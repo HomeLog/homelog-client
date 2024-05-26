@@ -1,25 +1,25 @@
 import Button from '@/components/Button';
 import { mergeClassNames } from '@/libs/utils';
 import Image from 'next/image';
+import deleteIcon from '/public/icons/delete.svg';
+import editIcon from '/public/icons/edit.svg';
+import homeIcon from '/public/icons/home.svg';
 
 const buttonProps = [
   {
-    src: '/icons/home.svg',
+    src: homeIcon,
     alt: 'Home Icon',
-    width: 200,
-    height: 200,
+    className: 'object-contain',
   },
   {
-    src: '/icons/edit.svg',
+    src: editIcon,
     alt: 'Edit Icon',
-    width: 100,
-    height: 100,
+    className: 'object-contain',
   },
   {
-    src: '/icons/delete.svg',
+    src: deleteIcon,
     alt: 'Delete Icon',
-    width: 100,
-    height: 100,
+    className: 'object-contain',
   },
 ];
 
@@ -27,17 +27,12 @@ function MenuBar() {
   return (
     <div
       className={mergeClassNames(
-        'sticky inset-0 w-full h-auto grid grid-cols-[10%_10%_10%] justify-around items-end py-7',
+        'bg-inherit sticky inset-0 w-full h-auto grid grid-cols-[10%_10%_10%] justify-around items-end py-7',
       )}
     >
       {buttonProps.map((props, index) => (
         <Button size='sm' key={index}>
-          <Image
-            {...props}
-            layout='responsive'
-            objectFit='contain'
-            alt={props.alt}
-          />
+          <Image {...props} alt={props.alt} />
         </Button>
       ))}
     </div>
