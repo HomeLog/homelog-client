@@ -5,19 +5,19 @@ import { ButtonHTMLAttributes, FC, forwardRef } from 'react';
 const buttonVariants = cva('', {
   variants: {
     intent: {
-      primary: 'bg-[rgba(0,0,0,0)] text-white',
+      primary: 'bg-[#DADADA] text-white hover:bg-[#999999] rounded-[5px]',
       secondary: 'bg-black text-white',
     },
     size: {
       sm: 'text-sm',
       md: 'text-md',
-      lg: 'text-lg',
+      lg: 'text-xl w-full px-5 py-4',
     },
   },
 
   defaultVariants: {
     intent: 'primary',
-    size: 'md',
+    size: 'lg',
   },
 });
 
