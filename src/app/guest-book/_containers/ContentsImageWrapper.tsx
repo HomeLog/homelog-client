@@ -1,24 +1,13 @@
 import { mergeClassNames } from '@/libs/utils';
-import Image, { ImageProps } from 'next/image';
 
-function ContentsImageWrapper({
-  src,
-  alt,
-  width,
-  height,
-  className,
-}: ImageProps) {
+function ContentsImageWrapper({ children }: { children: React.ReactNode }) {
   return (
-    <div className={mergeClassNames('w-[100%] h-[auto] flex justify-center')}>
-      <Image
-        src={src}
-        alt={alt}
-        width={width}
-        height={height}
-        className={className}
-        layout='responsive'
-        objectFit='contain'
-      />
+    <div
+      className={mergeClassNames(
+        'relative w-[100%] h-[50%] flex justify-center rounded-xl shadow-[inset_2px_2px_2px_0px_rgba(0,0,0,0.4)]',
+      )}
+    >
+      {children}
     </div>
   );
 }
