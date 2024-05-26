@@ -1,14 +1,13 @@
 import { mergeClassNames } from '@/libs/utils';
-import { FC } from 'react';
+import clsx from 'clsx';
+import Image from 'next/image';
+import Flex from '../../../components/Flex';
 import ContentsCaption from '../_containers/ContentsCaption';
-import ContentsContainer from '../_containers/ContentsContainer';
 import ContentsImageWrapper from '../_containers/ContentsImageWrapper';
 import ContentsInfo from '../_containers/ContentsInfo';
 import MenuBar from '../_containers/MenuBar';
 
-interface DetailsProps {}
-
-const DetailsPage: FC<DetailsProps> = () => {
+function DetailsPage() {
   const [writer, date, caption, imageUrl] = [
     '박상희',
     '2024년 5월 9일',
@@ -18,22 +17,23 @@ const DetailsPage: FC<DetailsProps> = () => {
 
   const imageProps = {
     src: imageUrl,
-    alt: 'Alt is here',
-    width: 100,
-    height: 100,
-    className: mergeClassNames('rounded-lg shadow-lg shadow-[#DADADA]'),
+    alt: clsx(writer, '님의 사진'),
+    fill: true,
+    className: mergeClassNames('rounded-lg object-cover'),
   };
 
   return (
     <>
-      <ContentsContainer>
+      <Flex>
         <ContentsInfo writer={writer} date={date} />
-        <ContentsImageWrapper {...imageProps} />
+        <ContentsImageWrapper>
+          <Image {...imageProps} alt={imageProps.alt} />
+        </ContentsImageWrapper>
         <ContentsCaption caption={caption} />
-      </ContentsContainer>
+      </Flex>
       <MenuBar />
     </>
   );
-};
+}
 
 export default DetailsPage;
