@@ -1,6 +1,6 @@
 import { client } from '..';
 
-async function signInKakao(code: string) {
+async function signInKakao() {
   await client.get('users/kakao');
 }
 
