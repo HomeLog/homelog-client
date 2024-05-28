@@ -1,16 +1,9 @@
 import { client } from '..';
 
-async function signInKakao() {
+export async function signInKakao() {
   await client.get('users/kakao');
 }
 
-async function signOut() {
+export async function signOut() {
   await client.delete('users/sign-out');
 }
-
-const authAPI = {
-  signInKakao,
-  signOut,
-};
-
-export default authAPI;
