@@ -3,7 +3,7 @@ import * as auth from './auth/auth.api';
 import * as user from './user/user.api';
 
 export const client = axios.create({
-  baseURL: process.env.SERVER_URL,
+  baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
   withCredentials: true,
 });
 
