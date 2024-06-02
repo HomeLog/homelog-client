@@ -1,32 +1,48 @@
-import Button from '@/components/Button';
+import Flex from '@/components/Flex';
+import { getCreatedAt } from '@/libs/utils';
 import clsx from 'clsx';
 import Image from 'next/image';
-import Flex from '../../../components/Flex';
-import ContentsImageWrapper from '../_containers/ContentsImageWrapper';
+import path from 'path';
+import ButtonContainer from '../_containers/ButtonContainer';
 import ContentsTextWrapper from '../_containers/ContentsTextWrapper';
-function NewGuestBookPage() {
+import ImageBackgroundWrapper from '../_containers/ImageBackgroundWrapper';
+import ImageWrapper from '../_containers/ImageWrapper';
+import TimeStampLayer from '../_containers/TimeStampLayer';
+
+async function NewGuestBookPage() {
   const { nickname, imageUrl } = {
     nickname: '상똥',
     imageUrl: '/images/example.jpg',
   };
 
+  const createdAt = new Date(
+    await getCreatedAt(path.join(process.cwd(), '/public', imageUrl)),
+  )
+    .toLocaleDateString('ko-KR')
+    .replace(/\./g, '')
+    .replace(/ /g, '.');
+
   return (
-    <Flex className='gap-8'>
-      <p className='w-full text-xl font-semibold text-center text-[#999999]'>
+    <Flex className='justify-center flex-grow w-full gap-6 py-10'>
+      <p className='w-full sm:text-md md:text-lg lg:text-xl font-semibold text-center text-[#999999]'>
         {nickname}님의 집에 방문해주셔서 감사합니다
       </p>
-      <ContentsImageWrapper>
-        <Image
-          src={imageUrl}
-          fill={true}
-          alt={clsx(nickname, '님의 사진')}
-          className='rounded-lg drop-shadow-lg'
-        />
-      </ContentsImageWrapper>
+      <ImageBackgroundWrapper>
+        <ImageWrapper>
+          <Image
+            src={imageUrl}
+            fill
+            alt={clsx(nickname, '님의 사진')}
+            className='object-cover drop-shadow-lg'
+          />
+          <TimeStampLayer date={createdAt} />
+        </ImageWrapper>
+      </ImageBackgroundWrapper>
       <ContentsTextWrapper />
-      <Button intent='primary' className={'button button--primary'}>
-        작성 완료
-      </Button>
+      <ButtonContainer
+        buttonText='작성완료'
+        className='justify-start w-full row-start-11'
+      />
     </Flex>
   );
 }
