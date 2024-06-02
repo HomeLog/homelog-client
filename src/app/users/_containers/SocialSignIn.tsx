@@ -14,11 +14,8 @@ function SocialSignIn({ title, src, alt }: signInProps) {
   const router = useRouter();
 
   const handleClickSignIn = async () => {
-    // const url = await api.auth.signUpKakao();
-    // const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/users/kakao`;
-    // router.push(url);
-    // const url = await api.auth.signUpKakao();
-    // window.location.href = url;
+    const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/users/kakao`;
+    router.push(url);
   };
 
   return (
