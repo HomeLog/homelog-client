@@ -1,16 +1,24 @@
 import { mergeClassNames } from '@/libs/utils';
 import { cva, VariantProps } from 'class-variance-authority';
-import { HTMLAttributes } from 'react';
+import { forwardRef, HTMLAttributes } from 'react';
 
 const flexVariants = cva([''], {
   variants: {
     direction: {
-      vertical:
-        'flex flex-col items-start justify-center w-full flex-grow gap-y-7 px-10',
+      vertical: 'flex flex-col',
+    },
+    position: {
+      center: 'items-center justify-center',
+    },
+    border: {
+      true: 'border-solid border-2 border-[#DADADA]',
+      false: '',
     },
   },
   defaultVariants: {
     direction: 'vertical',
+    position: 'center',
+    border: false,
   },
 });
 
@@ -18,16 +26,20 @@ interface FlexProps
   extends HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof flexVariants> {}
 
-function Flex({ children, direction, className, ...props }: FlexProps) {
-  const combinedClassName = mergeClassNames(
-    flexVariants({ direction, className }),
-  );
+const Flex = forwardRef<HTMLDivElement, FlexProps>(
+  ({ children, border, direction, position, className, ...props }, ref) => {
+    const combinedClassName = mergeClassNames(
+      flexVariants({ direction, position, border, className }),
+    );
 
-  return (
-    <div className={combinedClassName} {...props}>
-      {children}
-    </div>
-  );
-}
+    return (
+      <div className={combinedClassName} {...props}>
+        {children}
+      </div>
+    );
+  },
+);
+
+Flex.displayName = 'Flex';
 
 export default Flex;

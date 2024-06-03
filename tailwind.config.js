@@ -15,6 +15,20 @@ module.exports = {
     // Or if using `src` directory:
     './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  theme: {
+    extend: {
+      aspectRatio: {
+        '3/4': '3 / 4',
+        '2/3': '2 / 3',
+      },
+      backgroundImage: {
+        'paper-texture': "url('/images/paper.jpg')",
+      },
+      fontFamily: {
+        'digital-clock': ['E1234', 'sans-serif'],
+      },
+    },
+  },
   plugins: [
     function ({ addUtilities }) {
       const newUtilities = {

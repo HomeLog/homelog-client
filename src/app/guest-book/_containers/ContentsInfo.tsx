@@ -1,4 +1,5 @@
-import { mergeClassNames } from '@/libs/utils';
+import Flex from '@/components/Flex';
+import clsx from 'clsx';
 
 type ContentsInfoProps = {
   writer: string;
@@ -7,9 +8,9 @@ type ContentsInfoProps = {
 
 export default function ContentsInfo({ writer, date }: ContentsInfoProps) {
   return (
-    <div className={mergeClassNames('gap-1')}>
-      <p className={mergeClassNames('font-bold')}>{writer}</p>
-      <p className={mergeClassNames('text-[#5A5A5A]')}>{date}</p>
-    </div>
+    <Flex className='items-start justify-end w-full h-auto'>
+      <p className={clsx('font-bold')}>{writer}</p>
+      <p className={clsx('text-[#5A5A5A]')}>{date}</p>
+    </Flex>
   );
 }
