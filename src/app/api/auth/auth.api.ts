@@ -1,9 +1,17 @@
 import { client } from '..';
 
-export async function signInKakao() {
-  await client.get('users/kakao');
+export async function signUpKakao() {
+  const response = await client.get('/users/kakao', { withCredentials: true });
+  return response.data.url;
+}
+
+export async function signInKakao(code: string) {
+  const response = await client.get(`/users/kakao/callback?code=${code}`, {
+    withCredentials: true,
+  });
+  return response;
 }
 
 export async function signOut() {
-  await client.delete('users/sign-out');
+  await client.delete('/users/sign-out', { withCredentials: true });
 }
