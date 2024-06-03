@@ -1,13 +1,17 @@
-import { mergeClassNames } from '@/libs/utils';
+import Flex from '@/components/Flex';
+import Grid from '@/components/Grid';
+import { getCreatedAt, mergeClassNames } from '@/libs/utils';
 import clsx from 'clsx';
 import Image from 'next/image';
-import Flex from '../../../components/Flex';
+import path from 'path';
 import ContentsCaption from '../_containers/ContentsCaption';
-import ContentsImageWrapper from '../_containers/ContentsImageWrapper';
 import ContentsInfo from '../_containers/ContentsInfo';
+import ImageBackgroundWrapper from '../_containers/ImageBackgroundWrapper';
+import ImageWrapper from '../_containers/ImageWrapper';
 import MenuBar from '../_containers/MenuBar';
+import TimeStampLayer from '../_containers/TimeStampLayer';
 
-function DetailsPage() {
+async function DetailsPage() {
   const [writer, date, caption, imageUrl] = [
     '박상희',
     '2024년 5월 9일',
@@ -22,17 +26,35 @@ function DetailsPage() {
     className: mergeClassNames('rounded-lg object-cover'),
   };
 
+  const createdAt = new Date(
+    await getCreatedAt(path.join(process.cwd(), '/public', imageProps.src)),
+  )
+    .toLocaleDateString('ko-KR')
+    .replace(/\./g, '')
+    .replace(/ /g, '.');
+
   return (
-    <>
-      <Flex>
+    <Grid className='justify-around w-full h-full pb-5 grid-rows-12'>
+      <Flex className='flex-grow row-start-1 py-10 row-end-12 gap-y-4'>
         <ContentsInfo writer={writer} date={date} />
-        <ContentsImageWrapper>
-          <Image {...imageProps} alt={imageProps.alt} />
-        </ContentsImageWrapper>
-        <ContentsCaption caption={caption} />
+        <ImageBackgroundWrapper>
+          <ImageWrapper>
+            <Image
+              src={imageUrl}
+              fill
+              alt={`${writer}님의 사진`}
+              className='object-cover drop-shadow-lg'
+            />
+            <TimeStampLayer date={createdAt} />
+          </ImageWrapper>
+        </ImageBackgroundWrapper>
+        <ContentsCaption
+          className='row-span-2 mt-1 row-start-11'
+          caption={caption}
+        />
       </Flex>
-      <MenuBar />
-    </>
+      <MenuBar className='h-full row-span-1 row-start-12' />
+    </Grid>
   );
 }
 
