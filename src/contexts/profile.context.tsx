@@ -1,8 +1,7 @@
 'use client';
-
-import useQueryGetProfile from '@/hooks/profile/getProfile';
 import { createContext, PropsWithChildren, useContext, useEffect } from 'react';
 import useAuth from './auth.context';
+import useQueryGetProfile from '@/hooks/profile/useQuery.getProfile';
 
 export type Profile = {
   nickname: string;
