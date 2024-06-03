@@ -1,5 +1,11 @@
 import { client } from '..';
 
+export async function getProfile() {
+  const response = await client.get('/users/find-profile');
+  console.log(response);
+  return response.data;
+}
+
 export async function createProfile() {
   await client.post('users/profile');
 }

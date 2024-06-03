@@ -1,7 +1,9 @@
 import Background from '@/app/_containers/Layout';
 import '@app/globals.css';
+import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import type { Metadata } from 'next';
-import { Roboto, Italiana } from 'next/font/google';
+import { Roboto } from 'next/font/google';
+import ReactQueryProvider from './(providers)/reactQuery.provider';
 
 export const metadata: Metadata = {
   title: 'HomeLog',
@@ -20,10 +22,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
-      <body className={`${roboto.className} bg-[#DADADA]`}>
-        <Background>{children}</Background>
-      </body>
-    </html>
+    <ReactQueryProvider>
+      <html lang='en'>
+        <body className={`${roboto.className} bg-[#DADADA]`}>
+          <Background>{children}</Background>
+        </body>{' '}
+      </html>
+    </ReactQueryProvider>
   );
 }
