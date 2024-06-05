@@ -6,20 +6,27 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import ProfileImages from './_containers/ProfileImages';
 import Button from '@/components/Button';
-import Grid from '@/components/Grid';
-import Flex from '@/components/Flex';
+import useAuth from '@/contexts/auth.context';
 
 function ProfileEditPage() {
   const profile = useProfile();
-  // const queryClient = useQueryClient();
-  // const { mutateAsync: updateUser, isPending } = useMutation({
-  //   mutationFn: api.user.editProfile,
-  //   onSuccess: () =>
-  //     queryClient.invalidateQueries({ exact: true, queryKey: ['myProfile'] }),
-  // });
+  const queryClient = useQueryClient();
+  const { mutateAsync: updateProfile, isPending } = useMutation({
+    mutationFn: api.user.editProfile,
+    onSuccess: () =>
+      queryClient.invalidateQueries({ exact: true, queryKey: ['myProfile'] }),
+  });
   console.log('profile: ', profile);
   const [nickname, setNickname] = useState('');
   const [guestBookName, setGuestBookName] = useState('');
+
+  const nicknameChangeHandler = (e: {
+    target: { value: React.SetStateAction<string> };
+  }) => setNickname(e.target.value);
+
+  const guestBookNameChangeHandler = (e: {
+    target: { value: React.SetStateAction<string> };
+  }) => setGuestBookName(e.target.value);
 
   return (
     <>
@@ -28,13 +35,13 @@ function ProfileEditPage() {
         <Input
           placeholder='닉네임을 입력해주세요'
           value={nickname}
-          onChange={(e) => setNickname(e.target.value)}
+          onChange={nicknameChangeHandler}
           className='row-start-1 h-min'
         />
         <Input
           placeholder='방명록 이름을 입력해주세요'
           value={guestBookName}
-          onChange={(e) => setGuestBookName(e.target.value)}
+          onChange={guestBookNameChangeHandler}
           className='row-start-3 h-min'
         />
       </div>

@@ -4,11 +4,11 @@ import ReactQueryProvider from './_providers/reactQuery.provider';
 
 function ProvidersLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ReactQueryProvider>
-      <AuthProvider>
+    <AuthProvider>
+      <ReactQueryProvider>
         <ProfileProvider>{children}</ProfileProvider>
-      </AuthProvider>
-    </ReactQueryProvider>
+      </ReactQueryProvider>
+    </AuthProvider>
   );
 }
 

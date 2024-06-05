@@ -16,6 +16,7 @@ export const useProfile = () => useContext(ProfileContext);
 
 export function ProfileProvider({ children }: PropsWithChildren) {
   const isLoggedIn = useAuth();
+  console.log(isLoggedIn);
   const { data: profile, isFetched: isProfileFetched } = useQueryGetProfile();
 
   useEffect(() => {

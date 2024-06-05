@@ -6,7 +6,6 @@ import { useQuery } from '@tanstack/react-query';
 export default function useQueryGetProfile() {
   const { isLoggedIn } = useAuth();
 
-  console.log('api: ', api.user.getProfile);
   return useQuery<
     Awaited<ReturnType<typeof api.user.getProfile>>,
     unknown,

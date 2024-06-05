@@ -21,10 +21,7 @@ const useAuth = () => useContext(AuthContext);
 export function AuthProvider({ children }: PropsWithChildren<any>) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const signIn = useCallback(async () => {
-    await api.auth.signUpKakao();
-    setIsLoggedIn(true);
-  }, []);
+  const signIn = useCallback(() => setIsLoggedIn(true), []);
 
   const signOut = useCallback(async () => {
     await api.auth.signOut();
