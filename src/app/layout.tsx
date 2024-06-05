@@ -14,7 +14,7 @@ const roboto = Roboto({
   style: ['normal', 'italic'],
 });
 
-export default function RootLayout({
+export default function HTMLLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

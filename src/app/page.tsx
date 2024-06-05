@@ -1,5 +1,7 @@
+import ProvidersLayout from './(providers)/layout';
+
 function Home() {
-  return null;
+  return <>hello, home-log!</>;
 }
 
 export default Home;

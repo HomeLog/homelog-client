@@ -1,6 +1,6 @@
 import { AuthProvider } from '@/contexts/auth.context';
 import { ProfileProvider } from '@/contexts/profile.context';
-import ReactQueryProvider from './reactQuery.provider';
+import ReactQueryProvider from './_providers/reactQuery.provider';
 
 function ProvidersLayout({ children }: { children: React.ReactNode }) {
   return (
