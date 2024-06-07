@@ -25,13 +25,7 @@ interface InputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'>,
     VariantProps<typeof inputVariants> {}
 
-const Input = ({
-  onChange,
-  variant,
-  size,
-  className,
-  ...props
-}: InputProps) => {
+const Input = ({ variant, size, className, ...props }: InputProps) => {
   return (
     <input
       className={mergeClassNames(inputVariants({ variant, size, className }))}
