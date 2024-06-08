@@ -11,6 +11,6 @@ export async function createProfile() {
   await client.post('/users/profile');
 }
 
-export async function editProfile() {
-  await client.put('/users/profile');
+export async function editProfile(formData: any) {
+  await client.put('/users/profile', formData);
 }

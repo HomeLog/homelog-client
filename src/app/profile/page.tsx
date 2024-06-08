@@ -1,11 +1,12 @@
 'use client';
 import Input from '@/components/Input';
-import React, { useState } from 'react';
+import React, { FormEventHandler, useState } from 'react';
 import ProfileImages from './_containers/ProfileImages';
 import Button from '@/components/Button';
 import useQueryGetProfile from '@/hooks/profile/useQuery.getProfile';
 import useAuth from '@/contexts/auth.context';
 import { useRouter } from 'next/navigation';
+import api from '../api';
 
 function ProfileEditPage() {
   const router = useRouter();
@@ -14,6 +15,8 @@ function ProfileEditPage() {
 
   const { data: profile } = useQueryGetProfile();
 
+  const [profileImageFile, setProfileImageFile] = useState(null);
+  const [homeImageFile, setHomeImageFile] = useState(null);
   const [nickname, setNickname] = useState(profile?.nickname ?? '');
   const [guestBookName, setGuestBookName] = useState('');
 
@@ -25,9 +28,28 @@ function ProfileEditPage() {
     target: { value: React.SetStateAction<string> };
   }) => setGuestBookName(e.target.value);
 
+  const handleSubmitEditForm: FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('nickname', nickname);
+    formData.append('nickname', nickname);
+    if (profileImageFile) {
+      formData.append('profileImage', profileImageFile);
+    }
+    if (homeImageFile) {
+      formData.append('homeImage', homeImageFile);
+    }
+    await api.user.editProfile(formData);
+    router.push('/');
+  };
+
   return (
     <>
-      <ProfileImages />
+      <ProfileImages
+        onProfileImageChange={setProfileImageFile}
+        onHomeImageChange={setHomeImageFile}
+      />
       <div className='w-full px-10 gap-4 grid grid-rows-5'>
         <Input
           placeholder='닉네임을 입력해주세요'
@@ -43,7 +65,7 @@ function ProfileEditPage() {
         />
       </div>
       <div className='w-full p-10'>
-        <Button>저장하기</Button>
+        <Button type='submit'>저장하기</Button>
       </div>
     </>
   );
