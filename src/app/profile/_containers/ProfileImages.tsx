@@ -12,7 +12,8 @@ function ProfileImages() {
   console.log('profileImgUrl: ', profile?.result.homeImageUrl);
   console.log('homeImgUrl: ', profile?.result.profileImageUrl);
 
-  const fileInputRef = useRef(null);
+  const profileImageInputRef = useRef(null);
+  const homeImageInputRef = useRef(null);
 
   const [profileImage, setProfileImage] = useState(
     profile?.result.profileImageUrl ?? '/images/blank-profile.png',
@@ -48,24 +49,27 @@ function ProfileImages() {
     reader.onload = (e) => {
       if (reader.readyState === 2) {
         const imgUrl = e.target.result;
-        setProfileImage(imgUrl);
+        setHomeImage(imgUrl);
       }
     };
   };
 
-  const triggerFileInput = () => {
-    fileInputRef.current.click();
+  const triggerHomeInput = () => {
+    homeImageInputRef.current.click();
+  };
+  const triggerProfileInput = () => {
+    profileImageInputRef.current.click();
   };
 
   return (
     <Flex className='w-full h-1/3 relative'>
       <div className='w-full h-full relative'>
-        <Button onClick={triggerFileInput}>
+        <Button onClick={triggerHomeInput}>
           <input
             type='file'
-            style={{ display: 'none' }} // 파일 입력 요소 숨기기
-            ref={fileInputRef}
-            onChange={handleProfileImage}
+            ref={homeImageInputRef}
+            onChange={handleHomeImage}
+            className='w-full hidden'
           />
           <Image src={homeImage} alt='Home Image' fill className='w-full' />
         </Button>
@@ -74,13 +78,13 @@ function ProfileImages() {
         <Button
           intent={'none'}
           className='h-full p-0 '
-          onClick={triggerFileInput}
+          onClick={triggerProfileInput}
         >
           <input
             type='file'
-            style={{ display: 'none' }} // 파일 입력 요소 숨기기
-            ref={fileInputRef}
+            ref={profileImageInputRef}
             onChange={handleProfileImage}
+            className='rounded-full	hidden'
           />
           <Image
             src={profileImage}
