@@ -1,23 +1,20 @@
 'use client';
-import api from '@/app/api';
 import Input from '@/components/Input';
-import { useProfile } from '@/contexts/profile.context';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import ProfileImages from './_containers/ProfileImages';
 import Button from '@/components/Button';
+import useQueryGetProfile from '@/hooks/profile/useQuery.getProfile';
 import useAuth from '@/contexts/auth.context';
+import { useRouter } from 'next/navigation';
 
 function ProfileEditPage() {
-  const profile = useProfile();
-  const queryClient = useQueryClient();
-  const { mutateAsync: updateProfile, isPending } = useMutation({
-    mutationFn: api.user.editProfile,
-    onSuccess: () =>
-      queryClient.invalidateQueries({ exact: true, queryKey: ['myProfile'] }),
-  });
-  console.log('profile: ', profile);
-  const [nickname, setNickname] = useState('');
+  const router = useRouter();
+  const isLoggedIn = useAuth();
+  if (isLoggedIn.isLoggedIn === false) router.push('/users');
+
+  const { data: profile } = useQueryGetProfile();
+
+  const [nickname, setNickname] = useState(profile?.nickname ?? '');
   const [guestBookName, setGuestBookName] = useState('');
 
   const nicknameChangeHandler = (e: {

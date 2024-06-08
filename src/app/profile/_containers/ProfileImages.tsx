@@ -1,20 +1,33 @@
 'use client';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Button from '@/components/Button';
 import Flex from '@/components/Flex';
+import useQueryGetProfile from '@/hooks/profile/useQuery.getProfile';
 
 function ProfileImages() {
+  const { data: profile } = useQueryGetProfile();
+  console.log('profile: ', profile);
+  console.log('nickname: ', profile?.result.nickname);
+  console.log('profileImgUrl: ', profile?.result.homeImageUrl);
+  console.log('homeImgUrl: ', profile?.result.profileImageUrl);
+
   const [profileImage, setProfileImage] = useState('/images/blank-profile.png');
   const [homeImage, setHomeImage] = useState('/images/blank.png');
 
-  const fileInput = useRef(null);
+  useEffect(() => {
+    if (profile) {
+      setProfileImage(
+        profile.result.profileImageUrl ?? '/images/blank-profile.png',
+      );
+      setHomeImage(profile.result.homeImageUrl ?? '/images/blank.png');
+    }
+  }, [profile]);
 
   const handleProfileImage = async (e: any) => {
     const file = e.target.files[0];
     if (!file) return;
     else {
-      setProfileImage('');
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = (e) => {
@@ -30,7 +43,6 @@ function ProfileImages() {
     const file = e.target.files[0];
     if (!file) return;
     else {
-      setProfileImage('');
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = (e) => {
@@ -44,7 +56,7 @@ function ProfileImages() {
   return (
     <Flex className='w-full h-1/3 relative'>
       <div className='w-full h-full relative'>
-        <Button onClick={handleProfileImage}>
+        <Button onClick={handleHomeImage}>
           <Image src={homeImage} alt='Home Image' fill className='w-full' />
         </Button>
       </div>
@@ -52,7 +64,7 @@ function ProfileImages() {
         <Button
           intent={'none'}
           className='h-full p-0 '
-          onClick={handleHomeImage}
+          onClick={handleProfileImage}
         >
           <Image
             src={profileImage}

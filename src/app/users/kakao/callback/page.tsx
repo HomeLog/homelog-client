@@ -16,7 +16,7 @@ const KakaoCallbackPage = ({
 
   useEffect(() => {
     const signInAndRedirect = async () => {
-      await `${process.env.NEXT_PUBLIC_SERVER_URL}/users/kakao/callback?code=${code}`;
+      await api.auth.signInKakao(code);
       signIn();
       router.push('/');
     };

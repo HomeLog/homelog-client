@@ -16,12 +16,14 @@ export const useProfile = () => useContext(ProfileContext);
 
 export function ProfileProvider({ children }: PropsWithChildren) {
   const isLoggedIn = useAuth();
-  console.log(isLoggedIn);
+
   const { data: profile, isFetched: isProfileFetched } = useQueryGetProfile();
 
   useEffect(() => {
     if (!isLoggedIn) return;
-    if (!isProfileFetched) return;
+    if (!isProfileFetched) {
+      return;
+    }
   }, [isLoggedIn, isProfileFetched]);
   return (
     <ProfileContext.Provider value={profile || null}>
