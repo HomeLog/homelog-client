@@ -12,51 +12,61 @@ function ProfileImages() {
   console.log('profileImgUrl: ', profile?.result.homeImageUrl);
   console.log('homeImgUrl: ', profile?.result.profileImageUrl);
 
-  const [profileImage, setProfileImage] = useState('/images/blank-profile.png');
-  const [homeImage, setHomeImage] = useState('/images/blank.png');
+  const fileInputRef = useRef(null);
 
-  useEffect(() => {
-    if (profile) {
-      setProfileImage(
-        profile.result.profileImageUrl ?? '/images/blank-profile.png',
-      );
-      setHomeImage(profile.result.homeImageUrl ?? '/images/blank.png');
-    }
-  }, [profile]);
+  const [profileImage, setProfileImage] = useState(
+    profile?.result.profileImageUrl ?? '/images/blank-profile.png',
+  );
+  const [homeImage, setHomeImage] = useState(
+    profile?.result.homeImageUrl ?? '/images/blank.png',
+  );
 
   const handleProfileImage = async (e: any) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    else {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = (e) => {
-        if (reader.readyState === 2) {
-          const imgUrl = e.target.result;
-          setProfileImage(imgUrl);
-        }
-      };
+    const files = e.target.files;
+    if (!files || files.length === 0) {
+      return;
     }
+    const file = files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (e) => {
+      if (reader.readyState === 2) {
+        const imgUrl = e.target.result;
+        setProfileImage(imgUrl);
+      }
+    };
   };
 
   const handleHomeImage = async (e: any) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    else {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = (e) => {
-        if (reader.readyState === 2) {
-          const imgUrl = e.target.result;
-          setProfileImage(imgUrl);
-        }
-      };
+    const files = e.target.files;
+    if (!files || files.length === 0) {
+      return;
     }
+    const file = files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (e) => {
+      if (reader.readyState === 2) {
+        const imgUrl = e.target.result;
+        setProfileImage(imgUrl);
+      }
+    };
   };
+
+  const triggerFileInput = () => {
+    fileInputRef.current.click();
+  };
+
   return (
     <Flex className='w-full h-1/3 relative'>
       <div className='w-full h-full relative'>
-        <Button onClick={handleHomeImage}>
+        <Button onClick={triggerFileInput}>
+          <input
+            type='file'
+            style={{ display: 'none' }} // 파일 입력 요소 숨기기
+            ref={fileInputRef}
+            onChange={handleProfileImage}
+          />
           <Image src={homeImage} alt='Home Image' fill className='w-full' />
         </Button>
       </div>
@@ -64,8 +74,14 @@ function ProfileImages() {
         <Button
           intent={'none'}
           className='h-full p-0 '
-          onClick={handleProfileImage}
+          onClick={triggerFileInput}
         >
+          <input
+            type='file'
+            style={{ display: 'none' }} // 파일 입력 요소 숨기기
+            ref={fileInputRef}
+            onChange={handleProfileImage}
+          />
           <Image
             src={profileImage}
             alt='Profile Image'
