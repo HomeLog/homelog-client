@@ -2,7 +2,6 @@ import Background from '@/app/_containers/Layout';
 import '@app/globals.css';
 import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
-import ProvidersLayout from './(providers)/_providers';
 
 export const metadata: Metadata = {
   title: 'HomeLog',

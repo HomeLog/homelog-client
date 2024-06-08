@@ -3,41 +3,43 @@ import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import Button from '@/components/Button';
 import Flex from '@/components/Flex';
-import { client } from '@/app/api';
 
 function ProfileImages() {
   const [profileImage, setProfileImage] = useState('/images/blank-profile.png');
   const [homeImage, setHomeImage] = useState('/images/blank.png');
 
-  const fileInputProfile = useRef(null);
-  const fileInputHome = useRef(null);
+  const fileInput = useRef(null);
 
   const handleProfileImage = async (e: any) => {
     const file = e.target.files[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = (e: any) => {
-      if (reader.readyState === 2) {
-        setProfileImage(e.target.result);
-      }
-    };
-    const formData = new FormData();
-    formData.append('profileImage', file);
+    else {
+      setProfileImage('');
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        if (reader.readyState === 2) {
+          const imgUrl = e.target.result;
+          setProfileImage(imgUrl);
+        }
+      };
+    }
   };
 
   const handleHomeImage = async (e: any) => {
     const file = e.target.files[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = (e: any) => {
-      if (reader.readyState === 2) {
-        setHomeImage(e.target.result);
-      }
-    };
-    const formData = new FormData();
-    formData.append('homeImage', file);
+    else {
+      setProfileImage('');
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        if (reader.readyState === 2) {
+          const imgUrl = e.target.result;
+          setProfileImage(imgUrl);
+        }
+      };
+    }
   };
   return (
     <Flex className='w-full h-1/3 relative'>

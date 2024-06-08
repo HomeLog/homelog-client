@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import Footer from './Footer';
 import Header from './Header';
 import Main from './Main';
-import ProvidersLayout from '../(providers)/_providers';
+import ProvidersLayout from '../(provider)/layout';
 
 function Background({ children }: { children: ReactNode }) {
   return (

@@ -9,13 +9,14 @@ import Button from '@/components/Button';
 import useAuth from '@/contexts/auth.context';
 
 function ProfileEditPage() {
+  const profile = useProfile();
   const queryClient = useQueryClient();
   const { mutateAsync: updateProfile, isPending } = useMutation({
     mutationFn: api.user.editProfile,
     onSuccess: () =>
       queryClient.invalidateQueries({ exact: true, queryKey: ['myProfile'] }),
   });
-
+  console.log('profile: ', profile);
   const [nickname, setNickname] = useState('');
   const [guestBookName, setGuestBookName] = useState('');
 

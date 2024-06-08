@@ -4,49 +4,28 @@ import React, {
   useContext,
   useCallback,
   useState,
-  ReactNode,
+  PropsWithChildren,
 } from 'react';
 import api from '@/app/api';
 
-interface AuthContextType {
-  isLoggedIn: boolean;
-  signIn: () => Promise<void>; // signIn이 비동기 함수임을 명시
-  signOut: () => Promise<void>;
-}
-
-const initialValue: AuthContextType = {
+const initialValue = {
   isLoggedIn: false,
-  signIn: async () => {},
-  signOut: async () => {},
+  signIn: () => {},
+  signOut: () => {},
 };
 
-const AuthContext = createContext<AuthContextType>(initialValue);
+const AuthContext = createContext(initialValue);
 
-export const useAuth = () => useContext(AuthContext);
+const useAuth = () => useContext(AuthContext);
 
-interface AuthProviderProps {
-  children: ReactNode;
-}
-
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+export function AuthProvider({ children }: PropsWithChildren<any>) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const signIn = useCallback(async () => {
-    try {
-      await api.auth.signUpKakao();
-      setIsLoggedIn(true);
-    } catch (error) {
-      console.error('Login failed:', error);
-    }
-  }, []);
+  const signIn = useCallback(() => setIsLoggedIn(true), []);
 
   const signOut = useCallback(async () => {
-    try {
-      await api.auth.signOut();
-      setIsLoggedIn(false);
-    } catch (error) {
-      console.error('Logout failed:', error);
-    }
+    await api.auth.signOut();
+    setIsLoggedIn(false);
   }, []);
 
   return (
@@ -54,6 +33,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
 export default useAuth;
