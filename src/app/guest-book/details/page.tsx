@@ -34,7 +34,7 @@ async function DetailsPage() {
     .replace(/ /g, '.');
 
   return (
-    <Grid className='justify-around w-full h-full pb-5 grid-rows-12'>
+    <Grid className='justify-around w-full h-full px-10 pb-5 grid-rows-12'>
       <Flex className='flex-grow row-start-1 py-10 row-end-12 gap-y-4'>
         <ContentsInfo writer={writer} date={date} />
         <ImageBackgroundWrapper>
