@@ -10,18 +10,30 @@ import { editProfile } from '../api/user/user.api';
 
 function ProfileEditPage() {
   const router = useRouter();
-  const isLoggedIn = useAuth();
+  const { isLoggedIn, loading } = useAuth();
+  console.log('isLoggedIn: ', isLoggedIn);
+  console.log('loading: ', loading);
   useEffect(() => {
-    if (!isLoggedIn.isLoggedIn) {
+    if (loading === false && isLoggedIn === false) {
       router.push('/users');
     }
-  }, [isLoggedIn, router]);
+  }, [loading, isLoggedIn, router]);
   const { data: profile } = useQueryGetProfile();
-
-  const [profileImageFile, setProfileImageFile] = useState(null);
-  const [homeImageFile, setHomeImageFile] = useState(null);
+  console.log('profile in page: ', profile);
+  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [homeImage, setHomeImage] = useState<File | null>(null);
   const [nickname, setNickname] = useState(profile?.nickname ?? '');
-  const [guestBookName, setGuestBookName] = useState('');
+  const [guestBookName, setGuestBookName] = useState(
+    profile?.guestBookName ?? '',
+  );
+
+  const handleProfileImageChange = (file: File) => {
+    setProfileImage(file);
+  };
+
+  const handleHomeImageChange = (file: File) => {
+    setHomeImage(file);
+  };
 
   const nicknameChangeHandler = (e: {
     target: { value: React.SetStateAction<string> };
@@ -31,21 +43,21 @@ function ProfileEditPage() {
     target: { value: React.SetStateAction<string> };
   }) => setGuestBookName(e.target.value);
 
+  const formData = new FormData();
+
   const handleSubmitEditForm: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-
-    const formData = new FormData();
     if (nickname) {
       formData.append('nickname', nickname);
     }
     if (guestBookName) {
       formData.append('guestBookName', guestBookName);
     }
-    if (profileImageFile) {
-      formData.append('profileImage', profileImageFile);
+    if (profileImage) {
+      formData.append('profileImage', profileImage);
     }
-    if (homeImageFile) {
-      formData.append('homeImage', homeImageFile);
+    if (homeImage) {
+      formData.append('homeImage', homeImage);
     }
     await editProfile(formData);
     alert('프로필 변경이 완료되었습니다.');
@@ -55,20 +67,19 @@ function ProfileEditPage() {
   return (
     <>
       <ProfileImages
-        onProfileImageChange={setProfileImageFile}
-        onHomeImageChange={setHomeImageFile}
+        profile={profile}
+        onProfileImageChange={handleProfileImageChange}
+        onHomeImageChange={handleHomeImageChange}
       />
       <form onSubmit={handleSubmitEditForm} className='w-full'>
         <div className='w-full px-10 gap-4 grid grid-rows-5'>
           <Input
             placeholder='닉네임을 입력해주세요'
-            value={nickname}
             onChange={nicknameChangeHandler}
             className='row-start-1 h-min'
           />
           <Input
             placeholder='방명록 이름을 입력해주세요'
-            value={guestBookName}
             onChange={guestBookNameChangeHandler}
             className='row-start-3 h-min'
           />

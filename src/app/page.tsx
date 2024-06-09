@@ -5,6 +5,7 @@ import { redirect, useRouter } from 'next/navigation';
 function Home() {
   const router = useRouter();
   const isLoggedIn = useAuth();
+  if (!isLoggedIn) router.push('/users');
 
   const redirectToProfileEditPage = () => {
     if (isLoggedIn) router.push('/profile');

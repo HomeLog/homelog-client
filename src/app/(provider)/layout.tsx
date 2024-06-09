@@ -4,11 +4,11 @@ import { ProfileProvider } from '@/contexts/profile.context';
 
 function ProvidersLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ReactQueryProvider>
-      <AuthProvider>
+    <AuthProvider>
+      <ReactQueryProvider>
         <ProfileProvider>{children}</ProfileProvider>
-      </AuthProvider>
-    </ReactQueryProvider>
+      </ReactQueryProvider>
+    </AuthProvider>
   );
 }
 
