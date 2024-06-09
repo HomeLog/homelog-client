@@ -11,15 +11,14 @@ import { editProfile } from '../api/user/user.api';
 function ProfileEditPage() {
   const router = useRouter();
   const { isLoggedIn, loading } = useAuth();
-  console.log('isLoggedIn: ', isLoggedIn);
-  console.log('loading: ', loading);
+  const { data: profile } = useQueryGetProfile();
+
   useEffect(() => {
     if (loading === false && isLoggedIn === false) {
       router.push('/users');
     }
   }, [loading, isLoggedIn, router]);
-  const { data: profile } = useQueryGetProfile();
-  console.log('profile in page: ', profile);
+
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [homeImage, setHomeImage] = useState<File | null>(null);
   const [nickname, setNickname] = useState(profile?.nickname ?? '');
