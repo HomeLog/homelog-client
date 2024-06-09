@@ -1,7 +1,6 @@
 'use client';
 import api from '@/app/api';
 import useAuth from '@/contexts/auth.context';
-import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
