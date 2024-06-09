@@ -34,7 +34,6 @@ export function AuthProvider({ children }: PropsWithChildren<any>) {
       const response = await api.user.checkSignIn();
       setIsLoggedIn(response.data);
     } catch (error) {
-      console.error('Failed to check login status:', error);
       setIsLoggedIn(false);
     }
   };

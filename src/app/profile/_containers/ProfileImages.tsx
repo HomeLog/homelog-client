@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import Button from '@/components/Button';
 import Flex from '@/components/Flex';
@@ -7,10 +7,6 @@ import useQueryGetProfile from '@/hooks/profile/useQuery.getProfile';
 
 function ProfileImages({ onProfileImageChange, onHomeImageChange }) {
   const { data: profile } = useQueryGetProfile();
-  console.log('nickname: ', profile?.result.nickname);
-  console.log('guestBookName: ', profile?.result.guestBookName);
-  console.log('profileImgUrl: ', profile?.result.homeImageUrl);
-  console.log('homeImgUrl: ', profile?.result.profileImageUrl);
 
   const profileImageInputRef = useRef(null);
   const homeImageInputRef = useRef(null);
