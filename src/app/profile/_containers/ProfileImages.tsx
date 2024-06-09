@@ -7,8 +7,8 @@ import useQueryGetProfile from '@/hooks/profile/useQuery.getProfile';
 
 function ProfileImages({ onProfileImageChange, onHomeImageChange }) {
   const { data: profile } = useQueryGetProfile();
-  console.log('profile: ', profile);
   console.log('nickname: ', profile?.result.nickname);
+  console.log('guestBookName: ', profile?.result.guestBookName);
   console.log('profileImgUrl: ', profile?.result.homeImageUrl);
   console.log('homeImgUrl: ', profile?.result.profileImageUrl);
 
@@ -41,6 +41,7 @@ function ProfileImages({ onProfileImageChange, onHomeImageChange }) {
         <Button onClick={() => homeImageInputRef.current.click()}>
           <input
             type='file'
+            accept='image/*'
             ref={homeImageInputRef}
             onChange={(e) =>
               handleImageUpload(e, setHomeImage, onHomeImageChange)
@@ -58,6 +59,7 @@ function ProfileImages({ onProfileImageChange, onHomeImageChange }) {
         >
           <input
             type='file'
+            accept='image/*'
             ref={profileImageInputRef}
             onChange={(e) =>
               handleImageUpload(e, setProfileImage, onProfileImageChange)

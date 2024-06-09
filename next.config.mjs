@@ -6,7 +6,7 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'sangheebucket.s3.ap-northeast-2.amazonaws.com',
         port: '',
-        pathname: '/**', // 이 경로 설정은 모든 하위 경로를 포함합니다.
+        pathname: '/**',
       },
     ],
   },

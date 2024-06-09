@@ -14,3 +14,6 @@ export async function createProfile() {
 export async function editProfile(formData: any) {
   await client.put('/users/profile', formData);
 }
+export function checkSignIn() {
+  throw new Error('Function not implemented.');
+}

@@ -1,5 +1,6 @@
 'use client';
 import api from '@/app/api';
+import { signUpKakao } from '@/app/api/auth/auth.api';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
