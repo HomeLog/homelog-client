@@ -44,7 +44,13 @@ function ProfileImages({ onProfileImageChange, onHomeImageChange }) {
             }
             style={{ display: 'none' }}
           />
-          <Image src={homeImage} alt='Home Image' fill className='w-full' />
+          <Image
+            src={homeImage}
+            alt='Home Image'
+            fill
+            objectFit='cover'
+            className='w-full'
+          />
         </Button>
       </div>
       <div className='absolute bg-inherit aspect-square w-[14%]'>
@@ -66,7 +72,7 @@ function ProfileImages({ onProfileImageChange, onHomeImageChange }) {
             src={profileImage}
             alt='Profile Image'
             fill
-            objectFit='contain'
+            objectFit='cover'
             className='rounded-full'
           />
         </Button>
