@@ -15,3 +15,8 @@ export async function signInKakao(code: string) {
 export async function signOut() {
   await client.delete('/users/sign-out', { withCredentials: true });
 }
+
+export async function checkSignIn() {
+  const response = await client.get(`users`, { withCredentials: true });
+  return response;
+}

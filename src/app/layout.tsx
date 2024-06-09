@@ -1,7 +1,7 @@
 import Background from '@/app/_containers/Layout';
 import '@app/globals.css';
 import type { Metadata } from 'next';
-import { Roboto, Italiana } from 'next/font/google';
+import { Roboto } from 'next/font/google';
 
 export const metadata: Metadata = {
   title: 'HomeLog',
@@ -14,7 +14,7 @@ const roboto = Roboto({
   style: ['normal', 'italic'],
 });
 
-export default function RootLayout({
+export default function HTMLLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

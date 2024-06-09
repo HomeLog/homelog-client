@@ -1,8 +1,6 @@
 'use client';
-import api from '@/app/api';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React from 'react';
 
 type signInProps = {
   title: string;
