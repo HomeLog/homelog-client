@@ -50,8 +50,8 @@ function ProfileEditPage() {
       : undefined;
 
   const guestbookNameLabel =
-    guestbookName.length > 10
-      ? '방명록 이름은 최대 10자까지 작성할 수 있습니다.'
+    guestbookName.length > 20
+      ? '방명록 이름은 최대 20자까지 작성할 수 있습니다.'
       : undefined;
 
   const formData = new FormData();
@@ -70,9 +70,14 @@ function ProfileEditPage() {
     if (homeImage) {
       formData.append('homeImage', homeImage);
     }
-    await editProfile(formData);
-    alert('프로필 변경이 완료되었습니다.');
-    router.push('/');
+
+    if (nicknameLabel || guestbookNameLabel)
+      alert('닉네임 또는 방명록 이름을 확인해주세요.');
+    else {
+      await editProfile(formData);
+      alert('프로필 변경이 완료되었습니다.');
+      router.push('/');
+    }
   };
 
   return (
