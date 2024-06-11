@@ -1,22 +1,18 @@
 'use client';
 import useAuth from '@/contexts/auth.context';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 function Home() {
   const router = useRouter();
-  const isLoggedIn = useAuth();
-  if (!isLoggedIn) router.push('/users');
+  const { loading, isLoggedIn } = useAuth();
+  useEffect(() => {
+    if (loading === false && isLoggedIn === false) {
+      router.push('/users');
+    }
+  }, [loading, isLoggedIn, router]);
 
-  const redirectToProfileEditPage = () => {
-    if (isLoggedIn) router.push('/profile');
-    else router.push('/');
-  };
-  return (
-    <>
-      hello, home-log!
-      <button onClick={redirectToProfileEditPage}>profile</button>
-    </>
-  );
+  return <></>;
 }
 
 export default Home;
