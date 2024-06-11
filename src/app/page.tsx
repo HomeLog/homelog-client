@@ -14,7 +14,7 @@ function Home() {
   const { data: profile } = useQueryGetProfile();
   const guestbookName = profile?.guestBookName;
   const homeImage = profile?.homeImageUrl ?? '/images/blank-profile.png';
-  const profileImage = profile?.homeImageUrl ?? '/images/background.png';
+  const profileImage = profile?.profileImageUrl ?? '/images/background.png';
 
   useEffect(() => {
     if (loading === false && isLoggedIn === false) {
@@ -36,8 +36,8 @@ function Home() {
   };
 
   return (
-    <>
-      <Flex className='w-full h-1/3 relative'>
+    <div className='bg-[#F5F5F5] w-full h-full'>
+      <Flex className='w-full h-1/3 relative drop-shadow-lg'>
         <div className='w-full h-full relative'>
           <Image
             src={homeImage}
@@ -56,6 +56,9 @@ function Home() {
             className='rounded-full'
           />
         </div>
+        <div className='absolute top-16 font-bold	text-2xl text-white	'>
+          {guestbookName}
+        </div>
         <Flex className='absolute bottom-5 flex flex-row justify-evenly w-full items-end'>
           <HomeButton onClick={redirectToProfileEditPage}>
             프로필 편집
@@ -66,7 +69,7 @@ function Home() {
           <HomeButton onClick={logOut}>로그아웃</HomeButton>
         </Flex>
       </Flex>
-    </>
+    </div>
   );
 }
 
