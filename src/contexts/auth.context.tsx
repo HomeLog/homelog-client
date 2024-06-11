@@ -1,13 +1,13 @@
 'use client';
-import React, {
-  createContext,
-  useContext,
-  useCallback,
-  useState,
-  PropsWithChildren,
-  useEffect,
-} from 'react';
 import api from '@/app/api';
+import {
+  createContext,
+  PropsWithChildren,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 type AuthContextType = {
   isLoggedIn: boolean;

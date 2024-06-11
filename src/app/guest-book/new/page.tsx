@@ -23,7 +23,7 @@ async function NewGuestBookPage() {
     .replace(/ /g, '.');
 
   return (
-    <Flex className='justify-center flex-grow w-full gap-6 py-10'>
+    <Flex className='justify-center flex-grow w-full gap-6 px-10 py-10'>
       <p className='w-full sm:text-md md:text-lg lg:text-xl font-semibold text-center text-[#999999]'>
         {nickname}님의 집에 방문해주셔서 감사합니다
       </p>
