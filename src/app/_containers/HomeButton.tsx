@@ -6,14 +6,12 @@ const buttonVariants = cva('', {
   variants: {
     intent: {
       primary:
-        'bg-[#D9D9D9]/50 text-white hover:bg-[#999999] hover:bg-[#999999]/50 rounded-[5px]',
+        'bg-[#D9D9D9]/50 text-white hover:bg-[#999999] hover:bg-[#999999]/50 rounded-lg',
       secondary: 'bg-black text-white',
       none: '',
     },
     size: {
-      sm: 'text-xs',
-      md: 'text-ms',
-      lg: 'text-xl w-full px-3 py-2',
+      lg: 'text-xs w-1/4 px-3 py-2',
     },
   },
 
