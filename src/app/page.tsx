@@ -70,7 +70,7 @@ function Home() {
           </div>
           <div
             id='total'
-            className='relative text-sm text-white font-thin mt-1 mb-12'
+            className='relative text-sm text-white font-thin mt-1 mb-10'
           >
             Total: {totalGuestbook}
           </div>
