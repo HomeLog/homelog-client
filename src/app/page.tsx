@@ -53,13 +53,13 @@ function Home() {
         <Flex className='absolute w-full h-full'>
           <div
             id='guestbook name'
-            className='relative font-bold	text-2xl text-white	mt-16'
+            className='relative font-bold	text-2xl text-white	mt-14'
           >
             {guestbookName}
           </div>
           <div
             id='profile image'
-            className='relative aspect-square w-[14%] rounded-full overflow-hidden mt-5'
+            className='relative aspect-square w-[14%] rounded-full overflow-hidden mt-2'
           >
             <Image
               src={profileImage}
