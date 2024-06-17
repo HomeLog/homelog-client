@@ -13,8 +13,8 @@ function Home() {
   const { loading, isLoggedIn } = useAuth();
   const { data: profile } = useQueryGetProfile();
   const guestbookName = profile?.guestBookName;
-  const homeImage = profile?.homeImageUrl ?? '/images/blank-profile.png';
-  const profileImage = profile?.profileImageUrl ?? '/images/background.png';
+  const homeImage = profile?.homeImageUrl ?? '/images/background.png';
+  const profileImage = profile?.profileImageUrl ?? '/images/blank-profile.png';
 
   useEffect(() => {
     if (loading === false && isLoggedIn === false) {
