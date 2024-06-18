@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as auth from './auth/auth.api';
+import * as guestbook from './guestbook/guestbook.api';
 import * as user from './user/user.api';
 
 export const client = axios.create({
@@ -10,6 +11,7 @@ export const client = axios.create({
 const api = {
   auth,
   user,
+  guestbook,
 };
 
 export default api;

@@ -1,11 +1,10 @@
 'use client';
-import Input from '@/components/Input';
-import React, { FormEventHandler, useEffect, useState } from 'react';
-import ProfileImages from './_containers/ProfileImages';
 import Button from '@/components/Button';
-import useQueryGetProfile from '@/hooks/profile/useQuery.getProfile';
+import Input from '@/components/Input';
 import useAuth from '@/contexts/auth.context';
+import useQueryGetProfile from '@/hooks/profile/useQuery.getProfile';
 import { useRouter } from 'next/navigation';
+import React, { FormEventHandler, useEffect, useState } from 'react';
 import { editProfile } from '../api/user/user.api';
 import InputWithLabel from '@/components/InputWithLabel';
 import Flex from '@/components/Flex';
@@ -16,9 +15,12 @@ function ProfileEditPage() {
   const { data: profile } = useQueryGetProfile();
 
   useEffect(() => {
+    if (!isLoggedIn.isLoggedIn) {
     if (loading === false && isLoggedIn === false) {
       router.push('/users');
     }
+  }, [isLoggedIn, router]);
+  const { data: profile } = useQueryGetProfile();
   }, [loading, isLoggedIn, router]);
 
   const [profileImage, setProfileImage] = useState<File | null>(null);
