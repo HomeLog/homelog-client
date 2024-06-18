@@ -6,9 +6,9 @@ import * as htmlToImage from 'html-to-image';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, useState } from 'react';
+import InputWithLabel from '../../../components/InputWithLabel';
 import ButtonContainer from '../_containers/ButtonContainer';
 import ImageUploadContainer from './_container/ImageUploadContainer';
-import InputWithLabel from '../../../components/InputWithLabel';
 
 const handleVisitorNameInput = (
   e: ChangeEvent<HTMLInputElement>,
@@ -47,13 +47,13 @@ function NewGuestBookLink() {
       : undefined;
 
   return (
-    <Grid className='px-10 grid-rows-12 min-h-dvh'>
+    <Grid className='w-full h-full grid-cols-1 px-10 grid-rows-12'>
       <InputWithLabel
         id='visitor-name'
         labelText={labelText}
         placeholder='방문자 이름을 입력해주세요'
         value={visitor}
-        classNameFlex='justify-end row-span-2 row-start-1 mb-7'
+        classNameFlex='justify-end row-span-1 row-start-2'
         classNameLabel='w-full'
         onChange={(e) => handleVisitorNameInput(e, setVisitor)}
       />

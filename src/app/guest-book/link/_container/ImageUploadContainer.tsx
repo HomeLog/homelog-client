@@ -48,6 +48,7 @@ function ImageUploadContainer({
       className={clsx(
         'row-start-3',
         'row-span-8',
+        'my-7',
         `justify-${file ? 'start' : 'center'}`,
       )}
       background={file ? 'paper' : 'none'}
