@@ -17,6 +17,8 @@ export async function signOut() {
 }
 
 export async function checkSignIn() {
-  const response = await client.get('/users', { withCredentials: true });
+  const response = await client.get('/users/sign-in-status', {
+    withCredentials: true,
+  });
   return response.data;
 }
