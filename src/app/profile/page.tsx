@@ -7,21 +7,34 @@ import useQueryGetProfile from '@/hooks/profile/useQuery.getProfile';
 import useAuth from '@/contexts/auth.context';
 import { useRouter } from 'next/navigation';
 import { editProfile } from '../api/user/user.api';
+import InputWithLabel from '@/components/InputWithLabel';
+import Flex from '@/components/Flex';
 
 function ProfileEditPage() {
   const router = useRouter();
-  const isLoggedIn = useAuth();
-  useEffect(() => {
-    if (!isLoggedIn.isLoggedIn) {
-      router.push('/users');
-    }
-  }, [isLoggedIn, router]);
+  const { isLoggedIn, loading } = useAuth();
   const { data: profile } = useQueryGetProfile();
 
-  const [profileImageFile, setProfileImageFile] = useState(null);
-  const [homeImageFile, setHomeImageFile] = useState(null);
+  useEffect(() => {
+    if (loading === false && isLoggedIn === false) {
+      router.push('/users');
+    }
+  }, [loading, isLoggedIn, router]);
+
+  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [homeImage, setHomeImage] = useState<File | null>(null);
   const [nickname, setNickname] = useState(profile?.nickname ?? '');
-  const [guestBookName, setGuestBookName] = useState('');
+  const [guestbookName, setGuestbookName] = useState(
+    profile?.guestBookName ?? '',
+  );
+
+  const handleProfileImageChange = (file: File) => {
+    setProfileImage(file);
+  };
+
+  const handleHomeImageChange = (file: File) => {
+    setHomeImage(file);
+  };
 
   const nicknameChangeHandler = (e: {
     target: { value: React.SetStateAction<string> };
@@ -29,55 +42,79 @@ function ProfileEditPage() {
 
   const guestBookNameChangeHandler = (e: {
     target: { value: React.SetStateAction<string> };
-  }) => setGuestBookName(e.target.value);
+  }) => setGuestbookName(e.target.value);
+
+  const nicknameLabel =
+    nickname.length > 10
+      ? '닉네임은 최대 10자까지 작성할 수 있습니다.'
+      : undefined;
+
+  const guestbookNameLabel =
+    guestbookName.length > 20
+      ? '방명록 이름은 최대 20자까지 작성할 수 있습니다.'
+      : undefined;
+
+  const formData = new FormData();
 
   const handleSubmitEditForm: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-
-    const formData = new FormData();
     if (nickname) {
       formData.append('nickname', nickname);
     }
-    if (guestBookName) {
-      formData.append('guestBookName', guestBookName);
+    if (guestbookName) {
+      formData.append('guestBookName', guestbookName);
     }
-    if (profileImageFile) {
-      formData.append('profileImage', profileImageFile);
+    if (profileImage) {
+      formData.append('profileImage', profileImage);
     }
-    if (homeImageFile) {
-      formData.append('homeImage', homeImageFile);
+    if (homeImage) {
+      formData.append('homeImage', homeImage);
     }
-    await editProfile(formData);
-    alert('프로필 변경이 완료되었습니다.');
-    router.push('/');
+
+    if (nicknameLabel || guestbookNameLabel)
+      alert('닉네임 또는 방명록 이름을 확인해주세요.');
+    else {
+      await editProfile(formData);
+      alert('프로필 변경이 완료되었습니다.');
+      router.push('/');
+    }
   };
 
   return (
-    <>
+    <Flex className='w-full h-full justify-between'>
       <ProfileImages
-        onProfileImageChange={setProfileImageFile}
-        onHomeImageChange={setHomeImageFile}
+        profile={profile}
+        onProfileImageChange={handleProfileImageChange}
+        onHomeImageChange={handleHomeImageChange}
       />
       <form onSubmit={handleSubmitEditForm} className='w-full'>
-        <div className='w-full px-10 gap-4 grid grid-rows-5'>
-          <Input
+        <div className='w-full h-max px-10 gap-4 grid grid-rows-5'>
+          <InputWithLabel
+            id='nickname'
             placeholder='닉네임을 입력해주세요'
             value={nickname}
+            labelText={nicknameLabel}
+            classNameFlex='row-start-2 justify-end h-16'
+            classNameLabel='w-full'
+            classNameInput='justify-end h-max'
             onChange={nicknameChangeHandler}
-            className='row-start-1 h-min'
           />
-          <Input
+          <InputWithLabel
+            id='guestbook-name'
             placeholder='방명록 이름을 입력해주세요'
-            value={guestBookName}
+            value={guestbookName}
+            labelText={guestbookNameLabel}
+            classNameFlex='row-start-3 justify-end h-16'
+            classNameLabel='w-full '
+            classNameInput='justify-end h-min'
             onChange={guestBookNameChangeHandler}
-            className='row-start-3 h-min'
           />
         </div>
-        <div className='w-full p-10'>
+        <div className='w-full flex-col justify-end p-10'>
           <Button type='submit'>저장하기</Button>
         </div>
       </form>
-    </>
+    </Flex>
   );
 }
 

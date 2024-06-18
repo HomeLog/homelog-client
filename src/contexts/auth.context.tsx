@@ -9,18 +9,25 @@ import {
   useState,
 } from 'react';
 
-const initialValue = {
-  isLoggedIn: false,
-  signIn: () => {},
-  signOut: () => {},
+type AuthContextType = {
+  isLoggedIn: boolean;
+  loading: boolean;
+  signIn: () => void;
+  signOut: () => void;
 };
 
-const AuthContext = createContext(initialValue);
+const AuthContext = createContext<AuthContextType>({
+  isLoggedIn: false,
+  loading: true,
+  signIn: () => {},
+  signOut: () => {},
+});
 
 const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({ children }: PropsWithChildren<any>) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const signIn = useCallback(() => setIsLoggedIn(true), []);
 
@@ -29,23 +36,23 @@ export function AuthProvider({ children }: PropsWithChildren<any>) {
     setIsLoggedIn(false);
   }, []);
 
-  const checkLoginStatus = async () => {
-    try {
-      const response = await api.user.checkSignIn();
-      setIsLoggedIn(response.data);
-    } catch (error) {
-      setIsLoggedIn(false);
-    }
-  };
-
   useEffect(() => {
-    () => {
-      checkLoginStatus();
+    const checkLoginStatus = async () => {
+      setLoading(true);
+      try {
+        const response = await api.auth.checkSignIn();
+        setIsLoggedIn(response);
+      } catch (error) {
+        setIsLoggedIn(false);
+      }
+      setLoading(false);
     };
-  });
+
+    checkLoginStatus();
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, signIn, signOut }}>
+    <AuthContext.Provider value={{ isLoggedIn, loading, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

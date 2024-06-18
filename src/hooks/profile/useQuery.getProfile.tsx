@@ -12,7 +12,7 @@ export default function useQueryGetProfile() {
   >({
     queryKey: ['profile'],
     queryFn: api.user.getProfile,
-    enabled: isLoggedIn,
+    enabled: !!isLoggedIn,
     retry: false,
   });
 

@@ -4,7 +4,7 @@ import { client } from '..';
 
 export async function getProfile() {
   const response = await client.get('/users/profile');
-  return response.data;
+  return response.data.result;
 }
 
 export async function createProfile() {
@@ -13,7 +13,4 @@ export async function createProfile() {
 
 export async function editProfile(formData: any) {
   await client.put('/users/profile', formData);
-}
-export function checkSignIn() {
-  throw new Error('Function not implemented.');
 }
