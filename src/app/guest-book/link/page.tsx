@@ -1,6 +1,7 @@
 'use client';
-import api from '@/app/api';
+import api from '@/api';
 import Grid from '@/components/Grid';
+import showToast from '@/components/toast/toast';
 import ImageFile from '@/types/image.file';
 import { useMutation } from '@tanstack/react-query';
 import * as htmlToImage from 'html-to-image';

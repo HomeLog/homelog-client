@@ -1,4 +1,4 @@
-import api from '@/app/api';
+import api from '@/api';
 import useAuth from '@/contexts/auth.context';
 import { Profile } from '@/contexts/profile.context';
 import { useQuery } from '@tanstack/react-query';
