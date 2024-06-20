@@ -1,14 +1,18 @@
 'use client';
-import useAuth from '@/contexts/auth.context';
-import { useRouter } from 'next/navigation';
-import { signOut } from './api/auth/auth.api';
-import Image from 'next/image';
+import Button from '@/components/Button';
 import Flex from '@/components/Flex';
-import { useEffect } from 'react';
-import HomeButton from './_containers/HomeButton';
+import useAuth from '@/contexts/auth.context';
 import useQueryGetProfile from '@/hooks/profile/useQuery.getProfile';
-import Polaroid from './_components/Polaroid';
-import Grid from '@/components/Grid';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { signOut } from './api/auth/auth.api';
+
+const buttonStyles = {
+  intent: 'transparent' as 'transparent',
+  size: 'sm' as 'sm',
+  rounded: 'md' as 'md',
+};
 
 function Home() {
   const router = useRouter();
@@ -40,8 +44,8 @@ function Home() {
 
   return (
     <div className='bg-[#F5F5F5] w-full h-full'>
-      <Flex className='w-full h-1/3 relative drop-shadow-lg'>
-        <div id='home image' className='w-full h-full relative'>
+      <Flex className='relative w-full h-1/3 drop-shadow-lg'>
+        <div id='home image' className='relative w-full h-full'>
           <Image
             src={homeImage}
             alt='Home Image'
@@ -53,7 +57,7 @@ function Home() {
         <Flex className='absolute w-full h-full'>
           <div
             id='guestbook name'
-            className='relative font-bold	text-2xl text-white	mt-14'
+            className='relative text-2xl font-bold text-white mt-14'
           >
             {guestbookName}
           </div>
@@ -70,18 +74,20 @@ function Home() {
           </div>
           <div
             id='total'
-            className='relative text-sm text-white font-thin mt-1 mb-10'
+            className='relative mt-1 mb-10 text-sm font-thin text-white'
           >
             Total: {totalGuestbook}
           </div>
-          <Flex className='relative flex flex-row justify-evenly w-full items-end'>
-            <HomeButton onClick={redirectToProfileEditPage}>
+          <Flex className='relative flex flex-row items-end w-full justify-evenly'>
+            <Button {...buttonStyles} onClick={redirectToProfileEditPage}>
               프로필 편집
-            </HomeButton>
-            <HomeButton onClick={redirectToGenerateLinkPage}>
+            </Button>
+            <Button {...buttonStyles} onClick={redirectToGenerateLinkPage}>
               링크 생성
-            </HomeButton>
-            <HomeButton onClick={logOut}>로그아웃</HomeButton>
+            </Button>
+            <Button {...buttonStyles} onClick={logOut}>
+              로그아웃
+            </Button>
           </Flex>
         </Flex>
       </Flex>

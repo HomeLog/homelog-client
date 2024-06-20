@@ -5,19 +5,27 @@ import { ButtonHTMLAttributes, FC, forwardRef } from 'react';
 const buttonVariants = cva('', {
   variants: {
     intent: {
-      primary: 'bg-[#DADADA] text-white hover:bg-[#999999] rounded-[5px]',
+      primary: 'bg-[#DADADA] text-white hover:bg-[#999999]',
       secondary: 'bg-black text-white',
+      transparent:
+        'bg-white/30 text-white hover:bg-[#999999] hover:bg-[#999999]/50',
       none: '',
     },
     size: {
-      sm: 'text-sm',
+      sm: 'text-xs w-1/4 px-3 py-2',
       md: 'text-md',
       lg: 'text-xl w-full px-5 py-4 h-14',
+    },
+    rounded: {
+      sm: 'rounded-[5px]',
+      md: 'rounded-[10px]',
+      lg: 'rounded-[15px]',
     },
   },
 
   defaultVariants: {
     intent: 'primary',
+    rounded: 'sm',
     size: 'lg',
   },
 });
@@ -28,13 +36,15 @@ interface ButtonProps
 
 const Button: FC<ButtonProps> = forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    { intent, size, className, ...props },
+    { intent, size, className, rounded, ...props },
     ref: React.Ref<HTMLButtonElement>,
   ) => {
     return (
       <button
         ref={ref}
-        className={mergeClassNames(buttonVariants({ intent, size, className }))}
+        className={mergeClassNames(
+          buttonVariants({ intent, size, rounded, className }),
+        )}
         {...props}
       />
     );
