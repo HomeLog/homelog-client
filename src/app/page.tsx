@@ -1,4 +1,5 @@
 'use client';
+import { signOut } from '@/api/auth/auth.api';
 import Button from '@/components/Button';
 import Flex from '@/components/Flex';
 import useAuth from '@/contexts/auth.context';
@@ -6,7 +7,6 @@ import useQueryGetProfile from '@/hooks/profile/useQuery.getProfile';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { signOut } from './api/auth/auth.api';
 
 const buttonStyles = {
   intent: 'transparent' as 'transparent',
@@ -14,7 +14,7 @@ const buttonStyles = {
   rounded: 'md' as 'md',
 };
 
-function Home() {
+export default function Home() {
   const router = useRouter();
   const { loading, isLoggedIn } = useAuth();
   const { data: profile } = useQueryGetProfile();
@@ -94,5 +94,3 @@ function Home() {
     </div>
   );
 }
-
-export default Home;
