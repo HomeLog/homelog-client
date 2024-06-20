@@ -1,5 +1,19 @@
-const ImageWrapper = ({ children }: { children: React.ReactNode }) => (
-  <div className='relative flex w-full aspect-3/4'>{children}</div>
+import { mergeClassNames } from '@/libs/utils';
+import { forwardRef, HTMLAttributes } from 'react';
+
+interface ImageWrapperProps extends HTMLAttributes<HTMLDivElement> {}
+
+const ImageWrapper = forwardRef<HTMLDivElement, ImageWrapperProps>(
+  ({ children, className, ...props }, ref) => (
+    <div
+      className={mergeClassNames('relative flex w-full aspect-3/4', className)}
+      ref={ref}
+      {...props}
+    >
+      {children}
+    </div>
+  ),
 );
 
+ImageWrapper.displayName = 'ImageWrapper';
 export default ImageWrapper;

@@ -1,5 +1,5 @@
 'use client';
-import api from '@/app/api';
+import api from '@/api';
 import useAuth from '@/contexts/auth.context';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';

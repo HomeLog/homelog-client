@@ -1,5 +1,4 @@
 'use client';
-import useAuth from '@/contexts/auth.context';
 import { client } from '..';
 
 export async function getProfile() {

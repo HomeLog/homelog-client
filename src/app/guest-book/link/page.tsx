@@ -1,48 +1,70 @@
 'use client';
-
+import api from '@/api';
 import Grid from '@/components/Grid';
+import { showToast } from '@/libs/utils';
 import ImageFile from '@/types/image.file';
+import { useMutation } from '@tanstack/react-query';
 import * as htmlToImage from 'html-to-image';
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, useState } from 'react';
 import InputWithLabel from '../../../components/InputWithLabel';
 import ButtonContainer from '../_containers/ButtonContainer';
 import ImageUploadContainer from './_container/ImageUploadContainer';
 
-const handleVisitorNameInput = (
-  e: ChangeEvent<HTMLInputElement>,
-  setVisitor: (value: string) => void,
-) => {
-  if (e.target.value.length > 10) return;
+const MAX_VISITOR_NAME_LENGTH = 10;
 
-  setVisitor(e.target.value);
-};
-
-const handleButtonClick = async (
-  router: AppRouterInstance,
-  file: ImageFile | null,
-) => {
-  const imageUploadContainer = document.querySelector(
-    '#image-upload-container',
-  );
-
-  if (!file) return;
-
-  const image = await htmlToImage.toJpeg(imageUploadContainer as HTMLElement, {
-    quality: 1,
-  });
-
-  router.push(image);
-};
-
-function NewGuestBookLink() {
-  const [visitor, setVisitor] = useState('');
+const NewGuestBookLink = () => {
+  const [visitorName, setVisitorName] = useState('');
   const [file, setFile] = useState<ImageFile | null>(null);
   const router = useRouter();
 
+  const { mutate: createLink } = useMutation({
+    mutationFn: (formData: FormData) => api.guestbook.createLink(formData),
+    onSuccess: (data) => {
+      showToast.success('방명록 링크 생성이 완료되었습니다.');
+    },
+    onError: (error) => {
+      showToast.error('방명록 링크 생성이 실패했습니다.');
+    },
+  });
+
+  const handleVisitorNameInput = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length > MAX_VISITOR_NAME_LENGTH) return;
+    setVisitorName(e.target.value);
+  };
+
+  const handleButtonClick = async () => {
+    const imageUploadContainer = document.querySelector(
+      '#image-upload-container',
+    );
+
+    if (!visitorName) {
+      showToast.error('방문자 이름을 입력해주세요.');
+      return;
+    } else if (!file) {
+      showToast.error('이미지를 선택해주세요.');
+      return;
+    }
+
+    const image = await htmlToImage.toJpeg(
+      imageUploadContainer as HTMLElement,
+      {
+        quality: 1,
+      },
+    );
+
+    const base64Image = await fetch(image);
+    const blob = await base64Image.blob();
+
+    const formData = new FormData();
+    formData.append('imageFile', blob);
+    formData.append('visitorName', visitorName);
+
+    createLink(formData);
+  };
+
   const labelText =
-    visitor.length >= 10
+    visitorName.length >= MAX_VISITOR_NAME_LENGTH
       ? '방문자 이름은 최대 10자까지 작성할 수 있습니다.'
       : undefined;
 
@@ -52,19 +74,19 @@ function NewGuestBookLink() {
         id='visitor-name'
         labelText={labelText}
         placeholder='방문자 이름을 입력해주세요'
-        value={visitor}
+        value={visitorName}
         classNameFlex='justify-end row-span-1 row-start-2'
         classNameLabel='w-full'
-        onChange={(e) => handleVisitorNameInput(e, setVisitor)}
+        onChange={handleVisitorNameInput}
       />
       <ImageUploadContainer file={file} setFile={setFile} />
       <ButtonContainer
         buttonText='링크 생성하기'
         className='justify-start row-start-11'
-        onClick={() => handleButtonClick(router, file)}
+        onClick={handleButtonClick}
       />
     </Grid>
   );
-}
+};
 
 export default NewGuestBookLink;

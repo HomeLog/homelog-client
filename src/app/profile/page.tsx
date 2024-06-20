@@ -1,14 +1,13 @@
 'use client';
-import Input from '@/components/Input';
+import { editProfile } from '@/api/user/user.api';
+import Button from '@/components/Button';
+import Flex from '@/components/Flex';
+import InputWithLabel from '@/components/InputWithLabel';
+import useAuth from '@/contexts/auth.context';
+import useQueryGetProfile from '@/hooks/profile/useQuery.getProfile';
+import { useRouter } from 'next/navigation';
 import React, { FormEventHandler, useEffect, useState } from 'react';
 import ProfileImages from './_containers/ProfileImages';
-import Button from '@/components/Button';
-import useQueryGetProfile from '@/hooks/profile/useQuery.getProfile';
-import useAuth from '@/contexts/auth.context';
-import { useRouter } from 'next/navigation';
-import { editProfile } from '../api/user/user.api';
-import InputWithLabel from '@/components/InputWithLabel';
-import Flex from '@/components/Flex';
 
 function ProfileEditPage() {
   const router = useRouter();
@@ -81,14 +80,14 @@ function ProfileEditPage() {
   };
 
   return (
-    <Flex className='w-full h-full justify-between'>
+    <Flex className='justify-between w-full h-full'>
       <ProfileImages
         profile={profile}
         onProfileImageChange={handleProfileImageChange}
         onHomeImageChange={handleHomeImageChange}
       />
       <form onSubmit={handleSubmitEditForm} className='w-full'>
-        <div className='w-full h-max px-10 gap-4 grid grid-rows-5'>
+        <div className='grid w-full grid-rows-5 gap-4 px-10 h-max'>
           <InputWithLabel
             id='nickname'
             placeholder='닉네임을 입력해주세요'
@@ -110,7 +109,7 @@ function ProfileEditPage() {
             onChange={guestBookNameChangeHandler}
           />
         </div>
-        <div className='w-full flex-col justify-end p-10'>
+        <div className='flex-col justify-end w-full p-10'>
           <Button type='submit'>저장하기</Button>
         </div>
       </form>
