@@ -1,6 +1,7 @@
 'use client';
 import api from '@/api';
 import Grid from '@/components/Grid';
+import { showToast } from '@/libs/utils';
 import ImageFile from '@/types/image.file';
 import { useMutation } from '@tanstack/react-query';
 import * as htmlToImage from 'html-to-image';
@@ -9,7 +10,6 @@ import { ChangeEvent, useState } from 'react';
 import InputWithLabel from '../../../components/InputWithLabel';
 import ButtonContainer from '../_containers/ButtonContainer';
 import ImageUploadContainer from './_container/ImageUploadContainer';
-import { showToast } from '@/libs/utils';
 
 const MAX_VISITOR_NAME_LENGTH = 10;
 
@@ -21,10 +21,10 @@ const NewGuestBookLink = () => {
   const { mutate: createLink } = useMutation({
     mutationFn: (formData: FormData) => api.guestbook.createLink(formData),
     onSuccess: (data) => {
-      // TODO:성공 알림 후 /pages/new 페이지로 이동
+      showToast.success('방명록 링크 생성이 완료되었습니다.');
     },
     onError: (error) => {
-      // TODO:실패 알림
+      showToast.error('방명록 링크 생성이 실패했습니다.');
     },
   });
 
@@ -37,7 +37,12 @@ const NewGuestBookLink = () => {
     const imageUploadContainer = document.querySelector(
       '#image-upload-container',
     );
-    if (!file) {
+
+    if (!visitorName) {
+      showToast.error('방문자 이름을 입력해주세요.');
+      return;
+    } else if (!file) {
+      showToast.error('이미지를 선택해주세요.');
       return;
     }
 
