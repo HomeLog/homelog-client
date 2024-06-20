@@ -16,6 +16,11 @@ function ProfileImages({
   const [profileImage, setProfileImage] = useState('/images/blank-profile.png');
   const [homeImage, setHomeImage] = useState('/images/background.png');
 
+  useEffect(() => {
+    if (profile?.homeImageUrl) setHomeImage(profile.homeImageUrl);
+    if (profile?.profileImageUrl) setProfileImage(profile.profileImageUrl);
+  }, [profile]);
+
   const handleImageUpload = (
     e: React.ChangeEvent<HTMLInputElement>,
     setImage: React.Dispatch<React.SetStateAction<string>>,
