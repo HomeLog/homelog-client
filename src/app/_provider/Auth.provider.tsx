@@ -5,33 +5,34 @@ import { AuthContext } from '@/contexts/auth.context';
 import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
 
 export default function AuthProvider({ children }: PropsWithChildren<any>) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const signIn = useCallback(() => setIsLoggedIn(true), []);
+  const signIn = useCallback(() => setSignedIn(true), []);
 
   const signOut = useCallback(async () => {
     await api.auth.signOut();
-    setIsLoggedIn(false);
+    setSignedIn(false);
   }, []);
 
   useEffect(() => {
-    const checkLoginStatus = async () => {
+    const checkAuthStatus = async () => {
       setLoading(true);
       try {
-        const response = await api.auth.checkSignIn();
-        setIsLoggedIn(response);
+        const signedIn = await api.auth.checkSignIn();
+
+        setSignedIn(signedIn);
       } catch (error) {
-        setIsLoggedIn(false);
+        setSignedIn(false);
       }
       setLoading(false);
     };
 
-    checkLoginStatus();
+    checkAuthStatus();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, loading, signIn, signOut }}>
+    <AuthContext.Provider value={{ signedIn, loading, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

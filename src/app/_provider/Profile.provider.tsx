@@ -6,16 +6,16 @@ import useQueryGetProfile from '@/hooks/profile/useQuery.getProfile';
 import { PropsWithChildren, useEffect } from 'react';
 
 export default function ProfileProvider({ children }: PropsWithChildren) {
-  const isLoggedIn = useAuth();
+  const { signedIn } = useAuth();
 
   const { data: profile, isFetched: isProfileFetched } = useQueryGetProfile();
 
   useEffect(() => {
-    if (!isLoggedIn) return;
+    if (!signedIn) return;
     if (!isProfileFetched) {
       return;
     }
-  }, [isLoggedIn, isProfileFetched]);
+  }, [signedIn, isProfileFetched]);
   return (
     <ProfileContext.Provider value={profile || null}>
       {children}
