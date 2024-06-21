@@ -17,10 +17,33 @@ function ProfileImages({
   const [profileImage, setProfileImage] = useState('/images/blank-profile.png');
   const [homeImage, setHomeImage] = useState('/images/background.png');
 
+  const [modal, setModal] = useState(false);
+  const [isProfileImage, setIsProfileImage] = useState(true);
+
+  const clickModal = (isProfile: boolean) => {
+    setIsProfileImage(isProfile);
+    setModal(!modal);
+  };
+
   useEffect(() => {
     if (profile?.homeImageUrl) setHomeImage(profile.homeImageUrl);
     if (profile?.profileImageUrl) setProfileImage(profile.profileImageUrl);
   }, [profile]);
+
+  const setBasicImage = (isProfile: boolean) => {
+    if (isProfile) {
+      setProfileImage('/images/blank-profile.png');
+    } else {
+      setHomeImage('/images/background.png');
+    }
+    setModal(false);
+  };
+
+  const openFileSelector = (isProfile: boolean) => {
+    const ref = isProfile ? profileImageInputRef : homeImageInputRef;
+    ref.current?.click();
+    setModal(false);
+  };
 
   const handleImageUpload = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -41,54 +64,64 @@ function ProfileImages({
   };
 
   return (
-    <Flex className='w-full h-1/3 relative'>
-      <div className='w-full h-full relative'>
-        <Button onClick={() => homeImageInputRef.current?.click()}>
-          <input
-            title='selectHomeImage'
-            type='file'
-            accept='image/*'
-            ref={homeImageInputRef}
-            onChange={(e) =>
-              handleImageUpload(e, setHomeImage, onHomeImageChange)
-            }
-            className='hidden'
-          />
-          <Image
-            src={homeImage}
-            alt='Home Image'
-            fill
-            objectFit='cover'
-            className='w-full'
-          />
-        </Button>
-      </div>
-      <div className='absolute bg-inherit aspect-square w-[14%]'>
-        <Button
-          intent={'none'}
-          className='h-full p-0 '
-          onClick={() => profileImageInputRef.current?.click()}
-        >
-          <input
-            title='selectProfileImage'
-            type='file'
-            accept='image/*'
-            ref={profileImageInputRef}
-            onChange={(e) =>
-              handleImageUpload(e, setProfileImage, onProfileImageChange)
-            }
-            className='hidden'
-          />
-          <Image
-            src={profileImage}
-            alt='Profile Image'
-            fill
-            objectFit='cover'
-            className='rounded-full'
-          />
-        </Button>
-      </div>
-    </Flex>
+    <>
+      <Flex className='w-full h-1/3 relative'>
+        <div className='w-full h-full relative'>
+          <Button onClick={() => clickModal(false)}>
+            <Image
+              src={homeImage}
+              alt='Home Image'
+              fill
+              objectFit='cover'
+              className='w-full'
+            />
+          </Button>
+        </div>
+        <div className='absolute bg-inherit aspect-square w-[14%]'>
+          <Button
+            intent={'none'}
+            className='h-full p-0 '
+            onClick={() => clickModal(true)}
+          >
+            <Image
+              src={profileImage}
+              alt='Profile Image'
+              fill
+              objectFit='cover'
+              className='rounded-full'
+            />
+          </Button>
+        </div>
+        <input
+          title='selectHomeImage'
+          type='file'
+          accept='image/*'
+          ref={homeImageInputRef}
+          onChange={(e) =>
+            handleImageUpload(e, setHomeImage, onHomeImageChange)
+          }
+          className='hidden'
+        />
+        <input
+          title='selectProfileImage'
+          type='file'
+          accept='image/*'
+          ref={profileImageInputRef}
+          onChange={(e) =>
+            handleImageUpload(e, setProfileImage, onProfileImageChange)
+          }
+          className='hidden'
+        />
+      </Flex>
+      {modal && (
+        <Modal
+          clickModal={() => clickModal(isProfileImage)}
+          setBasicImage={() => setBasicImage(isProfileImage)}
+          selectImage={() => openFileSelector(isProfileImage)}
+          isProfileImage={isProfileImage}
+        />
+      )}
+    </>
   );
 }
 

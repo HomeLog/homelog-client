@@ -13,3 +13,7 @@ export async function createProfile() {
 export async function editProfile(formData: any) {
   await client.put('/users/profile', formData);
 }
+
+export async function deleteProfileImage() {
+  await client;
+}
