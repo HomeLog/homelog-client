@@ -14,7 +14,7 @@ export async function editProfile(formData: any) {
   await client.put('/users/profile', formData);
 }
 
-export async function deleteImage(isProfile: boolean) {
-  const imageType = isProfile ? 'profile' : 'home';
+export async function deleteImage(isAvatar: boolean) {
+  const imageType = isAvatar ? 'avatar' : 'home';
   await client.delete(`/users/profile/${imageType}`);
 }
