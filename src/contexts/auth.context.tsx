@@ -2,14 +2,14 @@
 import { createContext, useContext } from 'react';
 
 type AuthContextType = {
-  isLoggedIn: boolean;
+  signedIn: boolean;
   loading: boolean;
   signIn: () => void;
   signOut: () => void;
 };
 
 export const AuthContext = createContext<AuthContextType>({
-  isLoggedIn: false,
+  signedIn: false,
   loading: true,
   signIn: () => {},
   signOut: () => {},

@@ -4,7 +4,7 @@ import { Profile } from '@/contexts/profile.context';
 import { useQuery } from '@tanstack/react-query';
 
 export default function useQueryGetProfile() {
-  const { isLoggedIn } = useAuth();
+  const { signedIn } = useAuth();
   const result = useQuery<
     Awaited<ReturnType<typeof api.user.getProfile>>,
     unknown,
@@ -12,7 +12,7 @@ export default function useQueryGetProfile() {
   >({
     queryKey: ['profile'],
     queryFn: api.user.getProfile,
-    enabled: !!isLoggedIn,
+    enabled: !!signedIn,
     retry: false,
   });
 
