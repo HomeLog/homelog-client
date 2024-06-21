@@ -8,31 +8,31 @@ import Modal from '@/components/Modal';
 
 function ProfileImages({
   profile,
-  onProfileImageChange,
+  onAvatarImageChange,
   onHomeImageChange,
 }: ProfileImagesProps) {
-  const profileImageInputRef = useRef<HTMLInputElement | null>(null);
+  const avatarImageInputRef = useRef<HTMLInputElement | null>(null);
   const homeImageInputRef = useRef<HTMLInputElement | null>(null);
-  const [profileImage, setProfileImage] = useState('/images/blank-profile.png');
+  const [avatarImage, setAvatarImage] = useState('/images/blank-profile.png');
   const [homeImage, setHomeImage] = useState('/images/background.png');
 
   const [modal, setModal] = useState(false);
-  const [isProfileImage, setIsProfileImage] = useState(true);
+  const [isAvatarImage, setIsAvatarImage] = useState(true);
 
   const clickModal = (isProfile: boolean) => {
-    setIsProfileImage(isProfile);
+    setIsAvatarImage(isProfile);
     setModal(!modal);
   };
 
   useEffect(() => {
+    if (profile?.avatarImageUrl) setAvatarImage(profile.avatarImageUrl);
     if (profile?.homeImageUrl) setHomeImage(profile.homeImageUrl);
-    if (profile?.profileImageUrl) setProfileImage(profile.profileImageUrl);
   }, [profile]);
 
   const setBasicImage = (isProfile: boolean) => {
     if (isProfile) {
-      setProfileImage('/images/blank-profile.png');
-      onProfileImageChange(null, true);
+      setAvatarImage('/images/blank-profile.png');
+      onAvatarImageChange(null, true);
     } else {
       setHomeImage('/images/background.png');
       onHomeImageChange(null, true);
@@ -41,7 +41,7 @@ function ProfileImages({
   };
 
   const openFileSelector = (isProfile: boolean) => {
-    const ref = isProfile ? profileImageInputRef : homeImageInputRef;
+    const ref = isProfile ? avatarImageInputRef : homeImageInputRef;
     ref.current?.click();
     setModal(false);
   };
@@ -85,7 +85,7 @@ function ProfileImages({
             onClick={() => clickModal(true)}
           >
             <Image
-              src={profileImage}
+              src={avatarImage}
               alt='Profile Image'
               fill
               objectFit='cover'
@@ -107,19 +107,19 @@ function ProfileImages({
           title='selectProfileImage'
           type='file'
           accept='image/*'
-          ref={profileImageInputRef}
+          ref={avatarImageInputRef}
           onChange={(e) =>
-            handleImageUpload(e, setProfileImage, onProfileImageChange)
+            handleImageUpload(e, setAvatarImage, onAvatarImageChange)
           }
           className='hidden'
         />
       </Flex>
       {modal && (
         <Modal
-          clickModal={() => clickModal(isProfileImage)}
-          setBasicImage={() => setBasicImage(isProfileImage)}
-          selectImage={() => openFileSelector(isProfileImage)}
-          isProfileImage={isProfileImage}
+          clickModal={() => clickModal(isAvatarImage)}
+          setBasicImage={() => setBasicImage(isAvatarImage)}
+          selectImage={() => openFileSelector(isAvatarImage)}
+          isAvatarImage={isAvatarImage}
         />
       )}
     </>

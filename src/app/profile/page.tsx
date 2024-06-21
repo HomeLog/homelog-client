@@ -23,21 +23,21 @@ function ProfileEditPage() {
     }
   }, [loading, isLoggedIn, router]);
 
-  const [profileImage, setProfileImage] = useState<File | null>(null);
-  const [isProfileImageChanged, setIsProfileImageChanged] = useState(false);
-  const [isHomeImageChanged, setIsHomeImageChanged] = useState(false);
+  const [avatarImage, setAvatarImage] = useState<File | null>(null);
+  const [isAvatarImageChanged, setIsAvatarImageChanged] = useState(false);
   const [homeImage, setHomeImage] = useState<File | null>(null);
+  const [isHomeImageChanged, setIsHomeImageChanged] = useState(false);
   const [nickname, setNickname] = useState(profile?.nickname ?? '');
   const [guestbookName, setGuestbookName] = useState(
     profile?.guestBookName ?? '',
   );
 
-  const handleProfileImageChange = (
+  const handleAvatarImageChange = (
     file: File | null,
-    isProfileImageChanged: boolean,
+    isAvatarImageChanged: boolean,
   ) => {
-    setProfileImage(file);
-    setIsProfileImageChanged(isProfileImageChanged);
+    setAvatarImage(file);
+    setIsAvatarImageChanged(isAvatarImageChanged);
   };
 
   const handleHomeImageChange = (
@@ -89,9 +89,9 @@ function ProfileEditPage() {
     if (guestbookName) {
       formData.append('guestBookName', guestbookName);
     }
-    if (profileImage) {
-      formData.append('profileImage', profileImage);
-    } else if (!profileImage && isProfileImageChanged) {
+    if (avatarImage) {
+      formData.append('avatarImage', avatarImage);
+    } else if (!avatarImage && isAvatarImageChanged) {
       await api.user.deleteImage(true);
     }
     if (homeImage) {
@@ -117,7 +117,7 @@ function ProfileEditPage() {
     <Flex className='justify-between w-full h-full'>
       <ProfileImages
         profile={profile}
-        onProfileImageChange={handleProfileImageChange}
+        onAvatarImageChange={handleAvatarImageChange}
         onHomeImageChange={handleHomeImageChange}
       />
       <form onSubmit={handleSubmitEditForm} className='w-full'>

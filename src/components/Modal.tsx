@@ -4,14 +4,14 @@ interface ModalProps {
   clickModal: () => void;
   setBasicImage: () => void;
   selectImage: () => void;
-  isProfileImage: boolean;
+  isAvatarImage: boolean;
 }
 
 const Modal: React.FC<ModalProps> = ({
   clickModal,
   setBasicImage,
   selectImage,
-  isProfileImage,
+  isAvatarImage,
 }) => {
   return (
     <div className='absolute w-full h-full bg-gray-500/50' onClick={clickModal}>
@@ -20,7 +20,7 @@ const Modal: React.FC<ModalProps> = ({
         className='fixed bg-white rounded-md transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 '
       >
         <div className='font-bold w-full px-5 py-4 h-14'>
-          {isProfileImage ? '프로필' : '홈'} 사진 설정
+          {isAvatarImage ? '프로필' : '홈'} 사진 설정
         </div>
         <Button
           onClick={setBasicImage}
