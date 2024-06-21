@@ -19,8 +19,8 @@ function ProfileImages({
   const [modal, setModal] = useState(false);
   const [isAvatarImage, setIsAvatarImage] = useState(true);
 
-  const clickModal = (isProfile: boolean) => {
-    setIsAvatarImage(isProfile);
+  const clickModal = (isAvatar: boolean) => {
+    setIsAvatarImage(isAvatar);
     setModal(!modal);
   };
 
@@ -29,8 +29,8 @@ function ProfileImages({
     if (profile?.homeImageUrl) setHomeImage(profile.homeImageUrl);
   }, [profile]);
 
-  const setBasicImage = (isProfile: boolean) => {
-    if (isProfile) {
+  const setBasicImage = (isAvatar: boolean) => {
+    if (isAvatar) {
       setAvatarImage('/images/blank-profile.png');
       onAvatarImageChange(null, true);
     } else {
