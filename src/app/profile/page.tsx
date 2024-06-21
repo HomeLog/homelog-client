@@ -1,5 +1,4 @@
 'use client';
-import { deleteImage } from '@/api/user/user.api';
 import Button from '@/components/Button';
 import Flex from '@/components/Flex';
 import InputWithLabel from '@/components/InputWithLabel';

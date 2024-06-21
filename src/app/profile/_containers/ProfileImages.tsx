@@ -40,8 +40,8 @@ function ProfileImages({
     setModal(false);
   };
 
-  const openFileSelector = (isProfile: boolean) => {
-    const ref = isProfile ? avatarImageInputRef : homeImageInputRef;
+  const openFileSelector = (isAvatar: boolean) => {
+    const ref = isAvatar ? avatarImageInputRef : homeImageInputRef;
     ref.current?.click();
     setModal(false);
   };
@@ -86,7 +86,7 @@ function ProfileImages({
           >
             <Image
               src={avatarImage}
-              alt='Profile Image'
+              alt='Avatar Image'
               fill
               objectFit='cover'
               className='rounded-full'
@@ -104,7 +104,7 @@ function ProfileImages({
           className='hidden'
         />
         <input
-          title='selectProfileImage'
+          title='selectAvatarImage'
           type='file'
           accept='image/*'
           ref={avatarImageInputRef}
