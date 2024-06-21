@@ -7,6 +7,9 @@ interface Profile {
 
 export interface ProfileImagesProps {
   profile?: Profile;
-  onProfileImageChange: (file: File) => void;
-  onHomeImageChange: (file: File) => void;
+  onProfileImageChange: (
+    file: File | null,
+    isProfileImageChanged: boolean,
+  ) => void;
+  onHomeImageChange: (file: File | null, isHomeImageChanged: boolean) => void;
 }

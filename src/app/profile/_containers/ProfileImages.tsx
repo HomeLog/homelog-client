@@ -13,7 +13,6 @@ function ProfileImages({
 }: ProfileImagesProps) {
   const profileImageInputRef = useRef<HTMLInputElement | null>(null);
   const homeImageInputRef = useRef<HTMLInputElement | null>(null);
-
   const [profileImage, setProfileImage] = useState('/images/blank-profile.png');
   const [homeImage, setHomeImage] = useState('/images/background.png');
 
@@ -33,8 +32,10 @@ function ProfileImages({
   const setBasicImage = (isProfile: boolean) => {
     if (isProfile) {
       setProfileImage('/images/blank-profile.png');
+      onProfileImageChange(null, true);
     } else {
       setHomeImage('/images/background.png');
+      onHomeImageChange(null, true);
     }
     setModal(false);
   };
@@ -48,7 +49,7 @@ function ProfileImages({
   const handleImageUpload = (
     e: React.ChangeEvent<HTMLInputElement>,
     setImage: React.Dispatch<React.SetStateAction<string>>,
-    onImageChange: (file: File) => void,
+    onImageChange: (file: File | null, isChanged: boolean) => void,
   ) => {
     const file = e.target.files ? e.target.files[0] : null;
     if (!file) return;
@@ -58,7 +59,7 @@ function ProfileImages({
     reader.onload = () => {
       if (typeof reader.result === 'string') {
         setImage(reader.result);
-        onImageChange(file);
+        onImageChange(file, true);
       }
     };
   };

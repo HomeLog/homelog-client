@@ -1,5 +1,5 @@
 'use client';
-import { deleteImage, editProfile } from '@/api/user/user.api';
+import { deleteImage } from '@/api/user/user.api';
 import Button from '@/components/Button';
 import Flex from '@/components/Flex';
 import InputWithLabel from '@/components/InputWithLabel';
@@ -8,6 +8,9 @@ import useQueryGetProfile from '@/hooks/profile/useQuery.getProfile';
 import { useRouter } from 'next/navigation';
 import React, { FormEventHandler, useEffect, useState } from 'react';
 import ProfileImages from './_containers/ProfileImages';
+import { useMutation } from '@tanstack/react-query';
+import { showToast } from '@/libs/utils';
+import api from '@/api';
 
 function ProfileEditPage() {
   const router = useRouter();
@@ -21,18 +24,28 @@ function ProfileEditPage() {
   }, [loading, isLoggedIn, router]);
 
   const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [isProfileImageChanged, setIsProfileImageChanged] = useState(false);
+  const [isHomeImageChanged, setIsHomeImageChanged] = useState(false);
   const [homeImage, setHomeImage] = useState<File | null>(null);
   const [nickname, setNickname] = useState(profile?.nickname ?? '');
   const [guestbookName, setGuestbookName] = useState(
     profile?.guestBookName ?? '',
   );
 
-  const handleProfileImageChange = (file: File) => {
+  const handleProfileImageChange = (
+    file: File | null,
+    isProfileImageChanged: boolean,
+  ) => {
     setProfileImage(file);
+    setIsProfileImageChanged(isProfileImageChanged);
   };
 
-  const handleHomeImageChange = (file: File) => {
+  const handleHomeImageChange = (
+    file: File | null,
+    isHomeImageChanged: boolean,
+  ) => {
     setHomeImage(file);
+    setIsHomeImageChanged(isHomeImageChanged);
   };
 
   const nicknameChangeHandler = (e: {
@@ -53,6 +66,19 @@ function ProfileEditPage() {
       ? '방명록 이름은 최대 20자까지 작성할 수 있습니다.'
       : undefined;
 
+  const { mutate: editProfile } = useMutation({
+    mutationFn: async (formData: FormData) => {
+      api.user.editProfile(formData);
+    },
+    onSuccess: (data) => {
+      showToast.success('프로필 변경이 완료되었습니다.');
+      router.push('/');
+    },
+    onError: (error) => {
+      showToast.error('닉네임 또는 방명록 이름을 확인해주세요.');
+    },
+  });
+
   const formData = new FormData();
 
   const handleSubmitEditForm: FormEventHandler<HTMLFormElement> = async (e) => {
@@ -65,22 +91,26 @@ function ProfileEditPage() {
     }
     if (profileImage) {
       formData.append('profileImage', profileImage);
-    } else {
-      deleteImage(true);
+    } else if (!profileImage && isProfileImageChanged) {
+      await api.user.deleteImage(true);
     }
     if (homeImage) {
       formData.append('homeImage', homeImage);
-    } else {
-      deleteImage(false);
+    } else if (!homeImage && isHomeImageChanged) {
+      await api.user.deleteImage(false);
     }
 
-    if (nicknameLabel || guestbookNameLabel)
-      alert('닉네임 또는 방명록 이름을 확인해주세요.');
-    else {
-      await editProfile(formData);
-      alert('프로필 변경이 완료되었습니다.');
-      router.push('/');
+    if (nicknameLabel && guestbookNameLabel) {
+      showToast.error('닉네임과 방명록 이름을 확인해주세요.');
+      return;
+    } else if (nicknameLabel) {
+      showToast.error('닉네임을 확인해주세요.');
+      return;
+    } else if (guestbookNameLabel) {
+      showToast.error('방명록 이름을 확인해주세요.');
+      return;
     }
+    editProfile(formData);
   };
 
   return (
