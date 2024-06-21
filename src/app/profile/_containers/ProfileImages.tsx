@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Button from '@/components/Button';
 import Flex from '@/components/Flex';
 import { ProfileImagesProps } from '@/types/profile.type';
+import Modal from '@/components/Modal';
 
 function ProfileImages({
   profile,
