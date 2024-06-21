@@ -1,5 +1,5 @@
 'use client';
-import { editProfile } from '@/api/user/user.api';
+import { deleteImage, editProfile } from '@/api/user/user.api';
 import Button from '@/components/Button';
 import Flex from '@/components/Flex';
 import InputWithLabel from '@/components/InputWithLabel';
@@ -65,9 +65,13 @@ function ProfileEditPage() {
     }
     if (profileImage) {
       formData.append('profileImage', profileImage);
+    } else {
+      deleteImage(true);
     }
     if (homeImage) {
       formData.append('homeImage', homeImage);
+    } else {
+      deleteImage(false);
     }
 
     if (nicknameLabel || guestbookNameLabel)
