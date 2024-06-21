@@ -1,5 +1,11 @@
 import Button from './Button';
 
+const buttonStyles = {
+  intent: 'secondary' as 'secondary',
+  size: 'md' as 'md',
+  rounded: 'sm' as 'sm',
+};
+
 interface ModalProps {
   clickModal: () => void;
   setBasicImage: () => void;
@@ -14,24 +20,21 @@ const Modal: React.FC<ModalProps> = ({
   isAvatarImage,
 }) => {
   return (
-    <div className='absolute w-full h-full bg-gray-500/50' onClick={clickModal}>
+    <div
+      className='absolute w-full h-full bg-gray-500/50 p-10'
+      onClick={clickModal}
+    >
       <div
         onClick={clickModal}
-        className='fixed bg-white rounded-md transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 '
+        className='fixed bg-white rounded-md transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 px-2 py-5'
       >
-        <div className='font-bold w-full px-5 py-4 h-14'>
+        <div className='font-bold text-gray-400 w-full px-7 py-4'>
           {isAvatarImage ? '프로필' : '홈'} 사진 설정
         </div>
-        <Button
-          onClick={setBasicImage}
-          className='bg-inherit rounded-none text-black text-base text-left'
-        >
+        <Button onClick={setBasicImage} {...buttonStyles}>
           기본 이미지 적용
         </Button>
-        <Button
-          onClick={selectImage}
-          className='bg-inherit rounded-none rounded-b-md text-black text-base text-left'
-        >
+        <Button onClick={selectImage} {...buttonStyles}>
           앨범에서 사진 선택
         </Button>
       </div>
