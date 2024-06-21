@@ -1,8 +1,8 @@
 'use client';
 import ImageBackgroundWrapper from '@/app/guest-book/_containers/ImageBackgroundWrapper';
+import { convertFileToImageFile } from '@/app/guest-book/_utils/image.util';
 import Flex from '@/components/Flex';
-import { convertFileToImageFile } from '@/libs/utils';
-import ImageFile from '@/types/image.file';
+import TImageFile from '@/types/image.file';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { useCallback, useRef } from 'react';
@@ -15,8 +15,8 @@ function ImageUploadContainer({
   file,
   setFile,
 }: {
-  file: ImageFile | null;
-  setFile: (file: ImageFile | null) => void;
+  file: TImageFile | null;
+  setFile: (file: TImageFile | null) => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -25,7 +25,7 @@ function ImageUploadContainer({
       const acceptedFile = acceptedFiles.pop();
       if (!acceptedFile) return;
 
-      const fileWithPreviewUrl: ImageFile =
+      const fileWithPreviewUrl: TImageFile =
         convertFileToImageFile(acceptedFile);
 
       setFile(fileWithPreviewUrl);

@@ -16,7 +16,7 @@ const buttonStyles = {
 
 export default function Home() {
   const router = useRouter();
-  const { loading, isLoggedIn } = useAuth();
+  const { loading, signedIn } = useAuth();
   const { data: profile } = useQueryGetProfile();
   const guestbookName = profile?.guestBookName;
   const homeImage = profile?.homeImageUrl ?? '/images/background.png';
@@ -24,10 +24,10 @@ export default function Home() {
   const totalGuestbook = 0;
 
   useEffect(() => {
-    if (loading === false && isLoggedIn === false) {
+    if (loading === false && signedIn === false) {
       router.push('/users');
     }
-  }, [loading, isLoggedIn, router]);
+  }, [loading, signedIn, router]);
 
   const redirectToProfileEditPage = () => {
     router.push('/profile');

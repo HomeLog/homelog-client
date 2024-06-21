@@ -11,14 +11,14 @@ import ProfileImages from './_containers/ProfileImages';
 
 function ProfileEditPage() {
   const router = useRouter();
-  const { isLoggedIn, loading } = useAuth();
+  const { signedIn, loading } = useAuth();
   const { data: profile } = useQueryGetProfile();
 
   useEffect(() => {
-    if (loading === false && isLoggedIn === false) {
+    if (loading === false && signedIn === false) {
       router.push('/users');
     }
-  }, [loading, isLoggedIn, router]);
+  }, [loading, signedIn, router]);
 
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [homeImage, setHomeImage] = useState<File | null>(null);
