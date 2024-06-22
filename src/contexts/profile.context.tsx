@@ -4,7 +4,7 @@ import { createContext, useContext } from 'react';
 export type Profile = {
   nickname: string;
   guestBookName: string;
-  profileImageUrl: string;
+  avatarImageUrl: string;
   homeImageUrl: string;
 };
 

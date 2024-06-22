@@ -20,7 +20,7 @@ export default function Home() {
   const { data: profile } = useQueryGetProfile();
   const guestbookName = profile?.guestBookName;
   const homeImage = profile?.homeImageUrl ?? '/images/background.png';
-  const profileImage = profile?.profileImageUrl ?? '/images/blank-profile.png';
+  const avatarImage = profile?.avatarImageUrl ?? '/images/blank-profile.png';
   const totalGuestbook = 0;
 
   useEffect(() => {
@@ -62,12 +62,12 @@ export default function Home() {
             {guestbookName}
           </div>
           <div
-            id='profile image'
+            id='avatar image'
             className='relative aspect-square w-[14%] rounded-full overflow-hidden mt-2'
           >
             <Image
-              src={profileImage}
-              alt='Profile Image'
+              src={avatarImage}
+              alt='Avatar Image'
               layout='fill'
               objectFit='cover'
             />

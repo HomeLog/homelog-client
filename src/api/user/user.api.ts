@@ -13,3 +13,8 @@ export async function createProfile() {
 export async function editProfile(formData: any) {
   await client.put('/users/profile', formData);
 }
+
+export async function deleteImage(isAvatar: boolean) {
+  const imageType = isAvatar ? 'avatar' : 'home';
+  await client.delete(`/users/profile/${imageType}`);
+}

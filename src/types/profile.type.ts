@@ -1,12 +1,15 @@
 interface Profile {
   nickname: string;
-  profileImageUrl: string;
+  avatarImageUrl: string;
   homeImageUrl: string;
   guestBookName: string;
 }
 
 export interface ProfileImagesProps {
   profile?: Profile;
-  onProfileImageChange: (file: File) => void;
-  onHomeImageChange: (file: File) => void;
+  onAvatarImageChange: (
+    file: File | null,
+    isAvatarImageChanged: boolean,
+  ) => void;
+  onHomeImageChange: (file: File | null, isHomeImageChanged: boolean) => void;
 }
