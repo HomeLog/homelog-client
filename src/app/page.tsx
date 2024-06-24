@@ -1,9 +1,12 @@
 'use client';
+import api from '@/api';
 import { signOut } from '@/api/auth/auth.api';
 import Button from '@/components/Button';
 import Flex from '@/components/Flex';
 import useAuth from '@/contexts/auth.context';
+import useQueryGetAllGuestbooks from '@/hooks/profile/useQuery.getGuestbooks';
 import useQueryGetProfile from '@/hooks/profile/useQuery.getProfile';
+import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -21,7 +24,6 @@ export default function Home() {
   const guestbookName = profile?.guestBookName;
   const homeImage = profile?.homeImageUrl ?? '/images/background.png';
   const avatarImage = profile?.avatarImageUrl ?? '/images/blank-profile.png';
-  const totalGuestbook = 0;
 
   useEffect(() => {
     if (loading === false && signedIn === false) {
@@ -80,7 +82,7 @@ export default function Home() {
             id='total'
             className='relative mt-1 mb-10 text-sm font-thin text-white'
           >
-            Total: {totalGuestbook}
+            Total: 0
           </div>
           <Flex className='relative flex flex-row items-end w-full justify-evenly'>
             <Button {...buttonStyles} onClick={redirectToProfileEditPage}>

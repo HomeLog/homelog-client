@@ -1,4 +1,3 @@
-import { guestbook } from './guestbook.api';
 import { DGuestBook } from '@/types/guestbook.type';
 import { TAccessToken } from '@/types/user.type';
 import { client } from '..';
@@ -24,10 +23,14 @@ export const getGuestBookById = async (
 
 export const getAllGuestbooks = async () => {
   const guestbooks = await client.get(`/guestbooks`);
+  console.log('api: ', guestbooks);
+  const totalGuestbook = guestbooks.data.length;
 
-  return { guestbooks, guestbooks };
+  return guestbooks;
 };
 
-export const guestbook = async (guestbookId: string) => {
-  const guestbooks = await client.get(`/guestbooks/${guestbookId}`);
+export const getGuestbookById = async (guestbookId: string) => {
+  const guestbook = await client.get(`/guestbooks/${guestbookId}`);
+
+  return guestbook;
 };
