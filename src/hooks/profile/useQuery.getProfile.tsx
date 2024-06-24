@@ -1,3 +1,4 @@
+'use client';
 import api from '@/api';
 import useAuth from '@/contexts/auth.context';
 import { Profile } from '@/contexts/profile.context';
