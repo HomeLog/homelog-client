@@ -20,17 +20,19 @@ const buttonStyles = {
 export default function Home() {
   const router = useRouter();
   const { loading, signedIn } = useAuth();
-  const { data: profile } = useQueryGetProfile();
-  const guestbookName = profile?.guestBookName;
-  const homeImage = profile?.homeImageUrl ?? '/images/background.png';
-  const avatarImage = profile?.avatarImageUrl ?? '/images/blank-profile.png';
-  const { data: guestbooks } = useQueryGetAllGuestbooks();
-
   useEffect(() => {
     if (loading === false && signedIn === false) {
       router.push('/users');
     }
   }, [loading, signedIn, router]);
+
+  const { data: profile } = useQueryGetProfile();
+  const guestbookName = profile?.guestBookName;
+  const homeImage = profile?.homeImageUrl ?? '/images/background.png';
+  const avatarImage = profile?.avatarImageUrl ?? '/images/blank-profile.png';
+
+  const { data: guestbooks } = useQueryGetAllGuestbooks();
+  const totalGuestbooks = guestbooks?.data.result.length;
 
   const redirectToProfileEditPage = () => {
     router.push('/profile');
