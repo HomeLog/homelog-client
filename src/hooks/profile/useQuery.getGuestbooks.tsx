@@ -7,8 +7,7 @@ export default function useQueryGetAllGuestbooks() {
   const { signedIn } = useAuth();
   const result = useQuery<
     Awaited<ReturnType<typeof api.guestbook.getAllGuestbooks>>,
-    unknown,
-    DGuestBook
+    unknown
   >({
     queryKey: ['guestbooks'],
     queryFn: api.guestbook.getAllGuestbooks,

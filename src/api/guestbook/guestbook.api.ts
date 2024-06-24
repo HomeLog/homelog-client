@@ -23,8 +23,6 @@ export const getGuestBookById = async (
 
 export const getAllGuestbooks = async () => {
   const guestbooks = await client.get(`/guestbooks`);
-  console.log('api: ', guestbooks);
-  const totalGuestbook = guestbooks.data.length;
 
   return guestbooks;
 };

@@ -24,6 +24,7 @@ export default function Home() {
   const guestbookName = profile?.guestBookName;
   const homeImage = profile?.homeImageUrl ?? '/images/background.png';
   const avatarImage = profile?.avatarImageUrl ?? '/images/blank-profile.png';
+  const { data: guestbooks } = useQueryGetAllGuestbooks();
 
   useEffect(() => {
     if (loading === false && signedIn === false) {
@@ -82,7 +83,7 @@ export default function Home() {
             id='total'
             className='relative mt-1 mb-10 text-sm font-thin text-white'
           >
-            Total: 0
+            Total: {totalGuestbooks}
           </div>
           <Flex className='relative flex flex-row items-end w-full justify-evenly'>
             <Button {...buttonStyles} onClick={redirectToProfileEditPage}>
