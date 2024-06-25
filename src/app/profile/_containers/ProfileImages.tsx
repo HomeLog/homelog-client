@@ -76,6 +76,10 @@ function ProfileImages({
               objectFit='cover'
               className='w-full'
             />
+            <div
+              id='filter'
+              className='absolute inset-0 bg-black opacity-40 flex items-center justify-center'
+            />
           </Button>
         </div>
         <div className='absolute bg-inherit aspect-square w-[14%]'>

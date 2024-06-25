@@ -53,6 +53,10 @@ export default function Home() {
             objectFit='cover'
             className='w-full'
           />
+          <div
+            id='filter'
+            className='absolute inset-0 bg-black opacity-40 flex items-center justify-center'
+          />
         </div>
         <Flex className='absolute w-full h-full'>
           <div
