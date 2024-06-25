@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { DGuestBook } from '@/types/guestbook.type';
 
 function Polaroid(guestbook: DGuestBook) {
-  console.log(guestbook);
   let thumbnail = '/images/background.png';
   if (guestbook.imageUrl) thumbnail = guestbook?.imageUrl;
 

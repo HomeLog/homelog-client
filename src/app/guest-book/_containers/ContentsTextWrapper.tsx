@@ -3,8 +3,13 @@
 import TextArea from '@/components/TextArea';
 import { ChangeEvent, ChangeEventHandler, useCallback, useState } from 'react';
 
-export default function ContentsTextWrapper() {
-  const [value, setValue] = useState('');
+export default function ContentsTextWrapper({
+  value,
+  setValue,
+}: {
+  value: string;
+  setValue: (value: string) => void;
+}) {
   const [charLimitOver, setCharLimitOver] = useState(false);
 
   const handleChange = useCallback<ChangeEventHandler<HTMLTextAreaElement>>(
@@ -13,7 +18,7 @@ export default function ContentsTextWrapper() {
       setValue(inputValue);
       setCharLimitOver(inputValue.length >= 50);
     },
-    [],
+    [setValue],
   );
 
   return (
