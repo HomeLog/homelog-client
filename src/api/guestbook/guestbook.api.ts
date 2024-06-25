@@ -21,10 +21,10 @@ export const getGuestBookById = async (
   return response.data.result;
 };
 
-export const getAllGuestbooks = async () => {
+export const getAllGuestbooks = async (): Promise<DGuestBook[]> => {
   const guestbooks = await client.get(`/guestbooks`);
 
-  return guestbooks;
+  return guestbooks.data.result;
 };
 
 export const getGuestbookById = async (guestbookId: string) => {

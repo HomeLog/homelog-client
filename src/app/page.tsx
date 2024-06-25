@@ -10,6 +10,7 @@ import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import GuestbookList from './_components/GuestbookList';
 
 const buttonStyles = {
   intent: 'transparent' as 'transparent',
@@ -32,7 +33,7 @@ export default function Home() {
   const avatarImage = profile?.avatarImageUrl ?? '/images/blank-profile.png';
 
   const { data: guestbooks } = useQueryGetAllGuestbooks();
-  const totalGuestbooks = guestbooks?.data.result.length;
+  const totalGuestbooks = guestbooks?.length;
 
   const redirectToProfileEditPage = () => {
     router.push('/profile');
@@ -100,6 +101,7 @@ export default function Home() {
           </Flex>
         </Flex>
       </Flex>
+      <GuestbookList guestbooks={guestbooks} />
     </div>
   );
 }
