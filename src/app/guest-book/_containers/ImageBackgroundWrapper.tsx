@@ -25,25 +25,31 @@ interface ImageBackgroundWrapperProps
   extends HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof imageBackgroundWrapperVariants> {
   children: React.ReactNode;
+  border?: boolean;
 }
 
 const ImageBackgroundWrapper = forwardRef<
   HTMLDivElement,
   ImageBackgroundWrapperProps
->(({ children, variant, className, background, ...props }, ref) => {
-  return (
-    <Flex
-      ref={ref}
-      border={true}
-      className={mergeClassNames(
-        imageBackgroundWrapperVariants({ variant, background, className }),
-      )}
-      {...props}
-    >
-      {children}
-    </Flex>
-  );
-});
+>(
+  (
+    { children, variant, className, background, border = true, ...props },
+    ref,
+  ) => {
+    return (
+      <Flex
+        ref={ref}
+        border={border}
+        className={mergeClassNames(
+          imageBackgroundWrapperVariants({ variant, background, className }),
+        )}
+        {...props}
+      >
+        {children}
+      </Flex>
+    );
+  },
+);
 
 ImageBackgroundWrapper.displayName = 'ImageBackgroundWrapper';
 
