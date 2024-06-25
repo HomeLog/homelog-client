@@ -40,7 +40,7 @@ export default function Home() {
   };
 
   const redirectToGenerateLinkPage = () => {
-    router.push('/guest-book/link');
+    router.push('/guest-book/create');
   };
 
   const logOut = () => {
