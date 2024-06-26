@@ -66,7 +66,7 @@ function ProfileImages({
 
   return (
     <>
-      <Flex className='w-full h-1/3 relative'>
+      <Flex className='w-full h-[285px] relative'>
         <div className='w-full h-full relative'>
           <Button onClick={() => clickModal(false)}>
             <Image

@@ -49,7 +49,7 @@ export default function Home() {
   return (
     <>
       <div className='bg-[#F5F5F5] w-full h-full'>
-        <Flex id='profile' className='relative w-full h-[298px] drop-shadow-lg'>
+        <Flex id='profile' className='relative w-full h-[285px] drop-shadow-lg'>
           <div id='home image' className='relative w-full h-full'>
             <Image
               src={homeImage}
