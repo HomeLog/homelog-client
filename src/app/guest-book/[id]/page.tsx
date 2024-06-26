@@ -44,7 +44,7 @@ async function DetailsPage({ params }: { params: { id: string } }) {
           />
         </ImageBackgroundWrapper>
         <ContentsCaption
-          className='row-span-2 mt-1 row-start-11'
+          className='w-full row-span-2 mt-1 row-start-11'
           caption={content as string}
         />
       </Flex>

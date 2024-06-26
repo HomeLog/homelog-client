@@ -5,6 +5,7 @@ import {
   leaveMessageToGuestBook,
 } from '@/api/guestbook/guestbook.api';
 import Flex from '@/components/Flex';
+import { showToast } from '@/libs/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
 import Image from 'next/image';
@@ -24,12 +25,15 @@ function NewGuestBookPage({ params }: { params: { id: string } }) {
     queryFn: () => getGuestBookById(params.id),
   });
 
-  const { mutate: leaveMessage } = useMutation({
+  const { mutateAsync: leaveMessage } = useMutation({
     mutationFn: () => leaveMessageToGuestBook(params.id, caption),
   });
 
   const handleButtonClick = async () => {
-    leaveMessage();
+    if (!caption) return showToast.error('한 줄 기록을 작성해주세요.');
+
+    await leaveMessage();
+
     router.push(`/guest-book/${params.id}`);
   };
 
