@@ -1,6 +1,5 @@
 import api from '@/api';
 import useAuth from '@/contexts/auth.context';
-import { DGuestBook } from '@/types/guestbook.type';
 import { useQuery } from '@tanstack/react-query';
 
 export default function useQueryGetAllGuestbooks() {

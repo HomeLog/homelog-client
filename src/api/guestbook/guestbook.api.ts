@@ -31,12 +31,6 @@ export const getAllGuestbooks = async (): Promise<DGuestBook[]> => {
   return guestbooks.data.result;
 };
 
-export const getGuestbookById = async (guestbookId: string) => {
-  const guestbook = await client.get(`/guestbooks/${guestbookId}`);
-
-  return guestbook;
-};
-
 export const leaveMessageToGuestBook = async (id: string, caption: string) => {
   const response = await client.put(`/guestbooks/${id}`, { content: caption });
 

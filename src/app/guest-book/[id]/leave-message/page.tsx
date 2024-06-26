@@ -1,8 +1,8 @@
 'use client';
 
 import {
-  getGuestBookById,
   leaveMessageToGuestBook,
+  getGuestBookById,
 } from '@/api/guestbook/guestbook.api';
 import Flex from '@/components/Flex';
 import { useMutation, useQuery } from '@tanstack/react-query';
