@@ -16,7 +16,7 @@ export function convertFileToImageFile(file: File): TImageFile {
   const result = {
     ...file,
     previewUrl: URL.createObjectURL(file),
-    date: new Date(file.lastModified)
+    date: new Date()
       .toLocaleDateString('ko-KR')
       .replace(/\./g, '')
       .replace(/ /g, '.'),
