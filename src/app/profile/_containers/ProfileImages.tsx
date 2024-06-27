@@ -6,6 +6,12 @@ import Flex from '@/components/Flex';
 import { ProfileImagesProps } from '@/types/profile.type';
 import Modal from '@/components/Modal';
 
+const buttonStyles = {
+  intent: 'secondary' as 'secondary',
+  size: 'md' as 'md',
+  rounded: 'sm' as 'sm',
+};
+
 function ProfileImages({
   profile,
   onAvatarImageChange,
@@ -120,11 +126,22 @@ function ProfileImages({
       </Flex>
       {modal && (
         <Modal
-          clickModal={() => clickModal(isAvatarImage)}
-          setBasicImage={() => setBasicImage(isAvatarImage)}
-          selectImage={() => openFileSelector(isAvatarImage)}
-          isAvatarImage={isAvatarImage}
-        />
+          setModal={() => clickModal(isAvatarImage)}
+          title={isAvatarImage ? '프로필 사진 설정' : '홈 사진 설정'}
+        >
+          <Button
+            onClick={() => setBasicImage(isAvatarImage)}
+            {...buttonStyles}
+          >
+            기본 이미지 적용
+          </Button>
+          <Button
+            onClick={() => openFileSelector(isAvatarImage)}
+            {...buttonStyles}
+          >
+            앨범에서 사진 선택
+          </Button>
+        </Modal>
       )}
     </>
   );
