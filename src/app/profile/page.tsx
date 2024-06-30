@@ -10,6 +10,7 @@ import ProfileImages from './_containers/ProfileImages';
 import { useMutation } from '@tanstack/react-query';
 import { showToast } from '@/libs/utils';
 import api from '@/api';
+import { editProfile } from '@/api/user/user.api';
 
 function ProfileEditPage() {
   const router = useRouter();
