@@ -10,7 +10,6 @@ import ProfileImages from './_containers/ProfileImages';
 import { useMutation } from '@tanstack/react-query';
 import { showToast } from '@/libs/utils';
 import api from '@/api';
-import { editProfile } from '@/api/user/user.api';
 
 function ProfileEditPage() {
   const router = useRouter();
@@ -66,12 +65,17 @@ function ProfileEditPage() {
       ? '방명록 이름은 최대 20자까지 작성할 수 있습니다.'
       : undefined;
 
-  const { mutate: createComment } = useMutation({
+  const { mutate: editProfile } = useMutation({
     mutationFn: async (formData: FormData) => {
-      createComment(formData);
+      api.user.editProfile(formData);
     },
-    onSuccess: (data) => {},
-    onError: (error) => {},
+    onSuccess: (data) => {
+      showToast.success('프로필 변경이 완료되었습니다.');
+      router.push('/');
+    },
+    onError: (error) => {
+      showToast.error('닉네임 또는 방명록 이름을 확인해주세요.');
+    },
   });
 
   const formData = new FormData();
