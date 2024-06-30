@@ -35,7 +35,7 @@ export const getAllGuestbooks = async (
   return guestbooks.data.result;
 };
 
-export const getTotalGuestbooks = async () => {
+export const getTotalGuestbooksCount = async () => {
   const totalGuestbooks = await client.get(`/guestbooks/count`);
 
   return totalGuestbooks.data.result;

@@ -1,10 +1,5 @@
 import { getAllGuestbooks } from '@/api/guestbook/guestbook.api';
-import { DGuestBook } from '@/types/guestbook.type';
-import {
-  QueryFunctionContext,
-  useInfiniteQuery,
-  useQuery,
-} from '@tanstack/react-query';
+import { QueryFunctionContext, useInfiniteQuery } from '@tanstack/react-query';
 
 interface useSearchGuestbooksProps {
   guestbooksPerPage: number;

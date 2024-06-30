@@ -31,18 +31,18 @@ function GuestbookList({ guestbooks }: { guestbooks: DGuestBook[] }) {
   }, [hasNextPage, fetchNextPage]);
 
   return (
-    <>
-      <div className='px-3 mt-12'>
-        <Grid className='mx-auto grid-cols-3 w-[95%] h-min items-center'>
-          {data?.pages.flatMap((page) =>
-            page.map((guestbook: DGuestBook, index: number) => (
-              <Polaroid key={index} {...guestbook} />
-            )),
-          )}
-        </Grid>
+    <div className='px-3 mt-12'>
+      <Grid className='mx-auto grid-cols-3 w-[95%] h-min items-center'>
+        {data?.pages.flatMap((page) =>
+          page.map((guestbook: DGuestBook, index: number) => (
+            <Polaroid key={index} {...guestbook} />
+          )),
+        )}
+      </Grid>
+      <div ref={loadMoreRef} className='m-auto'>
+        {isFetchingNextPage ? 'Loading...' : ''}
       </div>
-      <div ref={loadMoreRef}>{isFetchingNextPage ? 'Loading...' : ''}</div>
-    </>
+    </div>
   );
 }
 

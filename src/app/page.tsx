@@ -9,6 +9,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import GuestbookList from './_components/GuestbookList';
 import useQueryGetGuestbooksPerPage from '@/hooks/guestbook/useQuery.getGuestbooks';
+import useQueryGetTotalCountGuestbooks from '@/hooks/guestbook/useQuery.getTotalGuestbooksCount';
+import api from '@/api';
 
 const buttonStyles = {
   intent: 'transparent' as 'transparent',
@@ -32,6 +34,9 @@ export default function Home() {
 
   const { data: guestbooksData } = useQueryGetGuestbooksPerPage();
   const guestbooks = guestbooksData?.pages.flatMap((page) => page) ?? [];
+
+  const { data: totalGuestbooks } = useQueryGetTotalCountGuestbooks();
+  //const totalGuestbooks = api.guestbook.getTotalGuestbooksCount();
 
   const redirectToProfileEditPage = () => {
     router.push('/profile');
@@ -85,7 +90,7 @@ export default function Home() {
               id='total'
               className='relative mt-1 mb-10 text-sm font-thin text-white'
             >
-              Total:
+              Total: {totalGuestbooks}
             </div>
             <Flex className='relative flex flex-row items-end w-full justify-evenly'>
               <Button {...buttonStyles} onClick={redirectToProfileEditPage}>
