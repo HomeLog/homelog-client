@@ -6,7 +6,7 @@ interface useSearchGuestbooksProps {
   queryFn: (context?: QueryFunctionContext) => void;
 }
 
-const LIMIT_PER_PAGE = 5;
+const LIMIT_PER_PAGE = 15;
 
 export default function useQueryGetGuestbooksPerPage() {
   const fetchGuestbooks = async ({ pageParam = 1 }) => {
