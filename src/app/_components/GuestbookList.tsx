@@ -4,6 +4,7 @@ import Polaroid from './Polaroid';
 import { DGuestBook } from '@/types/guestbook.type';
 import Grid from '@/components/Grid';
 import useQueryGetGuestbooksPerPage from '@/hooks/guestbook/useQuery.getGuestbooks';
+import Flex from '@/components/Flex';
 
 function GuestbookList({ guestbooks }: { guestbooks: DGuestBook[] }) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
@@ -39,9 +40,9 @@ function GuestbookList({ guestbooks }: { guestbooks: DGuestBook[] }) {
           )),
         )}
       </Grid>
-      <div ref={loadMoreRef} className='m-auto'>
-        {isFetchingNextPage ? 'Loading...' : ''}
-      </div>
+      <Flex className='my-5 text-gray-500 font-thin'>
+        <div ref={loadMoreRef}>{isFetchingNextPage ? 'Loading...' : ''}</div>
+      </Flex>
     </div>
   );
 }
