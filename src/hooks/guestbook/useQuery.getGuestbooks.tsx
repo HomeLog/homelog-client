@@ -1,6 +1,5 @@
-import api from '@/api';
 import { getAllGuestbooks } from '@/api/guestbook/guestbook.api';
-import useAuth from '@/contexts/auth.context';
+import { DGuestBook } from '@/types/guestbook.type';
 import {
   QueryFunctionContext,
   useInfiniteQuery,
@@ -12,11 +11,11 @@ interface useSearchGuestbooksProps {
   queryFn: (context?: QueryFunctionContext) => void;
 }
 
-const GUESTBOOKS_PER_PAGE = 10;
+const LIMIT_PER_PAGE = 15;
 
 export default function useQueryGetGuestbooksPerPage() {
   const fetchGuestbooks = async ({ pageParam = 1 }) => {
-    const res = getAllGuestbooks(pageParam, GUESTBOOKS_PER_PAGE);
+    const res = await getAllGuestbooks(pageParam, LIMIT_PER_PAGE);
     return res;
   };
 
@@ -24,7 +23,8 @@ export default function useQueryGetGuestbooksPerPage() {
     queryKey: ['guestbooks'],
     queryFn: fetchGuestbooks,
     getNextPageParam: (lastPage, allPages) => {
-      if (lastPage.length < 10) return undefined;
+      if (lastPage.length < LIMIT_PER_PAGE) return undefined;
+
       return allPages.length + 1;
     },
     initialPageParam: 1,

@@ -30,8 +30,8 @@ export default function Home() {
   const homeImage = profile?.homeImageUrl ?? '/images/background.png';
   const avatarImage = profile?.avatarImageUrl ?? '/images/blank-profile.png';
 
-  const { data: guestbooks } = useQueryGetGuestbooksPerPage();
-  //const totalGuestbooks = getTotalGuestbooks();
+  const { data: guestbooksData } = useQueryGetGuestbooksPerPage();
+  const guestbooks = guestbooksData?.pages.flatMap((page) => page) ?? [];
 
   const redirectToProfileEditPage = () => {
     router.push('/profile');
