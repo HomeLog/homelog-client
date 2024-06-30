@@ -25,10 +25,20 @@ export const getGuestBookById = async (
   return response.data.result;
 };
 
-export const getAllGuestbooks = async (): Promise<DGuestBook[]> => {
-  const guestbooks = await client.get(`/guestbooks`);
-
+export const getAllGuestbooks = async (
+  page: number,
+  size: number,
+): Promise<DGuestBook[]> => {
+  const guestbooks = await client.get(`/guestbooks`, {
+    params: { page, size },
+  });
   return guestbooks.data.result;
+};
+
+export const getTotalGuestbooks = async () => {
+  const totalGuestbooks = await client.get(`/guestbooks/count`);
+
+  return totalGuestbooks.data.result;
 };
 
 export const leaveMessageToGuestBook = async (id: string, caption: string) => {

@@ -65,17 +65,12 @@ function ProfileEditPage() {
       ? '방명록 이름은 최대 20자까지 작성할 수 있습니다.'
       : undefined;
 
-  const { mutate: editProfile } = useMutation({
+  const { mutate: createComment } = useMutation({
     mutationFn: async (formData: FormData) => {
-      api.user.editProfile(formData);
+      createComment(formData);
     },
-    onSuccess: (data) => {
-      showToast.success('프로필 변경이 완료되었습니다.');
-      router.push('/');
-    },
-    onError: (error) => {
-      showToast.error('닉네임 또는 방명록 이름을 확인해주세요.');
-    },
+    onSuccess: (data) => {},
+    onError: (error) => {},
   });
 
   const formData = new FormData();

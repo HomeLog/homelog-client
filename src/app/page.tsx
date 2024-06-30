@@ -3,12 +3,12 @@ import { signOut } from '@/api/auth/auth.api';
 import Button from '@/components/Button';
 import Flex from '@/components/Flex';
 import useAuth from '@/contexts/auth.context';
-import useQueryGetAllGuestbooks from '@/hooks/profile/useQuery.getGuestbooks';
 import useQueryGetProfile from '@/hooks/profile/useQuery.getProfile';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import GuestbookList from './_components/GuestbookList';
+import useQueryGetGuestbooksPerPage from '@/hooks/guestbook/useQuery.getGuestbooks';
 
 const buttonStyles = {
   intent: 'transparent' as 'transparent',
@@ -30,8 +30,8 @@ export default function Home() {
   const homeImage = profile?.homeImageUrl ?? '/images/background.png';
   const avatarImage = profile?.avatarImageUrl ?? '/images/blank-profile.png';
 
-  const { data: guestbooks } = useQueryGetAllGuestbooks();
-  const totalGuestbooks = guestbooks?.length || 0;
+  const { data: guestbooks } = useQueryGetGuestbooksPerPage();
+  //const totalGuestbooks = getTotalGuestbooks();
 
   const redirectToProfileEditPage = () => {
     router.push('/profile');
@@ -85,7 +85,7 @@ export default function Home() {
               id='total'
               className='relative mt-1 mb-10 text-sm font-thin text-white'
             >
-              Total: {totalGuestbooks}
+              Total:
             </div>
             <Flex className='relative flex flex-row items-end w-full justify-evenly'>
               <Button {...buttonStyles} onClick={redirectToProfileEditPage}>
