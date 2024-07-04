@@ -29,10 +29,15 @@ export const getAllGuestbooks = async (
   page: number,
   limit: number,
 ): Promise<DGuestBook[]> => {
-  const guestbooks = await client.get(`/guestbooks`, {
-    params: { page, limit },
-  });
-  return guestbooks.data.result;
+  const guestbooks = await client
+    .get(`/guestbooks`, {
+      params: { page, limit },
+    })
+    .then((res) => {
+      return res.data.result;
+    });
+
+  return guestbooks;
 };
 
 export const getTotalGuestbooksCount = async () => {

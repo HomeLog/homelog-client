@@ -1,27 +1,17 @@
-import { getAllGuestbooks } from '@/api/guestbook/guestbook.api';
-import { QueryFunctionContext, useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
-interface useSearchGuestbooksProps {
-  guestbooksPerPage: number;
-  queryFn: (context?: QueryFunctionContext) => void;
-}
-
-const LIMIT_PER_PAGE = 15;
-
-export default function useQueryGetGuestbooksPerPage() {
-  const fetchGuestbooks = async ({ pageParam = 1 }) => {
-    const res = await getAllGuestbooks(pageParam, LIMIT_PER_PAGE);
-    return res;
-  };
-
+export default function useQueryGetDataPerPage(
+  limit: number,
+  initialPageParam: number = 1,
+  queryFn: (pageParam: number, limit: number) => Promise<any[]>,
+) {
   return useInfiniteQuery({
-    queryKey: ['guestbooks'],
-    queryFn: fetchGuestbooks,
-    getNextPageParam: (lastPage, allPages) => {
-      if (lastPage.length < LIMIT_PER_PAGE) return undefined;
-
+    queryKey: ['data'],
+    queryFn: ({ pageParam = initialPageParam }) => queryFn(pageParam, limit),
+    getNextPageParam: (currentPage, allPages) => {
+      if (currentPage.length < limit) return undefined;
       return allPages.length + 1;
     },
-    initialPageParam: 1,
+    initialPageParam,
   });
 }

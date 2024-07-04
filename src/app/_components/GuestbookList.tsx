@@ -1,15 +1,17 @@
 'use client';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Polaroid from './Polaroid';
 import { DGuestBook } from '@/types/guestbook.type';
 import Grid from '@/components/Grid';
-import useQueryGetGuestbooksPerPage from '@/hooks/guestbook/useQuery.getGuestbooks';
 import Flex from '@/components/Flex';
+import useQueryGetDataPerPage from '@/hooks/guestbook/useQuery.getGuestbooks';
+import { getAllGuestbooks } from '@/api/guestbook/guestbook.api';
 
-function GuestbookList({ guestbooks }: { guestbooks: DGuestBook[] }) {
+function GuestbookList() {
+  const LIMIT_PER_PAGE = 15;
+
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useQueryGetGuestbooksPerPage();
-
+    useQueryGetDataPerPage(LIMIT_PER_PAGE, 1, getAllGuestbooks);
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -22,11 +24,14 @@ function GuestbookList({ guestbooks }: { guestbooks: DGuestBook[] }) {
       { threshold: 1.0 },
     );
 
-    if (loadMoreRef.current) {
+    const currentRef = loadMoreRef.current;
+
+    if (currentRef) {
       observer.observe(loadMoreRef.current);
     }
 
     return () => {
+      if (currentRef) observer.unobserve(currentRef);
       observer.disconnect();
     };
   }, [hasNextPage, fetchNextPage]);

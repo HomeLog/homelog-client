@@ -8,9 +8,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import GuestbookList from './_components/GuestbookList';
-import useQueryGetGuestbooksPerPage from '@/hooks/guestbook/useQuery.getGuestbooks';
 import useQueryGetTotalCountGuestbooks from '@/hooks/guestbook/useQuery.getTotalGuestbooksCount';
-import api from '@/api';
 
 const buttonStyles = {
   intent: 'transparent' as 'transparent',
@@ -32,11 +30,7 @@ export default function Home() {
   const homeImage = profile?.homeImageUrl ?? '/images/background.png';
   const avatarImage = profile?.avatarImageUrl ?? '/images/blank-profile.png';
 
-  const { data: guestbooksData } = useQueryGetGuestbooksPerPage();
-  const guestbooks = guestbooksData?.pages.flatMap((page) => page) ?? [];
-
   const { data: totalGuestbooks } = useQueryGetTotalCountGuestbooks();
-  //const totalGuestbooks = api.guestbook.getTotalGuestbooksCount();
 
   const redirectToProfileEditPage = () => {
     router.push('/profile');
@@ -105,7 +99,7 @@ export default function Home() {
             </Flex>
           </Flex>
         </Flex>
-        {guestbooks && <GuestbookList guestbooks={guestbooks} />}
+        <GuestbookList />
       </div>
     </>
   );
