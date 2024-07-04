@@ -1,17 +1,21 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-export default function useQueryGetDataPerPage(
-  limit: number,
-  initialPageParam: number = 1,
-  queryFn: (pageParam: number, limit: number) => Promise<any[]>,
-) {
+interface PaginationProps {
+  fetchData: ({ pageParam }: { pageParam?: number }) => Promise<any>;
+  limit: number;
+}
+
+export default function useQueryGetDataPerPage({
+  fetchData,
+  limit,
+}: PaginationProps) {
   return useInfiniteQuery({
     queryKey: ['data'],
-    queryFn: ({ pageParam = initialPageParam }) => queryFn(pageParam, limit),
+    queryFn: fetchData,
     getNextPageParam: (currentPage, allPages) => {
       if (currentPage.length < limit) return undefined;
       return allPages.length + 1;
     },
-    initialPageParam,
+    initialPageParam: 1,
   });
 }
