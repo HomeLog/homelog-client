@@ -1,15 +1,17 @@
+'use client';
 import api from '@/api';
 import useAuth from '@/contexts/auth.context';
 import { useQuery } from '@tanstack/react-query';
 
-export default function useQueryGetAllGuestbooks() {
+export default function useQueryGetTotalCountGuestbooks() {
   const { signedIn } = useAuth();
+
   const result = useQuery<
-    Awaited<ReturnType<typeof api.guestbook.getAllGuestbooks>>,
-    unknown
+    Awaited<ReturnType<typeof api.guestbook.getTotalGuestbooksCount>>,
+    number
   >({
-    queryKey: ['guestbooks'],
-    queryFn: api.guestbook.getAllGuestbooks,
+    queryKey: ['totalGuestbooks'],
+    queryFn: api.guestbook.getTotalGuestbooksCount,
     enabled: !!signedIn,
     retry: false,
   });
