@@ -3,12 +3,12 @@ import { signOut } from '@/api/auth/auth.api';
 import Button from '@/components/Button';
 import Flex from '@/components/Flex';
 import useAuth from '@/contexts/auth.context';
-import useQueryGetAllGuestbooks from '@/hooks/profile/useQuery.getGuestbooks';
 import useQueryGetProfile from '@/hooks/profile/useQuery.getProfile';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import GuestbookList from './_components/GuestbookList';
+import useQueryGetTotalCountGuestbooks from '@/hooks/guestbook/useQuery.getTotalGuestbooksCount';
 
 const buttonStyles = {
   intent: 'transparent' as 'transparent',
@@ -30,8 +30,7 @@ export default function Home() {
   const homeImage = profile?.homeImageUrl ?? '/images/background.png';
   const avatarImage = profile?.avatarImageUrl ?? '/images/blank-profile.png';
 
-  const { data: guestbooks } = useQueryGetAllGuestbooks();
-  const totalGuestbooks = guestbooks?.length || 0;
+  const { data: totalGuestbooks } = useQueryGetTotalCountGuestbooks();
 
   const redirectToProfileEditPage = () => {
     router.push('/profile');
@@ -100,7 +99,7 @@ export default function Home() {
             </Flex>
           </Flex>
         </Flex>
-        {guestbooks && <GuestbookList guestbooks={guestbooks} />}
+        <GuestbookList />
       </div>
     </>
   );
