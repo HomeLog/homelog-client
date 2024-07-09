@@ -30,8 +30,14 @@ export default function Home() {
   const homeImage = profile?.homeImageUrl ?? '/images/background.png';
   const avatarImage = profile?.avatarImageUrl ?? '/images/blank-profile.png';
 
-  const { data: totalGuestbooks } = useQueryGetTotalCountGuestbooks();
+  const { data: totalGuestbooks, refetch: refetchTotalGuestbooks } =
+    useQueryGetTotalCountGuestbooks();
 
+  useEffect(() => {
+    refetchTotalGuestbooks();
+  }, [refetchTotalGuestbooks]);
+  
+  
   const redirectToProfileEditPage = () => {
     router.push('/profile');
   };
@@ -59,7 +65,7 @@ export default function Home() {
             />
             <div
               id='filter'
-              className='absolute inset-0 bg-black opacity-40 flex items-center justify-center'
+              className='absolute inset-0 flex items-center justify-center bg-black opacity-40'
             />
           </div>
           <Flex className='absolute w-full h-full'>
