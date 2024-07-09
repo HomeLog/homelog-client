@@ -20,7 +20,7 @@ async function DetailsPage({ params }: { params: { id: string } }) {
   const { visitorName, imageUrl, createdAt, content } = await getGuestBookById(
     params.id,
     accessToken,
-  );
+  ).catch(() => redirect('/'));
 
   const createdAtString = new Date(createdAt)
     .toLocaleDateString('ko-KR')
@@ -48,7 +48,7 @@ async function DetailsPage({ params }: { params: { id: string } }) {
           caption={content as string}
         />
       </Flex>
-      <MenuBar className='h-full row-span-1 row-start-12' />
+      <MenuBar className='h-full row-span-1 row-start-12' id={params.id} />
     </Grid>
   );
 }

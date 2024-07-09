@@ -10,7 +10,7 @@ export default function useQueryGetTotalCountGuestbooks() {
     Awaited<ReturnType<typeof api.guestbook.getTotalGuestbooksCount>>,
     number
   >({
-    queryKey: ['totalGuestbooks'],
+    queryKey: ['guestbooks', 'totalCount'],
     queryFn: api.guestbook.getTotalGuestbooksCount,
     enabled: !!signedIn,
     retry: false,

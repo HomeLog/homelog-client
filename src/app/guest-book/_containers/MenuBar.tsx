@@ -1,16 +1,33 @@
 'use client';
 
+import { deleteGuestBook } from '@/api/guestbook/guestbook.api';
 import Button from '@/components/Button';
 import { mergeClassNames } from '@/libs/utils';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 import deleteIconSrc from '/public/icons/delete.svg?url';
 import editIconSrc from '/public/icons/edit.svg?url';
 import homeIconSrc from '/public/icons/home.svg?url';
 
-// TODO: delete 기능 구현
-function MenuBar({ className }: { className: string }) {
+function MenuBar({ className, id }: { className: string; id?: string }) {
   const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const { mutate: deleteMutation } = useMutation({
+    mutationFn: deleteGuestBook,
+    onSuccess: () => {
+      toast.success('삭제되었습니다.');
+      queryClient.invalidateQueries({
+        queryKey: ['guestbooks'],
+      });
+      router.push('/');
+    },
+    onError: (error) => {
+      toast.error('삭제 중 오류가 발생했습니다.');
+    },
+  });
 
   const handleClickHome = () => {
     router.push('/');
@@ -18,6 +35,12 @@ function MenuBar({ className }: { className: string }) {
 
   const handleClickEdit = () => {
     router.push('/guest-book/create');
+  };
+
+  const handleClickDelete = () => {
+    if (!id) return;
+
+    deleteMutation(id);
   };
 
   return (
@@ -38,7 +61,7 @@ function MenuBar({ className }: { className: string }) {
         </Button>
       </div>
       <div className='relative flex aspect-square'>
-        <Button intent='none'>
+        <Button intent='none' onClick={handleClickDelete}>
           <Image
             src={deleteIconSrc}
             alt='delete'
