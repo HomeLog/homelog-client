@@ -1,4 +1,5 @@
 import { DGuestBook } from '@/types/guestbook.type';
+import { TResponse } from '@/types/response.type';
 import { TAccessToken } from '@/types/user.type';
 import { client } from '..';
 
@@ -50,4 +51,10 @@ export const leaveMessageToGuestBook = async (id: string, caption: string) => {
   const response = await client.put(`/guestbooks/${id}`, { content: caption });
 
   return response.data.result;
+};
+
+export const deleteGuestBook = async (id: string): Promise<TResponse<any>> => {
+  const response = await client.delete(`/guestbooks/${id}`);
+
+  return response.data as TResponse<any>;
 };
