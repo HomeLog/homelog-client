@@ -53,6 +53,12 @@ export const leaveMessageToGuestBook = async (id: string, caption: string) => {
   return response.data.result;
 };
 
+export const editGuestBook = async (id: string, formData: FormData) => {
+  const response = await client.put(`/guestbooks/${id}/photo`, formData);
+
+  return response.data.result;
+};
+
 export const deleteGuestBook = async (id: string): Promise<TResponse<any>> => {
   const response = await client.delete(`/guestbooks/${id}`);
 
