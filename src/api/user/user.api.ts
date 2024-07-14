@@ -1,9 +1,10 @@
-'use client';
 import { client } from '..';
 
 export async function getProfile() {
   const response = await client.get('/users/profile');
-  return response.data.result;
+  const profile = response.data.result;
+
+  return profile;
 }
 
 export async function createProfile() {

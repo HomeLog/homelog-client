@@ -2,6 +2,7 @@
 import ImageBackgroundWrapper from '@/app/guest-book/_containers/ImageBackgroundWrapper';
 import { convertFileToImageFile } from '@/app/guest-book/_utils/image.util';
 import Flex from '@/components/Flex';
+import { mergeClassNames } from '@/libs/utils';
 import TImageFile from '@/types/image.file';
 import clsx from 'clsx';
 import Image from 'next/image';
@@ -14,9 +15,11 @@ import Upload from '/public/icons/upload.svg';
 function ImageUploadContainer({
   file,
   setFile,
+  className,
 }: {
   file: TImageFile | null;
   setFile: (file: TImageFile | null) => void;
+  className?: string;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -42,7 +45,12 @@ function ImageUploadContainer({
   });
 
   return (
-    <Flex className='justify-center row-start-3 mt-7 mb-7 row-span-8'>
+    <Flex
+      className={mergeClassNames(
+        'justify-center row-start-3 mt-7 mb-7 row-span-8',
+        className,
+      )}
+    >
       <ImageBackgroundWrapper
         id='image-upload-container'
         {...getRootProps({ role: 'button' })}

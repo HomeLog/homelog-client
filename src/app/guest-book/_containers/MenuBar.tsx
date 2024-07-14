@@ -34,7 +34,7 @@ function MenuBar({ className, id }: { className: string; id?: string }) {
   };
 
   const handleClickEdit = () => {
-    router.push('/guest-book/create');
+    router.push(`/guest-book/${id}/edit`);
   };
 
   const handleClickDelete = () => {
