@@ -1,8 +1,8 @@
 'use client';
 
 import {
-  leaveMessageToGuestBook,
   getGuestBookById,
+  leaveMessageToGuestBook,
 } from '@/api/guestbook/guestbook.api';
 import Flex from '@/components/Flex';
 import { showToast } from '@/libs/utils';
@@ -24,6 +24,10 @@ function NewGuestBookPage({ params }: { params: { id: string } }) {
     queryKey: ['guestBook', params.id],
     queryFn: () => getGuestBookById(params.id),
   });
+
+  const guestbookImageSrc = guestBook?.imageKey
+    ? `${process.env.NEXT_PUBLIC_API_IMAGE_SERVER_URL}/${guestBook?.imageKey}`
+    : '/images/background.png';
 
   const { mutateAsync: leaveMessage } = useMutation({
     mutationFn: () => leaveMessageToGuestBook(params.id, caption),
@@ -49,7 +53,7 @@ function NewGuestBookPage({ params }: { params: { id: string } }) {
           border={false}
         >
           <Image
-            src={guestBook?.imageUrl ?? ''}
+            src={guestbookImageSrc}
             fill
             alt={clsx(guestBook?.hostNickname, '님의 사진')}
             className='object-contain drop-shadow-lg'

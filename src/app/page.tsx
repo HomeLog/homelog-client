@@ -3,12 +3,12 @@ import { signOut } from '@/api/auth/auth.api';
 import Button from '@/components/Button';
 import Flex from '@/components/Flex';
 import useAuth from '@/contexts/auth.context';
+import useQueryGetTotalCountGuestbooks from '@/hooks/guestbook/useQuery.getTotalGuestbooksCount';
 import useQueryGetProfile from '@/hooks/profile/useQuery.getProfile';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import GuestbookList from './_components/GuestbookList';
-import useQueryGetTotalCountGuestbooks from '@/hooks/guestbook/useQuery.getTotalGuestbooksCount';
 
 const buttonStyles = {
   intent: 'transparent' as 'transparent',
@@ -27,8 +27,12 @@ export default function Home() {
 
   const { data: profile } = useQueryGetProfile();
   const guestbookName = profile?.guestBookName;
-  const homeImage = profile?.homeImageUrl ?? '/images/background.png';
-  const avatarImage = profile?.avatarImageUrl ?? '/images/blank-profile.png';
+  const homeImage = profile?.homeImageKey
+    ? `${process.env.NEXT_PUBLIC_API_IMAGE_SERVER_URL}/${profile?.homeImageKey}`
+    : '/images/background.png';
+  const avatarImage = profile?.avatarImageKey
+    ? `${process.env.NEXT_PUBLIC_API_IMAGE_SERVER_URL}/${profile?.avatarImageKey}`
+    : '/images/blank-profile.png';
 
   const { data: totalGuestbooks, refetch: refetchTotalGuestbooks } =
     useQueryGetTotalCountGuestbooks();
@@ -36,8 +40,7 @@ export default function Home() {
   useEffect(() => {
     refetchTotalGuestbooks();
   }, [refetchTotalGuestbooks]);
-  
-  
+
   const redirectToProfileEditPage = () => {
     router.push('/profile');
   };
