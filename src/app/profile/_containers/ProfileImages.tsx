@@ -1,16 +1,18 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
 import Button from '@/components/Button';
 import Flex from '@/components/Flex';
-import { ProfileImagesProps } from '@/types/profile.type';
 import Modal from '@/components/Modal';
+import { ProfileImagesProps } from '@/types/profile.type';
+import Image from 'next/image';
+import React, { useEffect, useRef, useState } from 'react';
 
 const buttonStyles = {
   intent: 'secondary' as 'secondary',
   size: 'md' as 'md',
   rounded: 'sm' as 'sm',
 };
+
+const imageBaseUrl = process.env.NEXT_PUBLIC_API_IMAGE_SERVER_URL;
 
 function ProfileImages({
   profile,
@@ -31,8 +33,10 @@ function ProfileImages({
   };
 
   useEffect(() => {
-    if (profile?.avatarImageUrl) setAvatarImage(profile.avatarImageUrl);
-    if (profile?.homeImageUrl) setHomeImage(profile.homeImageUrl);
+    if (profile?.avatarImageKey)
+      setAvatarImage(`${imageBaseUrl}/${profile.avatarImageKey}`);
+    if (profile?.homeImageKey)
+      setHomeImage(`${imageBaseUrl}/${profile.homeImageKey}`);
   }, [profile]);
 
   const setBasicImage = (isAvatar: boolean) => {
@@ -73,7 +77,7 @@ function ProfileImages({
   return (
     <>
       <Flex className='w-full h-[285px] relative'>
-        <div className='w-full h-full relative'>
+        <div className='relative w-full h-full'>
           <Button onClick={() => clickModal(false)}>
             <Image
               src={homeImage}
@@ -84,7 +88,7 @@ function ProfileImages({
             />
             <div
               id='filter'
-              className='absolute inset-0 bg-black opacity-40 flex items-center justify-center'
+              className='absolute inset-0 flex items-center justify-center bg-black opacity-40'
             />
           </Button>
         </div>

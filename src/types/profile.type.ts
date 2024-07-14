@@ -1,7 +1,7 @@
 interface Profile {
   nickname: string;
-  avatarImageUrl: string;
-  homeImageUrl: string;
+  avatarImageKey: string;
+  homeImageKey: string;
   guestBookName: string;
 }
 

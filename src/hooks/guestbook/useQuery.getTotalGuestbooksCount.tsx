@@ -1,4 +1,3 @@
-'use client';
 import api from '@/api';
 import useAuth from '@/contexts/auth.context';
 import { useQuery } from '@tanstack/react-query';

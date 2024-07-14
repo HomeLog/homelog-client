@@ -1,5 +1,5 @@
 export type DGuestBook = {
-  imageUrl: string | null;
+  imageKey: string | null;
   createdAt: Date;
   id: string;
   userId: string;
