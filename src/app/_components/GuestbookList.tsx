@@ -1,10 +1,10 @@
 'use client';
 import { getAllGuestbooks } from '@/api/guestbook/guestbook.api';
-import Flex from '@/components/Flex';
 import Grid from '@/components/Grid';
 import useQueryGetDataPerPage from '@/hooks/guestbook/useQuery.getGuestbooks';
 import { DGuestBook } from '@/types/guestbook.type';
 import { useEffect, useRef } from 'react';
+import LoadingSpinnerContainer from '../_containers/LoadingSpinnerContainer';
 import Polaroid from './Polaroid';
 
 const LIMIT_PER_PAGE = 15;
@@ -18,6 +18,7 @@ function GuestbookList() {
     data,
     fetchNextPage,
     hasNextPage,
+    isLoading,
     isFetchingNextPage,
     refetch: refetchGuestbooks,
   } = useQueryGetDataPerPage({
@@ -53,16 +54,20 @@ function GuestbookList() {
 
   return (
     <div className='px-3 mt-12'>
-      <Grid className='mx-auto grid-cols-3 w-[95%] h-min items-center'>
-        {data?.pages.flatMap((page) =>
-          page.map((guestbook: DGuestBook) => (
-            <Polaroid key={guestbook.id} {...guestbook} />
-          )),
-        )}
-      </Grid>
-      <Flex className='my-5 font-thin text-gray-500'>
-        <div ref={loadMoreRef}>{isFetchingNextPage ? 'Loading...' : ''}</div>
-      </Flex>
+      {isLoading ? (
+        <LoadingSpinnerContainer />
+      ) : (
+        <Grid className='mx-auto grid-cols-3 w-[95%] h-min items-center'>
+          {data?.pages.flatMap((page) =>
+            page.map((guestbook: DGuestBook) => (
+              <Polaroid key={guestbook.id} {...guestbook} />
+            )),
+          )}
+        </Grid>
+      )}
+      <div ref={loadMoreRef}>
+        {isFetchingNextPage ? <LoadingSpinnerContainer /> : null}
+      </div>
     </div>
   );
 }
