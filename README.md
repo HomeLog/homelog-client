@@ -8,7 +8,7 @@
 | 프로필 | 깃허브 | 역할 |
 | --- | --- | --- |
 | 고지명 | [jimyungkoh](https://github.com/jimyungkoh) | 역할1 |
-| 박상희 | [Sangddong](https://github.com/Sangddong) | 역할1 |
+| 박상희 | [Sangddong](https://github.com/Sangddong) | 로그인 페이지, 홈 페이지, 프로필 수정 페이지 |
 
 ## 3. 브랜치 전략
 ### 브랜치 관리
