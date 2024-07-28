@@ -26,7 +26,7 @@ function NewGuestBookPage({ params }: { params: { id: string } }) {
   });
 
   const guestbookImageSrc = guestBook?.imageKey
-    ? `${process.env.NEXT_PUBLIC_API_IMAGE_SERVER_URL}/${guestBook?.imageKey}`
+    ? `${process.env.NEXT_PUBLIC_API_IMAGE_SERVER_URL}/raw/${guestBook?.imageKey}`
     : '/images/background.png';
 
   const { mutateAsync: leaveMessage } = useMutation({

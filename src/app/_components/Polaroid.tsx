@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 function Polaroid(guestbook: DGuestBook) {
   let thumbnail = '/images/background.png';
   if (guestbook.imageKey)
-    thumbnail = `${process.env.NEXT_PUBLIC_API_IMAGE_SERVER_URL}/${guestbook.imageKey}`;
+    thumbnail = `${process.env.NEXT_PUBLIC_API_IMAGE_SERVER_URL}/w320/${guestbook.imageKey}`;
 
   const link = `/guest-book/${guestbook.id}`;
   const router = useRouter();
