@@ -34,9 +34,9 @@ function ProfileImages({
 
   useEffect(() => {
     if (profile?.avatarImageKey)
-      setAvatarImage(`${imageBaseUrl}/${profile.avatarImageKey}`);
+      setAvatarImage(`${imageBaseUrl}/w140/${profile.avatarImageKey}`);
     if (profile?.homeImageKey)
-      setHomeImage(`${imageBaseUrl}/${profile.homeImageKey}`);
+      setHomeImage(`${imageBaseUrl}/w640/${profile.homeImageKey}`);
   }, [profile]);
 
   const setBasicImage = (isAvatar: boolean) => {

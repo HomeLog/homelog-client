@@ -20,18 +20,16 @@ export default function Home() {
   const router = useRouter();
   const { loading, signedIn } = useAuth();
   useEffect(() => {
-    if (loading === false && signedIn === false) {
-      router.push('/users');
-    }
+    if (loading === false && signedIn === false) router.push('/users');
   }, [loading, signedIn, router]);
 
   const { data: profile } = useQueryGetProfile();
   const guestbookName = profile?.guestBookName;
   const homeImage = profile?.homeImageKey
-    ? `${process.env.NEXT_PUBLIC_API_IMAGE_SERVER_URL}/${profile?.homeImageKey}`
+    ? `${process.env.NEXT_PUBLIC_API_IMAGE_SERVER_URL}/w640/${profile?.homeImageKey}`
     : '/images/background.png';
   const avatarImage = profile?.avatarImageKey
-    ? `${process.env.NEXT_PUBLIC_API_IMAGE_SERVER_URL}/${profile?.avatarImageKey}`
+    ? `${process.env.NEXT_PUBLIC_API_IMAGE_SERVER_URL}/w140/${profile?.avatarImageKey}`
     : '/images/blank-profile.png';
 
   const { data: totalGuestbooks, refetch: refetchTotalGuestbooks } =

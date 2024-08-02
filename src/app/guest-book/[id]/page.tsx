@@ -27,7 +27,7 @@ function DetailsPage({ params }: { params: { id: string } }) {
     queryFn: () => getGuestBookById(params.id),
   });
 
-  const guestbookImageSrc = `${process.env.NEXT_PUBLIC_API_IMAGE_SERVER_URL}/${data?.imageKey}`;
+  const guestbookImageSrc = `${process.env.NEXT_PUBLIC_API_IMAGE_SERVER_URL}/w640/${data?.imageKey}`;
 
   const createdAtString = data
     ? new Date(data.createdAt)
