@@ -92,18 +92,13 @@ function ProfileImages({
             />
           </Button>
         </div>
-        <div className='absolute bg-inherit aspect-square w-[14%]'>
-          <Button
-            intent={'none'}
-            className='h-full p-0 '
-            onClick={() => clickModal(true)}
-          >
+        <div className='absolute bg-inherit aspect-square w-[14%] rounded-full overflow-hidden'>
+          <Button intent={'none'} onClick={() => clickModal(true)}>
             <Image
               src={avatarImage}
               alt='Avatar Image'
-              fill
+              layout='fill'
               objectFit='cover'
-              className='rounded-full'
             />
           </Button>
         </div>
