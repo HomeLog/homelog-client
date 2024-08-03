@@ -9,6 +9,12 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'http',
+        hostname: 'homelog-storage',
+        port: '9000',
+        pathname: '/**',
+      },
     ],
   },
   webpack: (config, { isServer }) => {
