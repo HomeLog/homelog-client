@@ -1,15 +1,3 @@
-# FROM node:22-alpine AS base
-# RUN apk add --no-cache libc6-compat bash
-
-# WORKDIR /next-app
-
-# COPY package*.json ./
-# RUN npm ci
-# COPY . .
-# RUN npm run build
-
-# CMD ["npm", "run", "start"]
-
 FROM node:22-alpine AS base
 RUN apk add --no-cache bash
 
