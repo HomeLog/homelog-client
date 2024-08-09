@@ -2,6 +2,7 @@ import Background from '@/app/_containers/Layout';
 import '@app/globals.css';
 import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
+import EnvVariablesScript from './_components/EnvVariablesScript';
 import Providers from './_provider';
 
 export const metadata: Metadata = {
@@ -22,6 +23,9 @@ export default function HTMLLayout({
 }>) {
   return (
     <html lang='en'>
+      <head>
+        <EnvVariablesScript />
+      </head>
       <body className={`${roboto.className} bg-[#DADADA]`}>
         <Providers>
           <Background>{children}</Background>

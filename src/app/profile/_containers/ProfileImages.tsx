@@ -2,6 +2,7 @@
 import Button from '@/components/Button';
 import Flex from '@/components/Flex';
 import Modal from '@/components/Modal';
+import { useEnvVariablesClientConfig } from '@/contexts/envVariablesClient.context';
 import { ProfileImagesProps } from '@/types/profile.type';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
@@ -12,8 +13,6 @@ const buttonStyles = {
   rounded: 'sm' as 'sm',
 };
 
-const imageBaseUrl = process.env.NEXT_PUBLIC_API_IMAGE_SERVER_URL;
-
 function ProfileImages({
   profile,
   onAvatarImageChange,
@@ -23,6 +22,8 @@ function ProfileImages({
   const homeImageInputRef = useRef<HTMLInputElement | null>(null);
   const [avatarImage, setAvatarImage] = useState('/images/blank-profile.png');
   const [homeImage, setHomeImage] = useState('/images/background.png');
+  const config = useEnvVariablesClientConfig();
+  const imageBaseUrl = config.NEXT_PUBLIC_API_IMAGE_SERVER_URL;
 
   const [modal, setModal] = useState(false);
   const [isAvatarImage, setIsAvatarImage] = useState(true);
@@ -37,7 +38,7 @@ function ProfileImages({
       setAvatarImage(`${imageBaseUrl}/w140/${profile.avatarImageKey}`);
     if (profile?.homeImageKey)
       setHomeImage(`${imageBaseUrl}/w640/${profile.homeImageKey}`);
-  }, [profile]);
+  }, [imageBaseUrl, profile]);
 
   const setBasicImage = (isAvatar: boolean) => {
     if (isAvatar) {

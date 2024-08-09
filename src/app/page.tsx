@@ -3,6 +3,7 @@ import { signOut } from '@/api/auth/auth.api';
 import Button from '@/components/Button';
 import Flex from '@/components/Flex';
 import useAuth from '@/contexts/auth.context';
+import { useEnvVariablesClientConfig } from '@/contexts/envVariablesClient.context';
 import useQueryGetTotalCountGuestbooks from '@/hooks/guestbook/useQuery.getTotalGuestbooksCount';
 import useQueryGetProfile from '@/hooks/profile/useQuery.getProfile';
 import Image from 'next/image';
@@ -19,6 +20,9 @@ const buttonStyles = {
 export default function Home() {
   const router = useRouter();
   const { loading, signedIn } = useAuth();
+  const config = useEnvVariablesClientConfig();
+  const imageServerUrl = config.NEXT_PUBLIC_API_IMAGE_SERVER_URL;
+
   useEffect(() => {
     if (loading === false && signedIn === false) router.push('/users');
   }, [loading, signedIn, router]);
@@ -26,10 +30,10 @@ export default function Home() {
   const { data: profile } = useQueryGetProfile();
   const guestbookName = profile?.guestBookName;
   const homeImage = profile?.homeImageKey
-    ? `${process.env.NEXT_PUBLIC_API_IMAGE_SERVER_URL}/w640/${profile?.homeImageKey}`
+    ? `${imageServerUrl}/w640/${profile?.homeImageKey}`
     : '/images/background.png';
   const avatarImage = profile?.avatarImageKey
-    ? `${process.env.NEXT_PUBLIC_API_IMAGE_SERVER_URL}/w140/${profile?.avatarImageKey}`
+    ? `${imageServerUrl}/w140/${profile?.avatarImageKey}`
     : '/images/blank-profile.png';
 
   const { data: totalGuestbooks, refetch: refetchTotalGuestbooks } =
