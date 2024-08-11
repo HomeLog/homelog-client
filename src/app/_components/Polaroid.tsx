@@ -1,3 +1,4 @@
+import { runtimeEnvConfig } from '@/config';
 import { DGuestBook } from '@/types/guestbook.type';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -5,8 +6,10 @@ import { useRouter } from 'next/navigation';
 
 function Polaroid(guestbook: DGuestBook) {
   let thumbnail = '/images/background.png';
-  if (guestbook.imageKey)
-    thumbnail = `${process.env.NEXT_PUBLIC_API_IMAGE_SERVER_URL}/w320/${guestbook.imageKey}`;
+  const baseURL =
+    window?.ENV?.NEXT_PUBLIC_API_IMAGE_SERVER_URL! ??
+    runtimeEnvConfig.NEXT_PUBLIC_API_IMAGE_SERVER_URL;
+  if (guestbook.imageKey) thumbnail = `${baseURL}/w320/${guestbook.imageKey}`;
 
   const link = `/guest-book/${guestbook.id}`;
   const router = useRouter();
