@@ -1,7 +1,24 @@
 'use client';
 import { useEnvVariablesClientConfig } from '@/contexts/envVariablesClient.context';
+import { mergeClassNames } from '@/libs/utils';
+import { cva } from 'class-variance-authority';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+
+const buttonsVariants = cva('w-full h-full', {
+  variants: {
+    align: {
+      center: 'flex justify-center items-center',
+    },
+    size: {
+      primary: 'w-[80%] h-full',
+    },
+  },
+  defaultVariants: {
+    size: 'primary',
+    align: 'center',
+  },
+});
 
 type signInProps = {
   title: string;
@@ -19,7 +36,11 @@ function SocialSignIn({ title, src, alt }: signInProps) {
 
   return (
     <>
-      <button title={title} onClick={handleClickSignIn}>
+      <button
+        title={title}
+        onClick={handleClickSignIn}
+        className={mergeClassNames(buttonsVariants())}
+      >
         <Image src={src} alt={alt} width={400} height={1} />
       </button>
     </>
