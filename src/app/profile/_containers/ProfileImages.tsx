@@ -84,7 +84,7 @@ function ProfileImages({
               src={homeImage}
               alt='Home Image'
               fill
-              objectFit='cover'
+              style={{ objectFit: 'cover' }}
               className='w-full'
             />
             <div
@@ -98,8 +98,8 @@ function ProfileImages({
             <Image
               src={avatarImage}
               alt='Avatar Image'
-              layout='fill'
-              objectFit='cover'
+              fill
+              style={{ objectFit: 'cover' }}
             />
           </Button>
         </div>
