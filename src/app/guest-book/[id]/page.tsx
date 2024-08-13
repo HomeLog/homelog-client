@@ -9,26 +9,32 @@ import { showToast } from '@/libs/utils';
 import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
 import Image from 'next/image';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import ContentsCaption from '../_containers/ContentsCaption';
 import ContentsInfo from '../_containers/ContentsInfo';
 import ImageBackgroundWrapper from '../_containers/ImageBackgroundWrapper';
 import MenuBar from '../_containers/MenuBar';
 
 function DetailsPage({ params }: { params: { id: string } }) {
-  const { signedIn } = useAuth();
+  const { loading, signedIn } = useAuth();
   const config = useEnvVariablesClientConfig();
-  if (!signedIn) {
-    showToast.error('로그인이 필요합니다.');
-    redirect('/users');
-  }
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (loading === false && signedIn === false) {
+      showToast.error('로그인이 필요합니다.');
+      router.push('/users');
+    }
+  }, [loading, signedIn, router]);
 
   const { data } = useQuery({
     queryKey: ['guestbook'],
     queryFn: () => getGuestBookById(params.id),
   });
 
-  const guestbookImageSrc = `${config.NEXT_PUBLIC_API_IMAGE_SERVER_URL}/w640/${data?.imageKey}`;
+  const guestbookImageSrc = `${config.NEXT_PUBLIC_API_IMAGE_SERVER_URL}/raw/${data?.imageKey}`;
 
   const createdAtString = data
     ? new Date(data.createdAt)
