@@ -1,39 +1,50 @@
 import TImageFile from '@/types/image.file';
-import * as htmlToImage from 'html-to-image';
-
-export const processImage = async () => {
-  const jpegDataUrl = await buildJpeg('image-upload-container');
-
-  const base64Image = await fetch(jpegDataUrl);
-
-  return base64Image.blob();
-};
+import html2canvas from 'html2canvas';
 
 const buildJpeg = async (elementId: string) => {
-  const element = document.getElementById(elementId) as HTMLElement;
-  let dataUrl = '';
-  const minDataLength = 1000000;
-  let i = 0;
-  const maxAttempts = 5;
+  const element = document.getElementById(elementId);
 
-  while (dataUrl.length < minDataLength && i < maxAttempts) {
-    dataUrl = await htmlToImage.toJpeg(element, {
-      quality: 1,
-    });
-    i += 1;
-  }
+  if (!element) throw new Error(`Element with id "${elementId}" not found`);
 
-  return dataUrl;
+  const canvas = await html2canvas(element);
+  return canvas.toDataURL('image/jpeg');
 };
 
-export const createImageFile = (file: File): TImageFile => ({
-  ...file,
-  previewUrl: URL.createObjectURL(file),
-  date: new Date()
-    .toLocaleDateString('ko-KR')
-    .replace(/\./g, '')
-    .replace(/ /g, '.'),
-});
+export const processImage = async () => {
+  try {
+    const jpegDataUrl = await buildJpeg('image-upload-container');
+    const response = await fetch(jpegDataUrl);
+    const blob = await response.blob();
+    return blob;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const createImageFile = (file: File): Promise<TImageFile> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      if (event.target && typeof event.target.result === 'string') {
+        resolve({
+          ...file,
+          previewUrl: event.target.result,
+          date: new Date()
+            .toLocaleDateString('ko-KR')
+            .replace(/\./g, '')
+            .replace(/ /g, '.'),
+        });
+      } else {
+        reject(new Error('Failed to read file'));
+      }
+    };
+
+    reader.onerror = (error) => reject(error);
+
+    reader.readAsDataURL(file);
+  });
+};
 
 export const convertFileToImageFile = async (
   file: File,
@@ -62,5 +73,5 @@ export const convertFileToImageFile = async (
       throw error;
     }
   }
-  return createImageFile(convertedFile);
+  return await createImageFile(convertedFile);
 };
