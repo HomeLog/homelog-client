@@ -65,7 +65,7 @@ export default function Home() {
               src={homeImage}
               alt='Home Image'
               fill
-              objectFit='cover'
+              style={{ objectFit: 'cover' }}
               className='w-full'
             />
             <div
@@ -87,8 +87,8 @@ export default function Home() {
               <Image
                 src={avatarImage}
                 alt='Avatar Image'
-                layout='fill'
-                objectFit='cover'
+                fill
+                style={{ objectFit: 'cover' }}
               />
             </div>
             <div

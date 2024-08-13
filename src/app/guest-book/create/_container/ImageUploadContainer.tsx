@@ -1,6 +1,6 @@
 'use client';
+
 import ImageBackgroundWrapper from '@/app/guest-book/_containers/ImageBackgroundWrapper';
-import { convertFileToImageFile } from '@/app/guest-book/_utils/image.util';
 import Flex from '@/components/Flex';
 import { mergeClassNames } from '@/libs/utils';
 import TImageFile from '@/types/image.file';
@@ -10,6 +10,7 @@ import { useCallback, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
 import ImageWrapper from '../../_containers/ImageWrapper';
 import TimeStampLayer from '../../_containers/TimeStampLayer';
+import { convertFileToImageFile } from '../../_utils/image.util';
 import Upload from '/public/icons/upload.svg';
 
 function ImageUploadContainer({
@@ -24,14 +25,13 @@ function ImageUploadContainer({
   const containerRef = useRef<HTMLDivElement>(null);
 
   const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      const acceptedFile = acceptedFiles.pop();
+    async (acceptedFiles: File[]) => {
+      const acceptedFile = acceptedFiles[0];
       if (!acceptedFile) return;
-
-      const fileWithPreviewUrl: TImageFile =
-        convertFileToImageFile(acceptedFile);
-
-      setFile(fileWithPreviewUrl);
+      try {
+        const fileWithPreviewUrl = await convertFileToImageFile(acceptedFile);
+        setFile(fileWithPreviewUrl);
+      } catch (error) {}
     },
     [setFile],
   );
@@ -39,9 +39,14 @@ function ImageUploadContainer({
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      'image/*': [],
+      'image/jpeg': [],
+      'image/jpg': [],
+      'image/png': [],
+      'image/heic': [],
+      'image/heif': [],
     },
     maxFiles: 1,
+    multiple: false,
   });
 
   return (
@@ -66,7 +71,7 @@ function ImageUploadContainer({
             <Image
               src={file.previewUrl}
               alt={'Uploaded image'}
-              className='object-cover drop-shadow-lg w-full, h-full'
+              className='object-cover w-full h-full drop-shadow-lg'
               fill
             />
             <TimeStampLayer date={file.date} />
