@@ -12,9 +12,9 @@ export const processImage = async () => {
 const buildJpeg = async (elementId: string) => {
   const element = document.getElementById(elementId) as HTMLElement;
   let dataUrl = '';
-  const minDataLength = 2000000;
+  const minDataLength = 1000000;
   let i = 0;
-  const maxAttempts = 10;
+  const maxAttempts = 5;
 
   while (dataUrl.length < minDataLength && i < maxAttempts) {
     dataUrl = await htmlToImage.toJpeg(element, {
