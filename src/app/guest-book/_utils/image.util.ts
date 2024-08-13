@@ -6,7 +6,10 @@ const buildJpeg = async (elementId: string) => {
 
   if (!element) throw new Error(`Element with id "${elementId}" not found`);
 
-  const canvas = await html2canvas(element);
+  const canvas = await html2canvas(element, {
+    scale: 2,
+  });
+
   return canvas.toDataURL('image/jpeg');
 };
 
