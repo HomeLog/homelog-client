@@ -34,3 +34,33 @@ export const createImageFile = (file: File): TImageFile => ({
     .replace(/\./g, '')
     .replace(/ /g, '.'),
 });
+
+export const convertFileToImageFile = async (
+  file: File,
+): Promise<TImageFile> => {
+  let convertedFile = file;
+  if (file.type === 'image/heic' || file.type === 'image/heif') {
+    try {
+      const heic2any = await import('heic2any');
+      const blob = await heic2any.default({
+        blob: file,
+        toType: 'image/jpeg',
+        quality: 0.7,
+      });
+      if (!(blob instanceof Blob)) {
+        throw new Error('Conversion failed: Result is not a Blob');
+      }
+      convertedFile = new File(
+        [blob],
+        file.name.replace(/\.(heic|heif)$/i, '.jpg'),
+        {
+          type: 'image/jpeg',
+          lastModified: file.lastModified,
+        },
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
+  return createImageFile(convertedFile);
+};

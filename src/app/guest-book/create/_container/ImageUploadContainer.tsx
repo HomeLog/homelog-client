@@ -3,15 +3,14 @@
 import ImageBackgroundWrapper from '@/app/guest-book/_containers/ImageBackgroundWrapper';
 import Flex from '@/components/Flex';
 import { mergeClassNames } from '@/libs/utils';
-import { Heic2anyFunction } from '@/types/heic2any.type';
 import TImageFile from '@/types/image.file';
 import clsx from 'clsx';
 import Image from 'next/image';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
 import ImageWrapper from '../../_containers/ImageWrapper';
 import TimeStampLayer from '../../_containers/TimeStampLayer';
-import { createImageFile } from '../../_utils/image.util';
+import { convertFileToImageFile } from '../../_utils/image.util';
 import Upload from '/public/icons/upload.svg';
 
 function ImageUploadContainer({
@@ -24,58 +23,17 @@ function ImageUploadContainer({
   className?: string;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [heic2any, setHeic2any] = useState<Heic2anyFunction | null>(null);
-
-  useEffect(() => {
-    import('heic2any').then((module) =>
-      setHeic2any(module.default as Heic2anyFunction),
-    );
-  }, []);
-
-  const convertFileToImageFile = useCallback(
-    async (file: File): Promise<TImageFile> => {
-      let convertedFile = file;
-      if (file.type === 'image/heic' || file.type === 'image/heif') {
-        if (!heic2any) return createImageFile(file);
-
-        try {
-          const blob = await heic2any({
-            blob: file,
-            toType: 'image/jpeg',
-            quality: 0.7,
-          });
-          if (!(blob instanceof Blob)) {
-            throw new Error('Conversion failed: Result is not a Blob');
-          }
-          convertedFile = new File(
-            [blob],
-            file.name.replace(/\.(heic|heif)$/i, '.jpg'),
-            {
-              type: 'image/jpeg',
-              lastModified: file.lastModified,
-            },
-          );
-        } catch (error) {
-          throw error;
-        }
-      }
-      return createImageFile(convertedFile);
-    },
-    [heic2any],
-  );
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
-      const acceptedFile = acceptedFiles.pop();
+      const acceptedFile = acceptedFiles[0];
       if (!acceptedFile) return;
       try {
         const fileWithPreviewUrl = await convertFileToImageFile(acceptedFile);
         setFile(fileWithPreviewUrl);
-      } catch (error) {
-        console.error('File processing error:', error);
-      }
+      } catch (error) {}
     },
-    [setFile, convertFileToImageFile],
+    [setFile],
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
