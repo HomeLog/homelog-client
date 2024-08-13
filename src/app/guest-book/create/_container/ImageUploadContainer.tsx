@@ -5,6 +5,7 @@ import Flex from '@/components/Flex';
 import { mergeClassNames } from '@/libs/utils';
 import TImageFile from '@/types/image.file';
 import clsx from 'clsx';
+import Image from 'next/image';
 import { useCallback, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
 import ImageWrapper from '../../_containers/ImageWrapper';
@@ -66,13 +67,14 @@ function ImageUploadContainer({
         {isDragActive ? (
           <p>파일을 여기에 드롭하세요...</p>
         ) : file ? (
-          <ImageWrapper
-            style={{
-              backgroundImage: `url(${file.previewUrl})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
-          >
+          <ImageWrapper>
+            <Image
+              src={file.previewUrl}
+              alt='uploaded image'
+              fill
+              className='drop-shadow-lg'
+              quality={100}
+            />
             <TimeStampLayer date={file.date} />
           </ImageWrapper>
         ) : (
