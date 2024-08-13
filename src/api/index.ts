@@ -4,7 +4,7 @@ import * as guestbook from './guestbook/guestbook.api';
 import * as user from './user/user.api';
 
 export const client = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
+  baseURL: process.env.SERVER_URL,
   withCredentials: true,
 });
 

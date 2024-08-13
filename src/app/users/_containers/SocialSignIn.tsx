@@ -1,4 +1,5 @@
 'use client';
+import { useEnvVariablesClientConfig } from '@/contexts/envVariablesClient.context';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -10,9 +11,9 @@ type signInProps = {
 
 function SocialSignIn({ title, src, alt }: signInProps) {
   const router = useRouter();
-
+  const config = useEnvVariablesClientConfig();
   const handleClickSignIn = async () => {
-    const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/users/kakao`;
+    const url = `${config.NEXT_PUBLIC_SERVER_URL}/users/kakao`;
     router.push(url);
   };
 

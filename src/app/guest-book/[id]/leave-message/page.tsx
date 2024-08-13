@@ -5,6 +5,7 @@ import {
   leaveMessageToGuestBook,
 } from '@/api/guestbook/guestbook.api';
 import Flex from '@/components/Flex';
+import { useEnvVariablesClientConfig } from '@/contexts/envVariablesClient.context';
 import { showToast } from '@/libs/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
@@ -17,7 +18,7 @@ import ImageBackgroundWrapper from '../../_containers/ImageBackgroundWrapper';
 
 function NewGuestBookPage({ params }: { params: { id: string } }) {
   const [caption, setCaption] = useState('');
-
+  const config = useEnvVariablesClientConfig();
   const router = useRouter();
 
   const { data: guestBook, isLoading } = useQuery({
@@ -26,7 +27,7 @@ function NewGuestBookPage({ params }: { params: { id: string } }) {
   });
 
   const guestbookImageSrc = guestBook?.imageKey
-    ? `${process.env.NEXT_PUBLIC_API_IMAGE_SERVER_URL}/raw/${guestBook?.imageKey}`
+    ? `${config.NEXT_PUBLIC_API_IMAGE_SERVER_URL}/raw/${guestBook?.imageKey}`
     : '/images/background.png';
 
   const { mutateAsync: leaveMessage } = useMutation({

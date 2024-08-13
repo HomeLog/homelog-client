@@ -4,6 +4,7 @@ import { getGuestBookById } from '@/api/guestbook/guestbook.api';
 import Flex from '@/components/Flex';
 import Grid from '@/components/Grid';
 import useAuth from '@/contexts/auth.context';
+import { useEnvVariablesClientConfig } from '@/contexts/envVariablesClient.context';
 import { showToast } from '@/libs/utils';
 import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
@@ -16,7 +17,7 @@ import MenuBar from '../_containers/MenuBar';
 
 function DetailsPage({ params }: { params: { id: string } }) {
   const { signedIn } = useAuth();
-
+  const config = useEnvVariablesClientConfig();
   if (!signedIn) {
     showToast.error('로그인이 필요합니다.');
     redirect('/users');
@@ -27,7 +28,7 @@ function DetailsPage({ params }: { params: { id: string } }) {
     queryFn: () => getGuestBookById(params.id),
   });
 
-  const guestbookImageSrc = `${process.env.NEXT_PUBLIC_API_IMAGE_SERVER_URL}/w640/${data?.imageKey}`;
+  const guestbookImageSrc = `${config.NEXT_PUBLIC_API_IMAGE_SERVER_URL}/w640/${data?.imageKey}`;
 
   const createdAtString = data
     ? new Date(data.createdAt)
