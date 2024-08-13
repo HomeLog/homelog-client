@@ -24,12 +24,11 @@ function ImageUploadContainer({
   const containerRef = useRef<HTMLDivElement>(null);
 
   const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
+    async (acceptedFiles: File[]) => {
       const acceptedFile = acceptedFiles.pop();
       if (!acceptedFile) return;
 
-      const fileWithPreviewUrl: TImageFile =
-        convertFileToImageFile(acceptedFile);
+      const fileWithPreviewUrl = await convertFileToImageFile(acceptedFile);
 
       setFile(fileWithPreviewUrl);
     },
@@ -39,9 +38,14 @@ function ImageUploadContainer({
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      'image/*': [],
+      'image/jpeg': [],
+      'image/jpg': [],
+      'image/png': [],
+      'image/heic': [],
+      'image/heif': [],
     },
     maxFiles: 1,
+    multiple: false,
   });
 
   return (
