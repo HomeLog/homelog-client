@@ -13,7 +13,7 @@ const Modal = ({ setModal, title, children }: ModalProps) => {
     <div onClick={setModal} className='absolute w-full h-full bg-gray-500/50'>
       <div
         onClick={preventOffModal}
-        className='fixed bg-white rounded-md transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 px-2 py-5 max-md:w-[80%] max-md:p-2'
+        className='fixed bg-white rounded-md transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 px-2 py-5 max-md:w-[80%]'
       >
         {title && (
           <div className='font-bold text-gray-400 w-full px-7 py-4'>
