@@ -5,12 +5,9 @@ import Flex from '@/components/Flex';
 import Grid from '@/components/Grid';
 import useAuth from '@/contexts/auth.context';
 import { useEnvVariablesClientConfig } from '@/contexts/envVariablesClient.context';
-import { showToast } from '@/libs/utils';
 import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import ContentsCaption from '../_containers/ContentsCaption';
 import ContentsInfo from '../_containers/ContentsInfo';
 import ImageBackgroundWrapper from '../_containers/ImageBackgroundWrapper';
@@ -19,15 +16,6 @@ import MenuBar from '../_containers/MenuBar';
 function DetailsPage({ params }: { params: { id: string } }) {
   const { loading, signedIn } = useAuth();
   const config = useEnvVariablesClientConfig();
-
-  const router = useRouter();
-
-  useEffect(() => {
-    if (loading === false && signedIn === false) {
-      showToast.error('로그인이 필요합니다.');
-      router.push('/users');
-    }
-  }, [loading, signedIn, router]);
 
   const { data } = useQuery({
     queryKey: ['guestbook'],
@@ -68,7 +56,9 @@ function DetailsPage({ params }: { params: { id: string } }) {
             caption={data.content as string}
           />
         </Flex>
-        <MenuBar className='h-full row-span-1 row-start-12' id={params.id} />
+        {!loading && signedIn && (
+          <MenuBar className='h-full row-span-1 row-start-12' id={params.id} />
+        )}
       </Grid>
     )
   );
