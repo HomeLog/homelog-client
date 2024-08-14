@@ -22,7 +22,7 @@ const useGuestBookLink = () => {
       const newLink = `/guest-book/${data.id}/leave-message`;
       router.push(newLink);
       showToast.success('방명록 링크 생성이 완료되었습니다.');
-      copyToClipboard('Homelog.online' + newLink);
+      copyToClipboard(`${window.location.origin}${newLink}`);
       showToast.success('방명록 링크 복사가 완료되었습니다.');
     },
     onError: () => {
