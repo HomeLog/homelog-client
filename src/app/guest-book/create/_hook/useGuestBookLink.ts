@@ -12,18 +12,31 @@ const useGuestBookLink = () => {
   const [file, setFile] = useState<TImageFile | null>(null);
   const router = useRouter();
 
-  const copyToClipboard = async (text: string) => {
-    await navigator.clipboard.writeText(text);
+  const copyToClipboard = async (url: string) => {
+    await navigator.clipboard.writeText(url);
+  };
+
+  const shareUrl = async (url: string) => {
+    await navigator.share({
+      title: '방명록 링크 공유하기',
+      text: '방명록 링크 공유하기',
+      url: url,
+    });
   };
 
   const { mutate: createLink } = useMutation({
     mutationFn: (formData: FormData) => api.guestbook.createLink(formData),
     onSuccess: (data) => {
-      const newLink = `/guest-book/${data.id}/leave-message`;
+      const newLink = `${window.location.origin}/guest-book/${data.id}/leave-message`;
       router.push(newLink);
       showToast.success('방명록 링크 생성이 완료되었습니다.');
-      copyToClipboard('Homelog.online' + newLink);
+      copyToClipboard(newLink);
       showToast.success('방명록 링크 복사가 완료되었습니다.');
+      if (typeof navigator.share === 'function') {
+        shareUrl(newLink);
+      } else {
+        showToast.info('공유 기능이 지원되지 않는 환경입니다.');
+      }
     },
     onError: () => {
       showToast.error('방명록 링크 생성이 실패했습니다.');
