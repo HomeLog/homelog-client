@@ -12,11 +12,18 @@ const useGuestBookLink = () => {
   const [file, setFile] = useState<TImageFile | null>(null);
   const router = useRouter();
 
+  const copyToClipboard = async (text: string) => {
+    await navigator.clipboard.writeText(text);
+  };
+
   const { mutate: createLink } = useMutation({
     mutationFn: (formData: FormData) => api.guestbook.createLink(formData),
     onSuccess: (data) => {
-      router.push(`/guest-book/${data.id}/leave-message`);
+      const newLink = `/guest-book/${data.id}/leave-message`;
+      router.push(newLink);
       showToast.success('방명록 링크 생성이 완료되었습니다.');
+      copyToClipboard(`${window.location.origin}${newLink}`);
+      showToast.success('방명록 링크 복사가 완료되었습니다.');
     },
     onError: () => {
       showToast.error('방명록 링크 생성이 실패했습니다.');
