@@ -6,7 +6,7 @@ interface ImageWrapperProps extends HTMLAttributes<HTMLDivElement> {}
 const ImageWrapper = forwardRef<HTMLDivElement, ImageWrapperProps>(
   ({ children, className, ...props }, ref) => (
     <div
-      className={mergeClassNames('relative flex w-full aspect-3/4', className)}
+      className={mergeClassNames('relative flex w-full aspect-2/3', className)}
       ref={ref}
       {...props}
     >

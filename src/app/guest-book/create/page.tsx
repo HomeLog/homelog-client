@@ -1,6 +1,5 @@
 'use client';
 
-import { processImage } from '@/app/guest-book/_utils/image.util';
 import Grid from '@/components/Grid';
 import InputWithLabel from '@/components/InputWithLabel';
 import ButtonContainer from '../_containers/ButtonContainer';
@@ -19,8 +18,12 @@ export default function GuestbookCreatePage() {
 
   const handleButtonClick = async () => {
     if (!validateForm(visitorName, file)) return;
+    if (!file) return;
 
-    const blob = await processImage();
+    const blob = new Blob([await file.file.arrayBuffer()], {
+      type: file.file.type,
+    });
+
     const formData = new FormData();
     formData.append('imageFile', blob);
     formData.append('visitorName', visitorName);
