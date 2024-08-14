@@ -14,8 +14,8 @@ const useGuestBookLink = () => {
 
   const shareUrl = async (url: string) => {
     await navigator.share({
-      title: '방명록 링크 공유하기',
-      text: '방명록 링크 공유하기',
+      title: '방명록 작성 링크 공유하기',
+      text: '방명록 작성 링크 공유하기',
       url: url,
     });
   };
