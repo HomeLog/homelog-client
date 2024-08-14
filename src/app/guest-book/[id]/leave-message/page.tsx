@@ -11,7 +11,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ButtonContainer from '../../_containers/ButtonContainer';
 import ContentsTextWrapper from '../../_containers/ContentsTextWrapper';
 import ImageBackgroundWrapper from '../../_containers/ImageBackgroundWrapper';
@@ -25,6 +25,20 @@ function NewGuestBookPage({ params }: { params: { id: string } }) {
     queryKey: ['guestBook', params.id],
     queryFn: () => getGuestBookById(params.id),
   });
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    if (!guestBook) {
+      showToast.error('존재하지 않는 방명록입니다.');
+      router.push('/');
+    }
+
+    if (guestBook?.content) {
+      showToast.info('이미 작성된 방명록입니다.');
+      router.push(`/guest-book/${params.id}`);
+    }
+  }, [isLoading, guestBook, router, params.id]);
 
   const guestbookImageSrc = guestBook?.imageKey
     ? `${config.NEXT_PUBLIC_API_IMAGE_SERVER_URL}/raw/${guestBook?.imageKey}`

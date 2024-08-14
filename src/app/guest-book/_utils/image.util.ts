@@ -21,9 +21,7 @@ async function loadFonts(): Promise<void> {
   try {
     const loadedFonts = await Promise.all(fontPromises);
     loadedFonts.forEach((font) => document.fonts.add(font));
-  } catch (error) {
-    console.warn('Failed to load custom fonts. Using fallback fonts.', error);
-  }
+  } catch (error) {}
 }
 
 async function cropImageTo4by3Ratio(imageFile: File): Promise<Blob> {
@@ -261,9 +259,7 @@ export const convertFileToImageFile = async (
 ): Promise<Omit<TImageFile, 'date'>> => {
   try {
     await loadFonts();
-  } catch (error) {
-    console.warn('Failed to load custom font. Using fallback font.', error);
-  }
+  } catch (error) {}
 
   let convertedFile = file;
   if (file.type === 'image/heic' || file.type === 'image/heif') {
