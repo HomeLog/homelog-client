@@ -2,6 +2,10 @@
 
 import Grid from '@/components/Grid';
 import InputWithLabel from '@/components/InputWithLabel';
+import useAuth from '@/contexts/auth.context';
+import { showToast } from '@/libs/utils';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import ButtonContainer from '../_containers/ButtonContainer';
 import {
   handleVisitorNameInput,
@@ -10,11 +14,20 @@ import {
 } from '../_utils/form.util';
 import ImageUploadContainer from './_container/ImageUploadContainer';
 import useGuestBookLink from './_hook/useGuestBookLink';
-import { showToast } from '@/libs/utils';
 
 export default function GuestbookCreatePage() {
   const { visitorName, setVisitorName, file, setFile, createLink } =
     useGuestBookLink();
+
+  const { signedIn, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!signedIn && !loading) {
+      showToast.error('로그인 후 이용해주세요!');
+      router.push('/users');
+    }
+  }, [signedIn, router, loading]);
 
   const handleButtonClick = async () => {
     if (!validateForm(visitorName, file)) return;
