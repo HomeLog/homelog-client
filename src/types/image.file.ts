@@ -1,3 +1,3 @@
-type TImageFile = File & { previewUrl: string; date: string };
+type TImageFile = { file: File } & { previewUrl: string; date: string };
 
 export default TImageFile;

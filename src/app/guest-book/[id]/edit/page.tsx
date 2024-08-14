@@ -11,7 +11,6 @@ import { useEffect, useState } from 'react';
 import ButtonContainer from '../../_containers/ButtonContainer';
 import ContentsCaption from '../../_containers/ContentsCaption';
 import ContentsInfo from '../../_containers/ContentsInfo';
-import { processImage } from '../../_utils/image.util';
 import ImageUploadContainer from '../../create/_container/ImageUploadContainer';
 
 export default function GuestbookEditPage({
@@ -66,7 +65,9 @@ export default function GuestbookEditPage({
   async function handleButtonClick(event: any): Promise<void> {
     if (!file) return;
 
-    const blob = await processImage();
+    const blob = new Blob([await file.file.arrayBuffer()], {
+      type: file.file.type,
+    });
     const formData = new FormData();
     formData.append('imageFile', blob);
 

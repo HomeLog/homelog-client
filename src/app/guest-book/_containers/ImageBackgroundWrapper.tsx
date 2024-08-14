@@ -6,8 +6,7 @@ import { forwardRef, HTMLAttributes } from 'react';
 const imageBackgroundWrapperVariants = cva('', {
   variants: {
     variant: {
-      primary:
-        'w-full aspect-2/3 rounded justify-start py-[13%] px-[5%] items-center',
+      primary: 'w-full aspect-2/3 rounded justify-start items-center',
       secondary: '',
     },
     background: {

@@ -9,7 +9,6 @@ import Image from 'next/image';
 import { useCallback, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
 import ImageWrapper from '../../_containers/ImageWrapper';
-import TimeStampLayer from '../../_containers/TimeStampLayer';
 import { convertFileToImageFile } from '../../_utils/image.util';
 import Upload from '/public/icons/upload.svg';
 
@@ -30,7 +29,13 @@ function ImageUploadContainer({
       if (!acceptedFile) return;
       try {
         const fileWithPreviewUrl = await convertFileToImageFile(acceptedFile);
-        setFile(fileWithPreviewUrl);
+        setFile({
+          ...fileWithPreviewUrl,
+          date: new Date()
+            .toLocaleDateString('ko-KR')
+            .replace(/\./g, '')
+            .replace(/ /g, '.'),
+        });
       } catch (error) {}
     },
     [setFile],
@@ -60,8 +65,9 @@ function ImageUploadContainer({
         id='image-upload-container'
         {...getRootProps({ role: 'button' })}
         className={clsx(`justify-${file ? 'start' : 'center'}`)}
-        background={file ? 'paper' : 'none'}
+        background={'none'}
         ref={containerRef}
+        border={file ? false : true}
       >
         <input {...getInputProps()} />
         {isDragActive ? (
@@ -75,7 +81,6 @@ function ImageUploadContainer({
               className='drop-shadow-lg'
               quality={100}
             />
-            <TimeStampLayer date={file.date} />
           </ImageWrapper>
         ) : (
           <Flex className='w-[20%]'>
