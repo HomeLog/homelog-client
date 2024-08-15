@@ -31,7 +31,13 @@ export const createLink = async (createGuestbookDto: {
   return response.data.result;
 };
 
-export const uploadImage = async (presignedUrl: string, imageFile: File) => {
+export const uploadImage = async ({
+  presignedUrl,
+  imageFile,
+}: {
+  presignedUrl: string;
+  imageFile: File;
+}) => {
   return await axios.put(presignedUrl, imageFile, {
     headers: {
       'Content-Type': imageFile.type,

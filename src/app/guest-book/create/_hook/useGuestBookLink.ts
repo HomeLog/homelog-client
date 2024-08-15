@@ -39,46 +39,24 @@ const useGuestBookLink = () => {
     }
   }, []);
 
-  const createLinkMutation = useMutation({
-    mutationFn: (dto: CreateLinkDto) => api.guestbook.createLink(dto),
-    onSuccess: () => {},
-    onError: () => {
-      showToast.error('방명록 링크 생성이 실패했습니다.');
-    },
-  });
-
-  const getPresignedUrlMutation = useMutation({
-    mutationFn: api.guestbook.getPresignedUrl,
-    onError: () => {
-      showToast.error('방명록 링크 생성이 실패했습니다.');
-    },
-  });
-
-  const uploadImageMutation = useMutation({
-    mutationFn: async ({ presignedUrl, imageFile }: UploadImageParams) =>
-      api.guestbook.uploadImage(presignedUrl, imageFile),
-    onError: () => {
-      showToast.error('방명록 링크 생성이 실패했습니다.');
-    },
-  });
-
   const handleCreateLink = async () => {
     if (!file) return;
 
     const imageKey = nanoid();
     try {
-      const presignedUrl = await getPresignedUrlMutation.mutateAsync(imageKey);
+      const presignedUrl = await api.guestbook.getPresignedUrl(imageKey);
 
       setIsLoading(true);
-      await uploadImageMutation.mutateAsync({
+      await api.guestbook.uploadImage({
         presignedUrl,
         imageFile: file.file,
       });
 
-      const createLinkResult = await createLinkMutation.mutateAsync({
+      const createLinkResult = await api.guestbook.createLink({
         visitorName,
         imageKey,
       });
+
       const newLink = `${window.location.origin}/guest-book/${createLinkResult.id}/leave-message`;
       router.push(newLink);
       showToast.success('방명록 링크 생성이 완료되었습니다.');
