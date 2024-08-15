@@ -70,21 +70,23 @@ const useGuestBookLink = () => {
       const presignedUrl = await getPresignedUrlMutation.mutateAsync(imageKey);
 
       setIsLoading(true);
-      const [, createLinkResult] = await Promise.all([
-        uploadImageMutation.mutateAsync({
-          presignedUrl,
-          imageFile: file.file,
-        }),
-        createLinkMutation.mutateAsync({ visitorName, imageKey }),
-      ]);
-      setIsLoading(false);
+      await uploadImageMutation.mutateAsync({
+        presignedUrl,
+        imageFile: file.file,
+      });
 
+      const createLinkResult = await createLinkMutation.mutateAsync({
+        visitorName,
+        imageKey,
+      });
       const newLink = `${window.location.origin}/guest-book/${createLinkResult.id}/leave-message`;
       router.push(newLink);
       showToast.success('방명록 링크 생성이 완료되었습니다.');
       shareUrl(newLink);
     } catch (error) {
       showToast.error('방명록 링크 생성이 실패했습니다.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
