@@ -1,13 +1,42 @@
 import { DGuestBook } from '@/types/guestbook.type';
 import { TResponse } from '@/types/response.type';
 import { TAccessToken } from '@/types/user.type';
+import axios from 'axios';
 import { client } from '..';
 
-export const createLink = async (formData: FormData) => {
+export const getPresignedUrl = async (imageKey: string) => {
   const baseURL = window?.ENV?.NEXT_PUBLIC_SERVER_URL! ?? '';
-  const response = await client.post(`${baseURL}/guestbooks`, formData);
+
+  const response = await client.get(`/guestbooks/presigned-url/${imageKey}`, {
+    baseURL,
+  });
 
   return response.data.result;
+};
+
+export const createLink = async (createGuestbookDto: {
+  visitorName: string;
+  imageKey: string;
+}) => {
+  const baseURL = window?.ENV?.NEXT_PUBLIC_SERVER_URL! ?? '';
+
+  const response = await client.post(
+    `${baseURL}/guestbooks`,
+    createGuestbookDto,
+    {
+      baseURL,
+    },
+  );
+
+  return response.data.result;
+};
+
+export const uploadImage = async (presignedUrl: string, imageFile: File) => {
+  return await axios.put(presignedUrl, imageFile, {
+    headers: {
+      'Content-Type': imageFile.type,
+    },
+  });
 };
 
 export const getGuestBookById = async (
