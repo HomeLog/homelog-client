@@ -24,6 +24,7 @@ const GuestbookCreatePage: React.FC = () => {
     setFile,
     handleCreateLink,
     isLoading,
+    setIsLoading,
   } = useGuestBookLink();
   const { signedIn, loading } = useAuth();
   const router = useRouter();
@@ -36,6 +37,7 @@ const GuestbookCreatePage: React.FC = () => {
   }, [signedIn, router, loading]);
 
   const onButtonClick = () => {
+    setIsLoading(true);
     if (validateForm(visitorName, file)) handleCreateLink();
   };
 

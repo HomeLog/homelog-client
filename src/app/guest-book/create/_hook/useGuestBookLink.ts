@@ -3,7 +3,6 @@
 import api from '@/api';
 import { showToast } from '@/libs/utils';
 import TImageFile from '@/types/image.file';
-import { useMutation } from '@tanstack/react-query';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
@@ -46,7 +45,6 @@ const useGuestBookLink = () => {
     try {
       const presignedUrl = await api.guestbook.getPresignedUrl(imageKey);
 
-      setIsLoading(true);
       await api.guestbook.uploadImage({
         presignedUrl,
         imageFile: file.file,
@@ -75,6 +73,7 @@ const useGuestBookLink = () => {
     setFile,
     handleCreateLink,
     isLoading,
+    setIsLoading,
   };
 };
 
