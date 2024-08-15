@@ -6,69 +6,78 @@ const FONT_PATHS = {
   italic: '/fonts/E1234/E1234-Italic.ttf',
 };
 
+// URL을 File 객체로 변환하는 함수
 async function urlToFile(url: string, fileName: string): Promise<File> {
   const response = await fetch(url);
   const blob = await response.blob();
   return new File([blob], fileName, { type: blob.type });
 }
 
+// 폰트를 로드하는 함수
 async function loadFonts(): Promise<void> {
-  const fontPromises = [
-    new FontFace('E1234', `url(${FONT_PATHS.normal})`).load(),
-    new FontFace('E1234-Italic', `url(${FONT_PATHS.italic})`).load(),
+  const fontFaces = [
+    new FontFace('E1234', `url(${FONT_PATHS.normal})`),
+    new FontFace('E1234-Italic', `url(${FONT_PATHS.italic})`),
   ];
 
   try {
-    const loadedFonts = await Promise.all(fontPromises);
+    const loadedFonts = await Promise.all(fontFaces.map((font) => font.load()));
     loadedFonts.forEach((font) => document.fonts.add(font));
-  } catch (error) {}
+  } catch (error) {
+  }
 }
 
+// 이미지를 4:3 비율로 자르는 함수
 async function cropImageTo4by3Ratio(imageFile: File): Promise<Blob> {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const img = await loadImage(imageFile);
+  const img = await loadImage(imageFile);
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('캔버스 컨텍스트를 가져올 수 없습니다');
 
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      if (!ctx) {
-        throw new Error('Unable to get canvas context');
-      }
+  const aspectRatio = 3 / 4;
+  const { width, height } = calculateDimensions(
+    img.width,
+    img.height,
+    aspectRatio,
+  );
 
-      let width, height;
-      const aspectRatio = 3 / 4;
-      if (img.width / img.height > aspectRatio) {
-        height = img.height;
-        width = height * aspectRatio;
-      } else {
-        width = img.width;
-        height = width / aspectRatio;
-      }
+  canvas.width = width;
+  canvas.height = height;
 
-      canvas.width = width;
-      canvas.height = height;
+  const startX = (img.width - width) / 2;
+  const startY = (img.height - height) / 2;
+  ctx.drawImage(img, startX, startY, width, height, 0, 0, width, height);
 
-      const startX = (img.width - width) / 2;
-      const startY = (img.height - height) / 2;
-      ctx.drawImage(img, startX, startY, width, height, 0, 0, width, height);
-
-      canvas.toBlob(
-        (blob) => {
-          if (blob) {
-            resolve(blob);
-          } else {
-            reject(new Error('Canvas to Blob conversion failed'));
-          }
-        },
-        'image/png',
-        1,
-      );
-    } catch (error) {
-      reject(error);
-    }
+  return new Promise((resolve, reject) => {
+    canvas.toBlob(
+      (blob) =>
+        blob
+          ? resolve(blob)
+          : reject(new Error('캔버스를 Blob으로 변환하는데 실패했습니다')),
+      'image/png',
+      1,
+    );
   });
 }
 
+// 주어진 종횡비에 맞는 너비와 높이를 계산하는 함수
+function calculateDimensions(
+  imgWidth: number,
+  imgHeight: number,
+  aspectRatio: number,
+): { width: number; height: number } {
+  let width, height;
+  if (imgWidth / imgHeight > aspectRatio) {
+    height = imgHeight;
+    width = height * aspectRatio;
+  } else {
+    width = imgWidth;
+    height = width / aspectRatio;
+  }
+  return { width, height };
+}
+
+// 스타일이 적용된 텍스트를 렌더링하는 함수
 function renderStyledText(
   ctx: CanvasRenderingContext2D,
   date: string,
@@ -82,9 +91,6 @@ function renderStyledText(
 ) {
   const fontFamily = '"E1234-Italic", "E1234", sans-serif';
   ctx.font = `${fontSize}px ${fontFamily}`;
-  ctx.save();
-
-  ctx.font = `${fontSize}px ${fontFamily}`;
   ctx.textAlign = 'right';
   ctx.textBaseline = 'bottom';
   ctx.fillStyle = 'rgba(255, 176, 97, 0.9)';
@@ -96,20 +102,22 @@ function renderStyledText(
     { color: 'rgba(0, 0, 0, 0.8)', blur: 8 },
   ];
 
-  shadowLayers.forEach((layer) => {
-    ctx.shadowColor = layer.color;
-    ctx.shadowBlur = layer.blur;
+  const textX = x + width - paddingRight;
+  const textY = y + height - paddingBottom;
+
+  shadowLayers.forEach(({ color, blur }) => {
+    ctx.shadowColor = color;
+    ctx.shadowBlur = blur;
     ctx.shadowOffsetX = 0;
     ctx.shadowOffsetY = 0;
-    ctx.fillText(date, x + width - paddingRight, y + height - paddingBottom);
+    ctx.fillText(date, textX, textY);
   });
 
   ctx.shadowColor = 'transparent';
-  ctx.fillText(date, x + width - paddingRight, y + height - paddingBottom);
-
-  ctx.restore();
+  ctx.fillText(date, textX, textY);
 }
 
+// 둥근 모서리의 이미지를 그리는 함수
 function drawRoundedImage(
   ctx: CanvasRenderingContext2D,
   img: HTMLImageElement,
@@ -124,46 +132,54 @@ function drawRoundedImage(
   borderRadius: number,
 ) {
   ctx.save();
-
-  // Fixed: Use a type assertion to handle the possibility of roundRect not being available
-  if ((ctx as any).roundRect) {
-    ctx.beginPath();
+  ctx.beginPath();
+  if ('roundRect' in ctx) {
     (ctx as any).roundRect(dx, dy, dWidth, dHeight, borderRadius);
-    ctx.clip();
   } else {
-    ctx.beginPath();
-    ctx.moveTo(dx + borderRadius, dy);
-    ctx.arcTo(dx + dWidth, dy, dx + dWidth, dy + dHeight, borderRadius);
-    ctx.arcTo(dx + dWidth, dy + dHeight, dx, dy + dHeight, borderRadius);
-    ctx.arcTo(dx, dy + dHeight, dx, dy, borderRadius);
-    ctx.arcTo(dx, dy, dx + dWidth, dy, borderRadius);
-    ctx.closePath();
-    ctx.clip();
+    drawFallbackRoundedRect(ctx, dx, dy, dWidth, dHeight, borderRadius);
   }
-
+  ctx.clip();
   ctx.drawImage(img, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
-
   ctx.restore();
 }
 
+// roundRect 메서드가 없는 경우를 위한 대체 함수
+function drawFallbackRoundedRect(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  radius: number,
+) {
+  ctx.moveTo(x + radius, y);
+  ctx.arcTo(x + width, y, x + width, y + height, radius);
+  ctx.arcTo(x + width, y + height, x, y + height, radius);
+  ctx.arcTo(x, y + height, x, y, radius);
+  ctx.arcTo(x, y, x + width, y, radius);
+  ctx.closePath();
+}
+
+// 이미지 파일을 로드하는 함수
 const loadImage = (file: File): Promise<HTMLImageElement> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (event) => {
       if (!event.target || typeof event.target.result !== 'string') {
-        reject(new Error('Failed to read file'));
+        reject(new Error('파일 읽기 실패'));
         return;
       }
       const img = new Image();
       img.onload = () => resolve(img);
-      img.onerror = () => reject(new Error('Failed to load image'));
+      img.onerror = () => reject(new Error('이미지 로드 실패'));
       img.src = event.target.result;
     };
-    reader.onerror = () => reject(new Error('Failed to read file'));
+    reader.onerror = () => reject(new Error('파일 읽기 실패'));
     reader.readAsDataURL(file);
   });
 };
 
+// 이미지들을 합성하는 함수
 async function combineImages(
   bgImg: File,
   fgCanvas: File,
@@ -176,17 +192,14 @@ async function combineImages(
 
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
-  if (!ctx) throw new Error('Unable to get canvas context');
+  if (!ctx) throw new Error('캔버스 컨텍스트를 가져올 수 없습니다');
 
   const bgImgRatio = 2 / 3;
-  let width, height;
-  if (bgImage.width / bgImage.height > bgImgRatio) {
-    height = bgImage.height;
-    width = height * bgImgRatio;
-  } else {
-    width = bgImage.width;
-    height = width / bgImgRatio;
-  }
+  const { width, height } = calculateDimensions(
+    bgImage.width,
+    bgImage.height,
+    bgImgRatio,
+  );
 
   canvas.width = width;
   canvas.height = height;
@@ -211,11 +224,11 @@ async function combineImages(
     10,
   );
 
-  const horizontalPadding = canvas.width * 0.05;
-  const imageWidth = canvas.width - horizontalPadding * 2;
+  const horizontalPadding = width * 0.05;
+  const imageWidth = width - horizontalPadding * 2;
   const imageHeight = (4 * imageWidth) / 3;
-  const paddingTop = canvas.height * 0.087;
-  const paddingLeft = canvas.width * 0.05;
+  const paddingTop = height * 0.087;
+  const paddingLeft = width * 0.05;
 
   ctx.drawImage(
     fgImage,
@@ -229,7 +242,7 @@ async function combineImages(
     imageHeight,
   );
 
-  const fontSize = Math.floor(canvas.height * 0.03);
+  const fontSize = Math.floor(height * 0.03);
   renderStyledText(
     ctx,
     date,
@@ -242,24 +255,20 @@ async function combineImages(
     Math.round(imageWidth * 0.085),
   );
 
-  // Fixed: Return a Blob instead of canvas
   return new Promise((resolve, reject) => {
-    canvas.toBlob((blob) => {
-      if (blob) {
-        resolve(blob);
-      } else {
-        reject(new Error('Failed to create blob from canvas'));
-      }
-    }, 'image/png');
+    canvas.toBlob(
+      (blob) =>
+        blob ? resolve(blob) : reject(new Error('캔버스에서 Blob 생성 실패')),
+      'image/png',
+    );
   });
 }
 
+// 파일을 이미지 파일로 변환하는 메인 함수
 export const convertFileToImageFile = async (
   file: File,
 ): Promise<Omit<TImageFile, 'date'>> => {
-  try {
-    await loadFonts();
-  } catch (error) {}
+  await loadFonts().catch(console.error);
 
   let convertedFile = file;
   if (file.type === 'image/heic' || file.type === 'image/heif') {
@@ -271,7 +280,7 @@ export const convertFileToImageFile = async (
         quality: 1,
       });
       if (!(blob instanceof Blob)) {
-        throw new Error('Conversion failed: Result is not a Blob');
+        throw new Error('변환 실패: 결과가 Blob이 아닙니다');
       }
       convertedFile = new File(
         [blob],
@@ -286,37 +295,31 @@ export const convertFileToImageFile = async (
     }
   }
 
-  try {
-    const croppedBlob = await cropImageTo4by3Ratio(convertedFile);
+  const croppedBlob = await cropImageTo4by3Ratio(convertedFile);
+  const croppedFile = new File([croppedBlob], convertedFile.name, {
+    type: 'image/jpeg',
+    lastModified: convertedFile.lastModified,
+  });
 
-    const croppedFile = new File([croppedBlob], convertedFile.name, {
-      type: 'image/jpeg',
-      lastModified: convertedFile.lastModified,
-    });
+  const paperFile = await urlToFile(PAPER_IMAGE_PATH, 'paper.jpg');
+  const combinedImageBlob = await combineImages(
+    paperFile,
+    croppedFile,
+    new Date()
+      .toLocaleDateString('ko-KR')
+      .replace(/\./g, '')
+      .replace(/ /g, '.'),
+  );
 
-    const paperFile = await urlToFile(PAPER_IMAGE_PATH, 'paper.jpg');
+  const combinedImageFile = new File([combinedImageBlob], file.name, {
+    type: 'image/png',
+    lastModified: file.lastModified,
+  });
 
-    const combinedImageBlob = await combineImages(
-      paperFile,
-      croppedFile,
-      new Date()
-        .toLocaleDateString('ko-KR')
-        .replace(/\./g, '')
-        .replace(/ /g, '.'),
-    );
-
-    const combinedImageFile = new File([combinedImageBlob], file.name, {
-      type: 'image/png',
-      lastModified: file.lastModified,
-    });
-
-    const createdImageFile = await createImageFile(combinedImageFile);
-    return createdImageFile;
-  } catch (error) {
-    throw error;
-  }
+  return createImageFile(combinedImageFile);
 };
 
+// 파일을 DataURL로 읽는 함수
 async function readFileAsDataURL(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -326,10 +329,8 @@ async function readFileAsDataURL(file: File): Promise<string> {
   });
 }
 
+// 이미지 파일을 생성하는 함수
 async function createImageFile(file: File): Promise<Omit<TImageFile, 'date'>> {
   const dataURL = await readFileAsDataURL(file);
-  return {
-    file,
-    previewUrl: dataURL,
-  };
+  return { file, previewUrl: dataURL };
 }

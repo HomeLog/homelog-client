@@ -2,10 +2,11 @@
 
 import Grid from '@/components/Grid';
 import InputWithLabel from '@/components/InputWithLabel';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import useAuth from '@/contexts/auth.context';
 import { showToast } from '@/libs/utils';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import ButtonContainer from '../_containers/ButtonContainer';
 import {
   handleVisitorNameInput,
@@ -15,10 +16,15 @@ import {
 import ImageUploadContainer from './_container/ImageUploadContainer';
 import useGuestBookLink from './_hook/useGuestBookLink';
 
-export default function GuestbookCreatePage() {
-  const { visitorName, setVisitorName, file, setFile, createLink } =
-    useGuestBookLink();
-
+const GuestbookCreatePage: React.FC = () => {
+  const {
+    visitorName,
+    setVisitorName,
+    file,
+    setFile,
+    handleCreateLink,
+    isLoading,
+  } = useGuestBookLink();
   const { signedIn, loading } = useAuth();
   const router = useRouter();
 
@@ -29,18 +35,8 @@ export default function GuestbookCreatePage() {
     }
   }, [signedIn, router, loading]);
 
-  const handleButtonClick = async () => {
-    if (!validateForm(visitorName, file)) return;
-    if (!file) return;
-
-    const blob = new Blob([await file.file.arrayBuffer()], {
-      type: file.file.type,
-    });
-
-    const formData = new FormData();
-    formData.append('imageFile', blob);
-    formData.append('visitorName', visitorName);
-    createLink(formData);
+  const onButtonClick = () => {
+    if (validateForm(visitorName, file)) handleCreateLink();
   };
 
   const labelText =
@@ -61,10 +57,17 @@ export default function GuestbookCreatePage() {
       />
       <ImageUploadContainer file={file} setFile={setFile} />
       <ButtonContainer
-        buttonText='링크 생성하기'
+        buttonText={isLoading ? '방명록을 생성중입니다..' : '링크 생성하기'}
         className='justify-start row-start-11'
-        onClick={handleButtonClick}
-      />
+        onClick={onButtonClick}
+        disabled={!file || !visitorName || isLoading}
+      >
+        {isLoading && (
+          <LoadingSpinner className='absolute right-2 top-[16px] w-min' />
+        )}
+      </ButtonContainer>
     </Grid>
   );
-}
+};
+
+export default GuestbookCreatePage;

@@ -6,6 +6,7 @@ const flexVariants = cva([''], {
   variants: {
     direction: {
       vertical: 'flex flex-col',
+      horizontal: 'flex flex-row',
     },
     position: {
       center: 'items-center justify-center',

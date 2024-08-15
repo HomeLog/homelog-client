@@ -6,18 +6,32 @@ function ButtonContainer({
   buttonText,
   className,
   type = 'button',
+  disabled = false,
   onClick,
+  children,
 }: {
   buttonText: string;
   className?: string;
   type?: 'submit' | 'button';
+  disabled?: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  children?: React.ReactNode;
 }) {
   return (
-    <Flex className={mergeClassNames(className)}>
-      <Button intent='primary' onClick={onClick} type={type}>
+    <Flex
+      className={mergeClassNames(className, 'relative')}
+      direction='vertical'
+    >
+      <Button
+        intent='primary'
+        className='w-full'
+        onClick={onClick}
+        type={type}
+        disabled={disabled}
+      >
         {buttonText}
       </Button>
+      {children}
     </Flex>
   );
 }
