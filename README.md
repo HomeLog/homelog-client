@@ -1,5 +1,11 @@
 # homelog-client
 
+## HomeLog 배포 주소
+
+[🏠 HomeLog](https://dev.homelog.online/)
+
+- 프로덕션 배포는 비용 문제로 2024-08-16 이후 중단되었습니다.
+
 ## 1. 서비스 소개
 
 🏠 **Home-log**는 집에 초대된 손님들이 방명록을 남기고, 집 주인이 방명록을 모아볼 수 있는 서비스입니다.
