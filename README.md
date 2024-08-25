@@ -1,9 +1,10 @@
 # homelog-client
 
-## HomeLog 배포 주소
+## 🏠 HomeLog 배포 주소
 
-[🏠 HomeLog](https://dev.homelog.online/)
+[HomeLog - 개발 환경](https://dev.homelog.online/)
 
+~~[HomeLog - 프로덕션 환경]()~~
 - 프로덕션 배포는 비용 문제로 2024-08-16 이후 중단되었습니다.
 
 ## 1. 아키텍처
