@@ -9,7 +9,7 @@
 
 ## 1. 아키텍처
 - 개발 환경에서의 아키텍처
-  ![homelog-dev-architecture](https://i.imgur.com/cOZ3ljM.png)
+  ![homelog-dev-architecture](https://i.imgur.com/c4IwGac.png)
 
 ## 2. 서비스 소개
 
