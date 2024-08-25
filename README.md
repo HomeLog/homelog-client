@@ -1,4 +1,6 @@
 # homelog-client
+![thumbnail](https://github.com/user-attachments/assets/2170673d-673b-44f7-8904-c4c830cffe92)
+
 
 ## 🏠 HomeLog 배포 주소
 
