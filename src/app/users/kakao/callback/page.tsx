@@ -17,7 +17,7 @@ const KakaoCallbackPage = ({
     const signInAndRedirect = async () => {
       await api.auth.signInKakao(code);
       signIn();
-      router.push('/');
+      router.replace('/');
     };
 
     signInAndRedirect();
