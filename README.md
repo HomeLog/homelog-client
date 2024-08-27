@@ -7,11 +7,24 @@
 [HomeLog - 개발 환경](https://dev.homelog.online/)
 
 ~~[HomeLog - 프로덕션 환경]()~~
+
 - 프로덕션 배포는 비용 문제로 2024-08-16 이후 중단되었습니다.
 
 ## 1. 아키텍처
-- 개발 환경에서의 아키텍처
-  ![homelog-dev-architecture](https://i.imgur.com/c4IwGac.png)
+
+<details>
+<summary>프로덕션 환경에서의 아키텍처 보기</summary>
+
+![homelog-backend-architecture](https://github.com/user-attachments/assets/1fad5261-0b13-43c3-bcbb-ef43dc30c34b)
+
+</details>
+
+<details>
+<summary>개발 환경에서의 아키텍처 보기</summary>
+
+![homelog-dev-architecture](https://i.imgur.com/c4IwGac.png)
+
+</details>
 
 ## 2. 서비스 소개
 
@@ -26,7 +39,7 @@
 
 | 프로필 | 깃허브 | 역할 |
 | --- | --- | --- |
-| 고지명 | [jimyungkoh](https://github.com/jimyungkoh) | * 방명록(링크 생성, 작성, 상세) 페이지 <br/> * 공통 컴포넌트 설계 <br/> * CI/CD 파이프라인 및 통합 테스트 환경 구축 <br/> * 이미지 프로세싱 |
+| 고지명 | [jimyungkoh](https://github.com/jimyungkoh) |  방명록(링크 생성, 작성, 상세) 페이지 <br/>  공통 컴포넌트 설계 <br/>  CI/CD 파이프라인 및 통합 테스트 환경 구축 <br/>  이미지 프로세싱 |
 | 박상희 | [Sangddong](https://github.com/Sangddong) | 로그인 페이지, 홈 페이지, 프로필 수정 페이지 |
 
 ## 5. 브랜치 전략
