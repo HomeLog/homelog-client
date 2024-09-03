@@ -1,38 +1,52 @@
 'use client';
-
 import api from '@/api';
 import { AuthContext } from '@/contexts/auth.context';
 import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
 
-export default function AuthProvider({ children }: PropsWithChildren<any>) {
-  const [signedIn, setSignedIn] = useState(false);
-  const [loading, setLoading] = useState(true);
+interface AuthState {
+  signedIn: boolean;
+  loading: boolean;
+}
 
-  const signIn = useCallback(() => setSignedIn(true), []);
+export default function AuthProvider({ children }: PropsWithChildren<unknown>) {
+  const [authState, setAuthState] = useState<AuthState>({
+    signedIn: false,
+    loading: true,
+  });
+
+  const signIn = useCallback(() => {
+    setAuthState((prevState) => ({ ...prevState, signedIn: true }));
+  }, []);
 
   const signOut = useCallback(async () => {
     await api.auth.signOut();
-    setSignedIn(false);
+    setAuthState((prevState) => ({ ...prevState, signedIn: false }));
   }, []);
+
+  const refreshAuth = useCallback(async () => {
+    try {
+      await api.auth.refresh();
+      return { signedIn: true, loading: false };
+    } catch (error) {
+      return { signedIn: false, loading: false };
+    }
+  }, []);
+
+  const checkAuthStatus = useCallback(async () => {
+    try {
+      const isSignedIn = await api.auth.checkSignIn();
+      return { signedIn: isSignedIn, loading: false };
+    } catch (error) {
+      return refreshAuth();
+    }
+  }, [refreshAuth]);
 
   useEffect(() => {
-    const checkAuthStatus = async () => {
-      setLoading(true);
-      try {
-        const signedIn = await api.auth.checkSignIn();
-
-        setSignedIn(signedIn);
-      } catch (error) {
-        setSignedIn(false);
-      }
-      setLoading(false);
-    };
-
-    checkAuthStatus();
-  }, []);
+    checkAuthStatus().then(setAuthState);
+  }, [checkAuthStatus]);
 
   return (
-    <AuthContext.Provider value={{ signedIn, loading, signIn, signOut }}>
+    <AuthContext.Provider value={{ ...authState, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
