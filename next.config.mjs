@@ -6,6 +6,12 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'homelog-dev.s3.ap-northeast-2.amazonaws.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'homelog.s3.ap-northeast-2.amazonaws.com',
         port: '',
         pathname: '/**',
